@@ -15,6 +15,7 @@ Run Locally:
 
     In backend folder: node server.js | npm run start:server for node server (Node) 
 
+    Open http://localhost:4200/ in any browser 
 ----------
 Deployment:
     Angular: ng build --prod  (to compile for deployment. Find files under dist) 
