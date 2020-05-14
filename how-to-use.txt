@@ -1,11 +1,18 @@
 How to use
 ----------
+Dependencies:
+
+    https://nodejs.org/en/
+
+    https://cli.angular.io/
+
+----------
 
 Run "npm install" inside this project folder to install all dependencies.
 
 Run "ng serve" to see the app in action (try "npm start" in case "ng serve" fails). (Angular)
 
-in backend folder: node server.js | npm run start:server for node server (Node) 
+In backend folder: node server.js | npm run start:server for node server (Node) 
 
 ng build --prod  (to compile for deployment)
 
