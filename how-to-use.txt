@@ -1,0 +1,26 @@
+How to use
+----------
+
+Run "npm install" inside this project folder to install all dependencies.
+
+Run "ng serve" to see the app in action (try "npm start" in case "ng serve" fails). (Angular)
+
+in backend folder: node server.js | npm run start:server for node server (Node) 
+
+ng build --prod  (to compile for deployment)
+
+compress backend folder to deploy to node js.
+
+
+Project Features:
+
+1 Sorts product list
+2 Spawn Python Script From Node 
+    - scrape html from website and get data
+    - solved for large amounts of data
+    - convert into json and send to angular
+3 Angular Reactive and Dynamic Forms Implementation
+4 Angular service functions
+5 Node js deployment on elastic beanstalk
+6 Angular deplyment on S3
+7 Angular Bootstrap

@@ -1,0 +1,54 @@
+@media only screen and (max-width: 801px) {
+  .text-item{
+      display: none;
+ }
+  .spacer{
+      display: none;
+ }
+  .mobileHeader{
+      color: black;
+      font-size: 8vw;
+      padding-left: 35vw;
+ }
+}
+.navbar-brand-image{
+  margin-top: -9px;
+  margin-left: 10px;
+}
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white;
+  width: 35px;
+  height: 3px;
+  border-radius: 1.5px;
+}
+.navbar-default .navbar-toggle{
+  border-color:transparent ;
+}
+/* Show it is fixed to the top */
+.navbar-static-top.navbar{
+  background-color: #373A3C;
+}
+.navbar.navbar-default {
+  background-color: #373A3C;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.navbar.navbar-default .navbar-collapse {
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+.nav.navbar-nav li a {
+  color: white;
+  letter-spacing: 1px;
+  font-size: 13pt;
+  font-weight: 300;
+}
+.navbar-custom .navbar-nav > .non-active > a:hover, .navbar-custom .navbar-nav > .non-active > a:focus, .navbar-custom .navbar-nav > .open >a {
+  background-color: green;
+  border-bottom: 2px solid green;
+}
+.navbar-custom .navbar-nav > .active > a:hover, .navbar-custom .navbar-nav > .active > a:focus, .navbar-custom .navbar-nav > .open >a {
+  background-color: green;
+}

@@ -1,0 +1,18 @@
+<p >
+    <ngb-alert *ngIf="errorMessage" (close)="errorMessage = false">
+        <strong>Message:</strong> Please open link on chrome.
+      </ngb-alert>  </p>
+<div class="containers container" >
+    <h3 class="text-center"><b>{{movie.Title}}</b></h3>
+    <div class="movieclip row" (click)="play()" ></div>
+    <div class="flexContainer">
+        <div class="movie-details">
+            <h4 class="movieText" *ngFor="let key of Object.keys(movieInfomation)">
+                {{key}}: {{movieInfomation[key]}}
+            </h4>
+        </div>
+        <div class="movie-image">
+                <div  class="img "  [ngStyle]="{'background-image':'url(' + getImage(movie.Image) + ')' }" ></div>
+        </div>
+    </div>
+</div>
