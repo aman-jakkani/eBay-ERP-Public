@@ -12,12 +12,6 @@ def main():
     if SITE_NUM == 0:
         link = URL_PARAM
         SITE_ID = 0
-    elif SITE_NUM == 1:
-        link = "https://m.bstock.com/m/downloads/get?site=cst&sku=" + URL_PARAM + "&file_type=html"
-        SITE_ID = 4
-    elif SITE_NUM == 2:
-        link = URL_PARAM
-        SITE_ID = 3
 
     #starting browser
     browser = mechanicalsoup.StatefulBrowser()
@@ -62,13 +56,13 @@ def main():
                     detailTitle = headers[detailCount]
                     if detailTitle == "Quantity":
                         detail = int(detail.strip())
-                        detailDict[detailTitle] = detail
+                        # detailDict[detailTitle] = detail
                     if detailTitle == "Price":
                         detail = detail.strip("$")
-                        detailDict[detailTitle] = detail
-                    if detailTitle == "Product":
-                        detailDict[detailTitle] = detail
-                    # detailDict[detailTitle] = detail
+                        # detailDict[detailTitle] = detail
+                    # if detailTitle == "Product":
+                    #     detailDict[detailTitle] = detail
+                    detailDict[detailTitle] = detail
                     
                 
                 product_dict[id] = detailDict
