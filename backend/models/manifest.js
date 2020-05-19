@@ -7,7 +7,7 @@ var manifest_schema = mongoose.Schema({
     auction_id: {type: Number},
     transaction_id: {type: Number},
     quantity: {type: Number},
-    total_price: {type: Float32Array, required: true},
+    total_price: {type: Number, required: true},
     date_purchased: {type: Date, required: true},
     status: {type: String},
     products: [{
