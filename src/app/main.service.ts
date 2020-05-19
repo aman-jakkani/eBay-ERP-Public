@@ -90,6 +90,22 @@ getManifests() {
       return manifests;
     }));
 }
+
+getManifest(manifestID) {
+  return this.http.get<{ message: string; data: any}>(
+    BACKEND_URL + '/getManifest/'+manifestID).pipe(map((response: any) => {
+      const manifest = response;
+      return manifest;
+    }));
+}
+
+getProducts(manifestID) {
+  return this.http.get<{ message: string; data: any}>(
+    BACKEND_URL + '/getProducts/'+manifestID).pipe(map((response: any) => {
+      const products = response;
+      return products;
+    }));
+}
   //Not using but goot example of observable
   // updateSearchValue(searchValue: string){
   //   this.searchValue.next(searchValue);
