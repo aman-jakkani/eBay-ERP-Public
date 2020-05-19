@@ -2,11 +2,14 @@ var mongoose = require('mongoose');
 var mongooseUniqueValidator = require('mongoose-unique-validator');
 
 var manifest_schema = mongoose.Schema({
-    id: {type: String, required: true},
+    manifest_id: {type: mongoose.Schema.Types.ObjectId, required: true},
     products: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
-    }]
+    }],
+    auction: {type: String, required: true},
+    auction_id: {type: Number},
+    date_purchased: {type: Date, required: true}
 });
 
 schema.plugin(mongooseUniqueValidator);
