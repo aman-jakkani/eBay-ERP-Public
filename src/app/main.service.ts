@@ -12,100 +12,44 @@ const BACKEND_URL = environment.apiUrl ;
 @Injectable({ providedIn: 'root' })
 export class MainService {
 
-  private currentMovieId = '';
-  private searchValue = new Subject<string>();
-
   constructor(private http: HttpClient) {}
 
-  setCurrentMovie(movieId: string) {
-    console.log('setting movieId', movieId);
-    this.currentMovieId = movieId;
-  }
-  getCurrentMovie() {
-    return this.currentMovieId;
-  }
 
-  getMovies(page: number) {
+  getLinkData(url, siteNum){
     return this.http
-      .get<{ message: string; movies: any }>(
-        BACKEND_URL + '/getMovies/' + page.toString()
-      ).pipe(map((response: any) => {
-
-        const movies = response;
-
-        return movies;
-      }));
-  }
-
-  getMoviesSearch(searchTerms: string){
-    return this.http
-      .get<{ message: string; movies: any }>(
-        BACKEND_URL + '/getMoviesSearch/' + searchTerms
-      ).pipe(map((response: any) => {
-
-        const movies = response;
-
-        return movies;
-      }));
-  }
-  getMovie(movieId: string) {
-    return this.http
-    .get<{ message: string; movie: any }>(
-      BACKEND_URL + '/getMovie/' + movieId
-    ).pipe(map((response: any) => {
-      const movie = response;
-      console.log('Success in get movie', movie);
-      return movie;
-    }));
-}
-
-getMovieCount() {
-  return this.http
-    .get<{ message: string; movies: any }>(
-      BACKEND_URL + '/getMovieCount/'
+    .get<{message: string; data: any}>(
+      BACKEND_URL + '/getLinkData/' + encodeURIComponent(url) +'/'+ siteNum
     ).pipe(map((response: any) => {
 
       const movieCount = response;
 
       return movieCount;
     }));
-}
+  }
 
-getLinkData(url, siteNum){
-  return this.http
-  .get<{message: string; data: any}>(
-    BACKEND_URL + '/getLinkData/' + encodeURIComponent(url) +'/'+ siteNum
-  ).pipe(map((response: any) => {
+  getManifests() {
+    return this.http.get<{ message: string; data: any}>(
+      BACKEND_URL + '/getManifests').pipe(map((response: any) => {
+        const manifests = response;
+        return manifests;
+      }));
+  }
 
-    const movieCount = response;
+  getManifest(manifestID) {
+    return this.http.get<{ message: string; data: any}>(
+      BACKEND_URL + '/getManifest/'+manifestID).pipe(map((response: any) => {
+        const manifest = response;
+        return manifest;
+      }));
+  }
 
-    return movieCount;
-  }));
-}
-
-getManifests() {
-  return this.http.get<{ message: string; data: any}>(
-    BACKEND_URL + '/getManifests').pipe(map((response: any) => {
-      const manifests = response;
-      return manifests;
-    }));
-}
-
-getManifest(manifestID) {
-  return this.http.get<{ message: string; data: any}>(
-    BACKEND_URL + '/getManifest/'+manifestID).pipe(map((response: any) => {
-      const manifest = response;
-      return manifest;
-    }));
-}
-
-getProducts(manifestID) {
-  return this.http.get<{ message: string; data: any}>(
-    BACKEND_URL + '/getProducts/'+manifestID).pipe(map((response: any) => {
-      const products = response;
-      return products;
-    }));
-}
+  getProducts(manifestID) {
+    return this.http.get<{ message: string; data: any}>(
+      BACKEND_URL + '/getProducts/'+manifestID).pipe(map((response: any) => {
+        const products = response;
+        return products;
+      }));
+  }
   //Not using but goot example of observable
   // updateSearchValue(searchValue: string){
   //   this.searchValue.next(searchValue);
