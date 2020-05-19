@@ -82,6 +82,14 @@ getLinkData(url, siteNum){
     return movieCount;
   }));
 }
+
+getManifests() {
+  return this.http.get<{ message: string; data: any}>(
+    BACKEND_URL + '/getManifests').pipe(map((response: any) => {
+      const manifests = response;
+      return manifests;
+    }));
+}
   //Not using but goot example of observable
   // updateSearchValue(searchValue: string){
   //   this.searchValue.next(searchValue);

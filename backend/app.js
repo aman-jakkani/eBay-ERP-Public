@@ -88,6 +88,13 @@ app.get("/api/getProducts/:manifestID", (req, res) => {
 
 });
 
+
+
+
+
+
+
+
 //Getting auction data from liquidation
 app.get("/api/getLinkData/:url/:siteNum", (req, res) => {
 
