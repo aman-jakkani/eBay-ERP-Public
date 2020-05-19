@@ -32,7 +32,6 @@ def logIn():
     browser["j_password"] = input("Password: ")
 
     browser.submit_selected()
-    stall(3)
     #log in check
     browser.open("https://www.liquidation.com/account/main")
     soup = browser.get_current_page()
