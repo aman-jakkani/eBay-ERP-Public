@@ -5,12 +5,14 @@ import time
 from pymongo import MongoClient
 
 #Mongo Detail
-client = MongoClient("mongodb+srv://sai:GNliaHHVYZqdTJu6@cluster0-vo2do.mongodb.net/test?retryWrites=true&ssl_cert_reqs=CERT_NONE")
-db = client.movie_database_main
-movies_collection = db.movies
+client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
+db = client.dev_db
+manifests_collection = db.manifests
 
 def main():
     print("hello world")
+    manifest = {"Name":"Manifest1 Test"}
+    manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
 
 main()
