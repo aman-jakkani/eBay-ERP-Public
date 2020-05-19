@@ -4,10 +4,11 @@ import sys
 import time
 from pymongo import MongoClient
 import getpass 
+from datetime import datetime, timedelta
 
 #Mongo Detail
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
-db = client.test_db
+db = client.dev_db
 manifests_collection = db.manifests
 
 def main():
@@ -27,21 +28,30 @@ def getManifests(browser):
     tr = transactions_in_progress.find_all("tr")
     for i in range(0,5):
 
-        manifest = {}
         td = tr[i].find_all('td')
+        data_to_add = []
 
         for detailCount in range(len(headers)):
             value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
-            key = headers[detailCount]
+            data_to_add.append(value)
+        FMT = '%Y/%m/%d %H:%M:%S'
+        data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
+        manifest = {
+        headers[0] : data_to_add[0],
+        headers[1] : int(data_to_add[1]),
+        headers[2] : int(data_to_add[2]),
+        headers[3] : int(data_to_add[3]),
+        headers[4] : "".join(filter(str.isdigit, data_to_add[4])),
+        headers[5] : data_to_add[5],
+        headers[6] : data_to_add[6]}
 
-            manifest[key] = value
         manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
         print(manifest)
         print()
 
 def logIn():
-    print("Trying to log in")
+    print("Trying to log in to liquidation")
     # Connect to Google
     browser = mechanicalsoup.StatefulBrowser()
     browser.open("https://www.liquidation.com/login")
