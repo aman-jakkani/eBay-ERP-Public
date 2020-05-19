@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 //const Movie = require("./models/movie");
 
 const Manifest = require("./models/manifest");
+const Product = require("./models/product");
 
 const app = express();
 const {spawn} = require('child_process');
@@ -70,6 +71,22 @@ app.get("/api/getManifest/:manifestID", (req, res) => {
 
 });
 
+//getting products of a manifest
+app.get("/api/getProducts/:manifestID", (req, res) => {
+
+  var url = req.params.url;
+  var manifest_id = req.params.manifestID;
+  console.log(req.params);
+
+  Product.find({manifest_id: manifest_id}).then(documents => {
+    console.log(documents);
+    res.status(200).json({
+      message: "Products fetched succesfully",
+      products: documents
+    });
+  });
+
+});
 
 //Getting auction data from liquidation
 app.get("/api/getLinkData/:url/:siteNum", (req, res) => {
