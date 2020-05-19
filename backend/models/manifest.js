@@ -12,6 +12,6 @@ var manifest_schema = mongoose.Schema({
     date_purchased: {type: Date, required: true}
 });
 
-schema.plugin(mongooseUniqueValidator);
+manifest_schema.plugin(mongooseUniqueValidator);
 
 module.exports = mongoose.model('Manifest', manifest_schema);
