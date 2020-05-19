@@ -41,7 +41,7 @@ def getManifests(browser):
         headers[1] : int(data_to_add[1]),
         headers[2] : int(data_to_add[2]),
         headers[3] : int(data_to_add[3]),
-        headers[4] : "".join(filter(str.isdigit, data_to_add[4])),
+        headers[4] : int("".join(filter(str.isdigit, data_to_add[4])))/100,
         headers[5] : data_to_add[5],
         headers[6] : data_to_add[6]}
 
