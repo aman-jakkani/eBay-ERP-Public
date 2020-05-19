@@ -11,24 +11,34 @@ db = client.test_db
 manifests_collection = db.manifests
 
 def main():
-    #saving manifest
-    manifest = {"auction":"auction1","auction_id":"14422849","date_purchased":"2020-05-16 21:05:00"}
-  
-    manifest_attributes_list = []
-
-
-    #manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
     browser = logIn()
+    #get and save manifest
     getManifests(browser)
+    print("Data seeded")
 
 def getManifests(browser):
     browser.open("https://www.liquidation.com/account/main?tab=Transactions")
     soup = browser.get_current_page()
-    transactions_in_progress = soup.find("div",id='flip-scroll').find_all('div',recursive=False)
-    print(transactions_in_progress)
+    transactions_in_progress = soup.find("div",{"class": "flip-scroll"}).table.tbody
+    # print( transactions_in_progress.table.tbody )
 
-    
+    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_amount","date_purchased","status"]
+    tr = transactions_in_progress.find_all("tr")
+    for i in range(0,5):
+
+        manifest = {}
+        td = tr[i].find_all('td')
+
+        for detailCount in range(len(headers)):
+            value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
+            key = headers[detailCount]
+
+            manifest[key] = value
+        manifests_id = manifests_collection.insert_one(manifest).inserted_id
+
+        print(manifest)
+        print()
 
 def logIn():
     print("Trying to log in")
