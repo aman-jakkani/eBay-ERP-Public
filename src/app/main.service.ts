@@ -1,38 +1,43 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+
+import { Manifest } from "./models/manifest.model";
 
 
 import { environment } from '../environments/environment';
-import { stringify } from 'querystring';
 
 const BACKEND_URL = environment.apiUrl ;
 
 @Injectable({ providedIn: 'root' })
 export class MainService {
 
+  private manifests: Manifest[] = [];
+
   constructor(private http: HttpClient) {}
 
 
-  getLinkData(url, siteNum){
-    return this.http
-    .get<{message: string; data: any}>(
-      BACKEND_URL + '/getLinkData/' + encodeURIComponent(url) +'/'+ siteNum
-    ).pipe(map((response: any) => {
-
-      const movieCount = response;
-
-      return movieCount;
-    }));
-  }
 
   getManifests() {
-    return this.http.get<{ message: string; data: any}>(
-      BACKEND_URL + '/getManifests').pipe(map((response: any) => {
-        const manifests = response;
-        return manifests;
-      }));
+    return this.http.get<{ message: string; manifests: any}>(
+      BACKEND_URL + '/getManifests')
+      .pipe(map((manifestData) => {
+        return manifestData.manifests.map ( manifest =>{
+          return {
+            id: manifest._id,
+            auction_title: manifest.auction_title,
+            auction_id: manifest.auction_id,
+            transaction_id: manifest.transaction_id,
+            quantity: manifest.quantity,
+            total_price: manifest.total_price,
+            date_purchased: manifest.date_purchased,
+            status: manifest.status
+          };
+        });
+      })).subscribe(transformedManifests =>{
+        this.manifests = transformedManifests;
+      });
+
   }
 
   getManifest(manifestID) {
@@ -50,15 +55,16 @@ export class MainService {
         return products;
       }));
   }
-  //Not using but goot example of observable
-  // updateSearchValue(searchValue: string){
-  //   this.searchValue.next(searchValue);
-  // }
-  // getSearchValue(){
-  //   return this.searchValue.asObservable();
-  // }
-  // getPostUpdateListener() {
-  //   return this.postsUpdated.asObservable();
-  // }
 
+  getLinkData(url, siteNum){
+    return this.http
+    .get<{message: string; data: any}>(
+      BACKEND_URL + '/getLinkData/' + encodeURIComponent(url) +'/'+ siteNum
+    ).pipe(map((response: any) => {
+
+      const movieCount = response;
+
+      return movieCount;
+    }));
+  }
 }
