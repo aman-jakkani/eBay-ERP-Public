@@ -1,31 +1,18 @@
 
 <div class="container " >
-  <div style="display: inline-flex; padding-right: 10%;" >
-    <h4 style="text-align: left;">Liquidation</h4>
-    <div style="padding-left: 10%;">
-      <a>
-        <form [formGroup]="form" (submit)="onEnterLink(0)" class="form-inline my-2 my-md-0">
-                <input matInput formControlName="search" class="form-control" type="text" placeholder="Enter Link">
-                <button type="submit" style="display:none">hidden submit</button>
-        </form>
-      </a>
-    </div>
-  </div>
-  <div style="display: inline-flex; padding-right: 10%;">
-    <h4 style="text-align: left;">Choose a Manifest</h4>
-    <mat-form-field style="padding-left: 10%;">
+  <div style="display: inline-flex;">
+    <mat-form-field style="padding-left: 1%; width: 300px;">
       <mat-label>Choose a manifest</mat-label>
-      <mat-select>
-        <mat-option value="option1">Manifest 1</mat-option>
-        <mat-option value="option2">Manifest 2</mat-option>
-        <mat-option value="option3">Manifest 3</mat-option>
+      <mat-select [(ngModel)]="selected" name="manifest">
+        <mat-option value="Manifest 1">Manifest 1</mat-option>
+        <mat-option value="Manifest 2">Manifest 2</mat-option>
+        <mat-option value="Manifest 3">Manifest 3</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
+  <h3>{{ selected }}</h3>
 
-
-<h3>{{link}}</h3>
 <form [formGroup]="priceForm"  >
 
 <table class="table table-striped">
@@ -59,14 +46,9 @@
 
 </table>
 
-
-
 </form>
 <br>
 
-
-<h3>Example Links To Enter</h3>
-<h4>Liquidation: https://www.liquidation.com/aucimg/14372/m14372943.html</h4>
 
   <!-- <div class="flexContainer">
     <div class="" *ngFor="let movie of movies; let i = index">
