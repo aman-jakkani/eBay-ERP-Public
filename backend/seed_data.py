@@ -11,6 +11,7 @@ client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-
 #Set db
 db = client.test_db
 manifests_collection = db.manifests
+product_collection = db.products
 
 def main():
     #logging in to Liquidation Account
@@ -24,21 +25,76 @@ def main():
     print("Data seeded")
 
 def saveProducts(browser, manifests):
+    print()
+    print("Saving products")
+    print()
+
     headers = ["title", "quantity", "price","model","grade"]
 
-
-     
-
     for manifest in manifests:
-        print(manifest)
+        auctionId = manifest["auction_id"] 
         #open transcations page
-        browser.open("https://www.liquidation.com/aucimg/14429/m14429946.html")
-        soup = browser.get_current_page()
-        transactions_in_progress = soup.find("div",{"class": "flip-scroll"}).table.tbody
+        browser.open("https://www.liquidation.com/aucimg/" + str(auctionId)[0:5]+ "/m"+ str(auctionId) +".html")#14429946
         
+        #checking for all formats
+        soup = browser.get_current_page().table.table
+        if soup == None:
+            soup = browser.get_current_page().table
+
+        #storing unique products
+        product_dict = {}
+
+        #going through rows of html table
+        tr = soup.find_all("tr")
 
 
+        for i in range(1,len(tr)-1):
+        
+            #getting all columns
+            td = tr[i].find_all('td')
 
+            #finding id based on site
+            id = td[0].get_text()
+            #tallying up unique products
+            if id not in product_dict.keys():
+                #if product is not in dictionary add it
+                try:
+                    data_to_add = []
+                    for detailCount in range(len(td)):
+                        
+                        value = td[detailCount].get_text().strip()
+                        data_to_add.append(value)
+                        
+                    detailDict = {
+                        headers[0] : data_to_add[0],
+                        headers[1] : int(data_to_add[1]),
+                        headers[2] : float(data_to_add[2].strip("$")),
+                        headers[3] : data_to_add[4],
+                        headers[4] : data_to_add[5]
+                    }
+                    
+                    product_dict[id] = detailDict
+                except Exception as ex:
+                    print(ex)
+            
+            else:
+                #if product exists increase count
+                for i in range(len(td)):
+                    detail = td[i].get_text()
+
+                    if i == 1:
+                        detail = int(detail.strip())
+                    
+                        product_dict[id]['quantity'] += detail
+
+        for key in product_dict:
+
+            product = product_dict[key]
+            product["manifest_id"] = manifest["_id"]
+            productId = product_collection.insert_one(product).inserted_id
+
+            print(product)
+            print()
 
 def saveManifests(browser):
 
