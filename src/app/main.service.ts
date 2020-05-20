@@ -34,9 +34,7 @@ export class MainService {
             status: manifest.status
           };
         });
-      })).subscribe(transformedManifests =>{
-        this.manifests = transformedManifests;
-      });
+      }));
 
   }
 

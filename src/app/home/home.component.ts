@@ -36,30 +36,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-    //Creating Forms
-    //Form for link input
-    this.form = new FormGroup({
-      search: new FormControl(null, {}),
-    });
-
+    this.getManifests();
   }
 
-
-  //Stores link url
-  onEnterLink(siteNum){
-
-    //Stores url
-    if (siteNum == 0) {
-      this.link = this.form.value.search
-      var localLink = this.form.value.search
-    }
-
-    //Resetting Forms for clarity and reuseage of site without reresh
-    this.resetForms()
-
-    //Gets url data
-    this.getLinkData(this.link,siteNum);
-  }
 
   resetForms(){
     //Clearing Form
