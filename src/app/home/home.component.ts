@@ -30,6 +30,8 @@ export class HomeComponent implements OnInit {
   //manifest array
   manifests: Manifest[];
 
+  current_manifest: Manifest;
+
 
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute) { }
@@ -79,10 +81,21 @@ export class HomeComponent implements OnInit {
       data => {
         console.log((data));
         this.manifests = data;
-      }
-    )
+      },
+      error => console.error(error)
+    );
   }
 
+  getManifest(manifestID){
+    this.mainService.getManifest(manifestID).subscribe(
+      data => {
+        console.log((data));
+        this.current_manifest = data;
+
+      },
+      error => console.error(error)
+    );
+  }
 
 
 }
