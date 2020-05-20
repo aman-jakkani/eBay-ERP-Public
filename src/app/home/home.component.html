@@ -24,12 +24,12 @@
  </thead>
   <tbody>
 
-    <tr *ngFor="let data of datakeys;let i = index">
+    <tr *ngFor="let product of products;let i = index">
 
-      <td >{{linkData[data]["Product"]}}</td>
-      <td style="text-align: left;">{{ linkData[data]["Quantity"] }}</td>
-      <td style="text-align: left;">{{ linkData[data]["Price"] }}</td>
-      <td style="text-align: left;">{{ linkData[data]["Grade"] }}</td>
+      <td >{{product.title}}</td>
+      <td style="text-align: left;">{{ product.quantity }}</td>
+      <td style="text-align: left;">{{ product.price }}</td>
+      <td style="text-align: left;">{{ product.grade }}</td>
 
 
     </tr>
