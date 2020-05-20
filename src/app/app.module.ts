@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
+import { MatSelectModule} from '@angular/material/select';
 
 
 import { AppComponent } from './app.component';
@@ -35,7 +35,8 @@ const appRoutes: Routes =  [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     DeviceDetectorModule.forRoot(),
-    NgbModule
+    NgbModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
