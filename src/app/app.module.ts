@@ -12,16 +12,11 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { DetailComponent } from './detail/detail.component';
-import { PlayerComponent } from './player/player.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 
 const appRoutes: Routes =  [
   {path: '', component: HomeComponent},
   {path: 'home', component: HomeComponent},
-  {path: 'detail', redirectTo: 'home'},
-  {path: 'detail/:id', component: DetailComponent},
-  {path: 'player', component: PlayerComponent},
   {path: 'privacy', component: PrivacyComponent}
 ];
 
@@ -30,8 +25,6 @@ const appRoutes: Routes =  [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    DetailComponent,
-    PlayerComponent,
     PrivacyComponent
   ],
   imports: [
