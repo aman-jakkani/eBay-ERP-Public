@@ -12,20 +12,17 @@ import { MatSelectModule} from '@angular/material/select';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { PrivacyComponent } from './privacy/privacy.component';
 
 const appRoutes: Routes =  [
   {path: '', component: HomeComponent},
   {path: 'home', component: HomeComponent},
-  {path: 'privacy', component: PrivacyComponent}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent,
-    PrivacyComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
