@@ -5,7 +5,7 @@ Creating a branch: git branch *branch_name*
 Switching between Git branches: git checkout *branch_name*
 				      git checkout -b *branch_name* (both create and switch to)
 
-Merging branches: 
+Merging branches:
 First git checkout development to move to the development branch
 to merge feature branch commits into development: git merge *feature_branch_name*
 
@@ -14,5 +14,8 @@ Create new branches for each feature you are working on
 Fully test the code before merging commits into development. Commit the code on the branch you are on before merging.
 Always move to the branch you want to merge INTO first and then merge the branch you moved FROM
 Merge conflicts will occur inevitably. Run git status to manually fix them or git mergetool to see a visualization of the conflicts
+
+
+git reset --hard origin/development to move back to where the origin is. This will reset the state of the repository to the previous commit, and it will discard all local changes.
 
 More handy documentation: https://www.atlassian.com/git/tutorials/using-branches
