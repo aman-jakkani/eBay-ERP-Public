@@ -16,10 +16,31 @@ def main():
     #logging in to Liquidation Account
     browser = logIn()
     #get and save manifest
-    getManifests(browser)
+    manifests_list = saveManifests(browser)
+
+    saveProducts(browser,manifests_list)
+
+
     print("Data seeded")
 
-def getManifests(browser):
+def saveProducts(browser, manifests):
+    headers = ["title", "quantity", "price","model","grade"]
+
+
+     
+
+    for manifest in manifests:
+        print(manifest)
+        #open transcations page
+        browser.open("https://www.liquidation.com/aucimg/14429/m14429946.html")
+        soup = browser.get_current_page()
+        transactions_in_progress = soup.find("div",{"class": "flip-scroll"}).table.tbody
+        
+
+
+
+
+def saveManifests(browser):
 
     #open transcations page
     browser.open("https://www.liquidation.com/account/main?tab=Transactions")
@@ -28,7 +49,8 @@ def getManifests(browser):
 
     #mongo attributes for manifest collection
     headers = ["auction_title", "auction_id", "transaction_id","quantity","total_amount","date_purchased","status"]
-
+    #stores all the manifests
+    manifests_list = []
     #geetting table rows
     tr = transactions_in_progress.find_all("tr")
     for i in range(0,5):
@@ -57,6 +79,8 @@ def getManifests(browser):
 
         print(manifest)
         print()
+        manifests_list.append(manifest)
+    return manifests_list
 
 def logIn():
     print("Trying to log in to liquidation")
