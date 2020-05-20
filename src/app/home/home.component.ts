@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { observable, VirtualTimeScheduler } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 import {Manifest} from '../models/manifest.model';
+import { Product } from '../models/product.model';
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit {
   uniqueItemCount = 0;
   //manifest array
   manifests: Manifest[];
-
+  products: Product[];
   current_manifest: Manifest;
 
 
@@ -91,6 +92,17 @@ export class HomeComponent implements OnInit {
       data => {
         console.log((data));
         this.current_manifest = data;
+
+      },
+      error => console.error(error)
+    );
+  }
+
+  getProducts(manifestID){
+    this.mainService.getManifest(manifestID).subscribe(
+      data => {
+        console.log((data));
+        this.products = data;
 
       },
       error => console.error(error)

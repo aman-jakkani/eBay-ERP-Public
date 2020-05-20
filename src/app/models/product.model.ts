@@ -1,4 +1,4 @@
-export interface Manifest {
+export interface Product {
     id: string;
     title: string;
     quantity: number;
@@ -7,4 +7,3 @@ export interface Manifest {
     grade: string;
     manifest_id: string;
   }
-  
