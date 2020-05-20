@@ -4,6 +4,7 @@
     <mat-form-field style="padding-left: 1%; width: 300px;">
       <mat-label>Choose a manifest</mat-label>
       <mat-select [(ngModel)]="selected" name="manifest">
+        <mat-option *ngFor="let manifest of manifests" [value]="manifest.id">{{ manifest.id}}</mat-option>
         <mat-option value="Manifest 1">Manifest 1</mat-option>
         <mat-option value="Manifest 2">Manifest 2</mat-option>
         <mat-option value="Manifest 3">Manifest 3</mat-option>

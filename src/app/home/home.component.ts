@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
     this.form = new FormGroup({
       search: new FormControl(null, {}),
     });
-
+    this.getManifests();
   }
 
 
