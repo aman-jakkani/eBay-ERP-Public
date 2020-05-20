@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { observable, VirtualTimeScheduler } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
+import {Manifest} from '../models/manifest.model';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@ang
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  
+
   //url from user
   link = "";
   //search form
@@ -26,20 +27,21 @@ export class HomeComponent implements OnInit {
   priceTotal = 0;
   //Used to populate dynamic form prices
   uniqueItemCount = 0;
-
+  //manifest array
+  manifests: Manifest[];
 
 
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    
+
     //Creating Forms
     //Form for link input
     this.form = new FormGroup({
       search: new FormControl(null, {}),
     });
-    
+
   }
 
 
@@ -54,7 +56,7 @@ export class HomeComponent implements OnInit {
 
     //Resetting Forms for clarity and reuseage of site without reresh
     this.resetForms()
-    
+
     //Gets url data
     this.getLinkData(this.link,siteNum);
   }
@@ -64,7 +66,7 @@ export class HomeComponent implements OnInit {
     this.form.reset();
     this.priceTotal = 0;
     this.quantityTotal = 0;
-    
+
   }
 
   getLinkData(url,siteNum) {
@@ -93,7 +95,14 @@ export class HomeComponent implements OnInit {
     );
   }
 
-
+  getManifests(){
+    this.mainService.getManifests().subscribe(
+      data => {
+        console.log((data));
+        this.manifests = data;
+      }
+    )
+  }
 
 
 
