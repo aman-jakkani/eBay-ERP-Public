@@ -96,10 +96,7 @@ export class HomeComponent implements OnInit {
       },
       error => console.error(error)
     );
-  }
-
-  getProducts(manifestID){
-    this.mainService.getManifest(manifestID).subscribe(
+    this.mainService.getProducts(manifestID).subscribe(
       data => {
         console.log((data));
         this.products = data;
