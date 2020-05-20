@@ -64,7 +64,7 @@ app.get("/api/getManifest/:manifestID", (req, res) => {
   Manifest.find({_id: manifest_id}).then(documents => {
     console.log(documents);
     res.status(200).json({
-      message: "Manifests fetched succesfully",
+      message: "Manifest fetched succesfully",
       manifests: documents
     });
   });

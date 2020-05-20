@@ -3,13 +3,13 @@
   <div style="display: inline-flex;">
     <mat-form-field style="padding-left: 1%; width: 300px;">
       <mat-label>Choose a manifest</mat-label>
-      <mat-select [(ngModel)]="selected" name="manifest">
-        <mat-option *ngFor="let manifest of manifests;let i = index" value="Manifest {{manifest.id}}">{{manifest.id}}</mat-option>
+      <mat-select [(ngModel)]="selected" name="manifest" (selectionChange)="getManifest($event.value)">
+        <mat-option *ngFor="let manifest of manifests;let i = index" value="{{manifest.id}}">{{manifest.id}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
-  <h3>{{ selected }}</h3>
+  <h3>{{ current_manifest.id }}</h3>
 
 
 <table class="table table-striped">
