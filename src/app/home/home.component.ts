@@ -4,6 +4,9 @@ import {Router} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { observable, VirtualTimeScheduler } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
+import {Manifest} from '../models/manifest.model';
+import { Product } from '../models/product.model';
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: 'app-home',
@@ -11,90 +14,65 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@ang
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  
-  //url from user
-  link = "";
-  //search form
-  form: FormGroup;
-  //user input forms
-  linkData ;
-  //keys from data
-  datakeys = [];
-  //total quantity of items in auction
-  quantityTotal = 0;
-  //total sum of prices estimated by auction
-  priceTotal = 0;
-  //Used to populate dynamic form prices
-  uniqueItemCount = 0;
 
+
+  //total quantity of items in auction
+  manifestQuantity: number = 0;
+  //total sum of prices estimated by auction
+  priceTotal: number = 0;
+  //Contain list of all Manifests
+  manifests: Manifest[];
+  //Contain products of current manifest
+  products: Product[];
+  //Contains current manifest
+  current_manifest: Manifest;
 
 
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    
-    //Creating Forms
-    //Form for link input
-    this.form = new FormGroup({
-      search: new FormControl(null, {}),
-    });
-    
+    this.getManifests();
+
   }
 
-
-  //Stores link url
-  onEnterLink(siteNum){
-
-    //Stores url
-    if (siteNum == 0) {
-      this.link = this.form.value.search
-      var localLink = this.form.value.search
-    }
-
-    //Resetting Forms for clarity and reuseage of site without reresh
-    this.resetForms()
-    
-    //Gets url data
-    this.getLinkData(this.link,siteNum);
-  }
-
-  resetForms(){
-    //Clearing Form
-    this.form.reset();
-    this.priceTotal = 0;
-    this.quantityTotal = 0;
-    
-  }
-
-  getLinkData(url,siteNum) {
-    this.mainService.getLinkData(url,siteNum)
-    .subscribe(
+  getManifests(){
+    this.mainService.getManifests().subscribe(
       data => {
-        //Logging data received
         console.log((data));
-
-        //Getting only auction data
-        this.linkData = data.data;//how to parse for future reference JSON.parse(data.data);
-
-        //Storing keys from auction data
-        this.datakeys = Object.keys(this.linkData).sort();
-
-        //Geting number of forms to make
-        this.uniqueItemCount = Object.keys(this.linkData).length;
-
-        for(let key in data.data) {
-          //aggrating quantity and price
-          this.quantityTotal += data.data[key]["Quantity"]
-          this.priceTotal += data.data[key]["Price"] * data.data[key]["Quantity"]
-        };
-      },
-      error => console.error(error)
-    );
+        this.manifests = data;
+        this.manifests.sort((a,b) => (a.date_purchased < b.date_purchased)?1 : -1);
+        this.manifests.forEach(element => {
+          formatDate(element.date_purchased,'mm/DD/yyyy', 'en-US');
+        });
+      });
   }
 
+  getManifestDetails(manifestID){
+    this.getManifest(manifestID);
+    this.getProducts(manifestID);
+  }
 
+  getManifest(manifestID){
+    this.mainService.getManifest(manifestID).subscribe(
+      data => {
+        console.log((data));
+        this.current_manifest = data;
+        //Getting Quantity
+        this.manifestQuantity = this.current_manifest.quantity;
+      });
+  }
 
-
+  getProducts(manifestID){
+    this.mainService.getProducts(manifestID).subscribe(
+      data => {
+        console.log((data));
+        this.products = data;
+        //Getting Products Total Value
+        for ( var product of data){
+          this.priceTotal += product.price * product.quantity;
+        }
+      });
+  }
 
 }

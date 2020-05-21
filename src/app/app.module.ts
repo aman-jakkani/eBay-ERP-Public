@@ -6,33 +6,23 @@ import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-
+import { MatSelectModule} from '@angular/material/select';
 
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { DetailComponent } from './detail/detail.component';
-import { PlayerComponent } from './player/player.component';
-import { PrivacyComponent } from './privacy/privacy.component';
 
 const appRoutes: Routes =  [
   {path: '', component: HomeComponent},
   {path: 'home', component: HomeComponent},
-  {path: 'detail', redirectTo: 'home'},
-  {path: 'detail/:id', component: DetailComponent},
-  {path: 'player', component: PlayerComponent},
-  {path: 'privacy', component: PrivacyComponent}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent,
-    DetailComponent,
-    PlayerComponent,
-    PrivacyComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +32,8 @@ const appRoutes: Routes =  [
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     DeviceDetectorModule.forRoot(),
-    NgbModule
+    NgbModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
