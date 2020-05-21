@@ -22,7 +22,7 @@
   border-radius: 1.5px;
 }
 .navbar-default .navbar-toggle{
-  border-color:transparent ;
+  border-color:transparent;
 }
 /* Show it is fixed to the top */
 .navbar-static-top.navbar{
