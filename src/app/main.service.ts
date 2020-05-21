@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import { map, retry, catchError  } from 'rxjs/operators';
+import {Observable, throwError} from 'rxjs';
 
 import { Manifest } from "./models/manifest.model";
 
@@ -18,7 +18,18 @@ export class MainService {
 
   constructor(private http: HttpClient) {}
 
-
+  handleError(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+        // client-side error
+        errorMessage = `Error: ${error.error.message}`;
+    } else {
+        // server-side error
+        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return throwError(errorMessage);
+  }
 
   getManifests() {
     return this.http.get<{ message: string; manifests: any}>(
@@ -38,7 +49,7 @@ export class MainService {
           return manifestData;
         });
         return manifests;
-      }));
+      })).pipe(catchError(this.handleError));
 
   }
 
@@ -59,7 +70,7 @@ export class MainService {
         } 
       }           
 
-      ));
+      )).pipe(catchError(this.handleError));
   }
 
   getProducts(manifestID) {
@@ -79,7 +90,7 @@ export class MainService {
           return productData;
         });
           return products;
-      }));
+      })).pipe(catchError(this.handleError));
   }
 
   getLinkData(url, siteNum){

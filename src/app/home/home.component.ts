@@ -45,9 +45,7 @@ export class HomeComponent implements OnInit {
         this.manifests.forEach(element => {
           formatDate(element.date_purchased,'mm/DD/yyyy', 'en-US');
         });
-      },
-      error => console.error(error)
-    );
+      });
   }
 
   getManifestDetails(manifestID){
@@ -62,9 +60,7 @@ export class HomeComponent implements OnInit {
         this.current_manifest = data;
         //Getting Quantity
         this.manifestQuantity = this.current_manifest.quantity;
-      },
-      error => console.error(error)
-    );
+      });
   }
 
   getProducts(manifestID){
@@ -76,9 +72,7 @@ export class HomeComponent implements OnInit {
         for ( var product of data){
           this.priceTotal += product.price * product.quantity;
         }
-      },
-      error => console.error(error)
-    );
+      });
   }
 
 }
