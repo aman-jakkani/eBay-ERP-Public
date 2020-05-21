@@ -61,11 +61,11 @@ app.get("/api/getManifest/:manifestID", (req, res) => {
   var manifest_id = req.params.manifestID;
   console.log(req.params);
 
-  Manifest.find({_id: manifest_id}).then(documents => {
-    console.log(documents);
+  Manifest.findOne({_id: manifest_id}).then(document => {
+    console.log(document);
     res.status(200).json({
       message: "Manifest fetched succesfully",
-      manifests: documents
+      manifest: document
     });
   });
 

@@ -12,7 +12,7 @@ const BACKEND_URL = environment.apiUrl ;
 @Injectable({ providedIn: 'root' })
 export class MainService {
 
-  private manifests: Manifest[] = [];
+  
 
   constructor(private http: HttpClient) {}
 
@@ -39,18 +39,40 @@ export class MainService {
   }
 
   getManifest(manifestID) {
-    return this.http.get<{ message: string; data: any}>(
-      BACKEND_URL + '/getManifest/'+manifestID).pipe(map((response: any) => {
-        const manifest = response;
-        return manifest;
-      }));
+    return this.http.get<{ message: string; manifest: any}>(
+      BACKEND_URL + '/getManifest/'+manifestID)
+      .pipe(map((response) =>    {
+        
+        return {
+          id: response.manifest._id,
+          auction_title: response.manifest.auction_title,
+          auction_id: response.manifest.auction_id,
+          transaction_id: response.manifest.transaction_id,
+          quantity: response.manifest.quantity,
+          total_price: response.manifest.total_price,
+          date_purchased: response.manifest.date_purchased,
+          status: response.manifest.status
+        } 
+      }           
+
+      ));
   }
 
   getProducts(manifestID) {
-    return this.http.get<{ message: string; data: any}>(
-      BACKEND_URL + '/getProducts/'+manifestID).pipe(map((response: any) => {
-        const products = response;
-        return products;
+    return this.http.get<{ message: string; products: any}>(
+      BACKEND_URL + '/getProducts/'+manifestID)
+      .pipe(map((productData) => {
+        return productData.products.map ( product =>{
+          return {
+            id: product._id,
+            title: product.title,
+            quantity: product.quantity,
+            price: product.price,
+            model: product.model,
+            grade: product.grade,
+            manifest_id: product.manifest_id
+          };
+        });
       }));
   }
 
