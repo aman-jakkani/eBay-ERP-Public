@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 import { Manifest } from "./models/manifest.model";
 
 
 import { environment } from '../environments/environment';
+import { Product } from './models/product.model';
 
 const BACKEND_URL = environment.apiUrl ;
 
@@ -22,8 +24,8 @@ export class MainService {
     return this.http.get<{ message: string; manifests: any}>(
       BACKEND_URL + '/getManifests')
       .pipe(map((manifestData) => {
-        return manifestData.manifests.map ( manifest =>{
-          return {
+        var manifests:Manifest[] = manifestData.manifests.map ( manifest =>{
+           let manifestData: Manifest = {
             id: manifest._id,
             auction_title: manifest.auction_title,
             auction_id: manifest.auction_id,
@@ -33,7 +35,9 @@ export class MainService {
             date_purchased: manifest.date_purchased,
             status: manifest.status
           };
+          return manifestData;
         });
+        return manifests;
       }));
 
   }
@@ -62,8 +66,8 @@ export class MainService {
     return this.http.get<{ message: string; products: any}>(
       BACKEND_URL + '/getProducts/'+manifestID)
       .pipe(map((productData) => {
-        return productData.products.map ( product =>{
-          return {
+        var products: Product[] = productData.products.map ( product =>{
+          let productData: Product = {
             id: product._id,
             title: product.title,
             quantity: product.quantity,
@@ -72,7 +76,9 @@ export class MainService {
             grade: product.grade,
             manifest_id: product.manifest_id
           };
+          return productData;
         });
+          return products;
       }));
   }
 
