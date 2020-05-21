@@ -23,9 +23,9 @@ export class HomeComponent implements OnInit {
   //keys from data
   datakeys = [];
   //total quantity of items in auction
-  manifestQuantity: Number = 0;
+  manifestQuantity: number = 0;
   //total sum of prices estimated by auction
-  priceTotal: Number = 0;
+  priceTotal: number = 0;
   //Used to populate dynamic form prices
   uniqueItemCount = 0;
   //manifest array
@@ -85,29 +85,6 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  getLinkData(url,siteNum) {
-    this.mainService.getLinkData(url,siteNum)
-    .subscribe(
-      data => {
-        //Logging data received
-        console.log((data));
 
-        //Getting only auction data
-        this.linkData = data.data;//how to parse for future reference JSON.parse(data.data);
 
-        //Storing keys from auction data
-        this.datakeys = Object.keys(this.linkData).sort();
-
-        //Geting number of forms to make
-        this.uniqueItemCount = Object.keys(this.linkData).length;
-
-        for(let key in data.data) {
-          //aggrating quantity and price
-          this.manifestQuantity += data.data[key]["Quantity"]
-          this.priceTotal += data.data[key]["Price"] * data.data[key]["Quantity"]
-        };
-      },
-      error => console.error(error)
-    );
-  }
 }
