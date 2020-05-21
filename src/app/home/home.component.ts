@@ -6,6 +6,7 @@ import { observable, VirtualTimeScheduler } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 import {Manifest} from '../models/manifest.model';
 import { Product } from '../models/product.model';
+import { formatDate } from "@angular/common";
 
 @Component({
   selector: 'app-home',
@@ -41,6 +42,9 @@ export class HomeComponent implements OnInit {
         console.log((data));
         this.manifests = data;
         this.manifests.sort((a,b) => (a.date_purchased < b.date_purchased)?1 : -1);
+        this.manifests.forEach(element => {
+          formatDate(element.date_purchased,'mm/DD/yyyy', 'en-US');
+        });
       },
       error => console.error(error)
     );

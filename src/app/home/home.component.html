@@ -5,7 +5,7 @@
       <mat-label>Choose a manifest</mat-label>
       <mat-select [(ngModel)]="selected" name="manifest" (selectionChange)="getManifestDetails($event.value)">
         <mat-option *ngFor="let manifest of manifests;let i = index" value="{{manifest.id}}">
-          ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: ${{manifest.total_price}} &nbsp; &nbsp; Date: {{manifest.date_purchased.toString().substr(0,10)}}
+          ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -46,7 +46,7 @@
 </table>
 
 <br>
-<h4 *ngIf="current_manifest">ID: {{current_manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: ${{current_manifest.total_price}} &nbsp; &nbsp; Date: {{current_manifest.date_purchased.toString().substr(0,10)}}</h4>
+<h4 *ngIf="current_manifest">ID: {{current_manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{current_manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{current_manifest.date_purchased | date: 'M/d/yyyy'}}</h4>
 
 </div>
 
