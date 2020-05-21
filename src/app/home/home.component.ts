@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
       data => {
         console.log((data));
         this.manifests = data;
+        this.manifests.sort((a,b) => (a.date_purchased < b.date_purchased)?1 : -1);
       },
       error => console.error(error)
     );
