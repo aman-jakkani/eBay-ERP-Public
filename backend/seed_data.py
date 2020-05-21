@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 #Mongo Detail
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
-db = client.test_db
+db = client.dev_db
 manifests_collection = db.manifests
 product_collection = db.products
 
@@ -104,7 +104,7 @@ def saveManifests(browser):
     transactions_in_progress = soup.find("div",{"class": "flip-scroll"}).table.tbody
 
     #mongo attributes for manifest collection
-    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_amount","date_purchased","status"]
+    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status"]
     #stores all the manifests
     manifests_list = []
     #geetting table rows
