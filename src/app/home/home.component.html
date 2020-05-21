@@ -46,7 +46,7 @@
 </table>
 
 <br>
-
+<h3 *ngIf="current_manifest">ID: {{current_manifest.transaction_id}} &emsp; Amount: ${{current_manifest.total_price}} Date: {{current_manifest.date_purchased.toString().substr(0,10)}}</h3>
 
 </div>
 
