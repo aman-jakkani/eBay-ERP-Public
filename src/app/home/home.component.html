@@ -3,7 +3,7 @@
   <div style="display: inline-flex;">
     <mat-form-field style="padding-left: 1%; width: 300px;">
       <mat-label>Choose a manifest</mat-label>
-      <mat-select [(ngModel)]="selected" name="manifest" (selectionChange)="getManifest($event.value)">
+      <mat-select [(ngModel)]="selected" name="manifest" (selectionChange)="getManifestDetails($event.value)">
         <mat-option *ngFor="let manifest of manifests;let i = index" value="{{manifest.id}}">{{manifest.id}}</mat-option>
       </mat-select>
     </mat-form-field>

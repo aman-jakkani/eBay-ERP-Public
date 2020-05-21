@@ -43,11 +43,42 @@ export class HomeComponent implements OnInit {
   }
 
 
-  resetForms(){
-    //Clearing Form
-    this.form.reset();
-    this.priceTotal = 0;
-    this.quantityTotal = 0;
+
+
+  getManifests(){
+    this.mainService.getManifests().subscribe(
+      data => {
+        console.log((data));
+        this.manifests = data;
+      },
+      error => console.error(error)
+    );
+  }
+  getManifestDetails(manifestID){
+    this.getManifest(manifestID);
+    this.getProducts(manifestID);
+  }
+  getManifest(manifestID){
+    this.mainService.getManifest(manifestID).subscribe(
+      data => {
+        console.log((data));
+        this.current_manifest = data;
+
+      },
+      error => console.error(error)
+    );
+    
+  }
+
+  getProducts(manifestID){
+    this.mainService.getProducts(manifestID).subscribe(
+      data => {
+        console.log((data));
+        this.products = data;
+
+      },
+      error => console.error(error)
+    );
 
   }
 
@@ -76,35 +107,4 @@ export class HomeComponent implements OnInit {
       error => console.error(error)
     );
   }
-
-  getManifests(){
-    this.mainService.getManifests().subscribe(
-      data => {
-        console.log((data));
-        this.manifests = data;
-      },
-      error => console.error(error)
-    );
-  }
-
-  getManifest(manifestID){
-    this.mainService.getManifest(manifestID).subscribe(
-      data => {
-        console.log((data));
-        this.current_manifest = data;
-
-      },
-      error => console.error(error)
-    );
-    this.mainService.getProducts(manifestID).subscribe(
-      data => {
-        console.log((data));
-        this.products = data;
-
-      },
-      error => console.error(error)
-    );
-  }
-
-
 }
