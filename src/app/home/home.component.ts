@@ -14,23 +14,16 @@ import { Product } from '../models/product.model';
 })
 export class HomeComponent implements OnInit {
 
-  //url from user
-  link = "";
-  //search form
-  form: FormGroup;
-  //user input forms
-  linkData ;
-  //keys from data
-  datakeys = [];
+
   //total quantity of items in auction
   manifestQuantity: number = 0;
   //total sum of prices estimated by auction
   priceTotal: number = 0;
-  //Used to populate dynamic form prices
-  uniqueItemCount = 0;
-  //manifest array
+  //Contain list of all Manifests
   manifests: Manifest[];
+  //Contain products of current manifest
   products: Product[];
+  //Contains current manifest
   current_manifest: Manifest;
 
 
@@ -38,12 +31,9 @@ export class HomeComponent implements OnInit {
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-
     this.getManifests();
+
   }
-
-
-
 
   getManifests(){
     this.mainService.getManifests().subscribe(
@@ -54,10 +44,12 @@ export class HomeComponent implements OnInit {
       error => console.error(error)
     );
   }
+
   getManifestDetails(manifestID){
     this.getManifest(manifestID);
     this.getProducts(manifestID);
   }
+
   getManifest(manifestID){
     this.mainService.getManifest(manifestID).subscribe(
       data => {
@@ -68,7 +60,6 @@ export class HomeComponent implements OnInit {
       },
       error => console.error(error)
     );
-    
   }
 
   getProducts(manifestID){
@@ -84,7 +75,5 @@ export class HomeComponent implements OnInit {
       error => console.error(error)
     );
   }
-
-
 
 }
