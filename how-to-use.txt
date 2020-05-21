@@ -22,6 +22,7 @@ Deployment:
 
     Node: compress backend folder to deploy to node js
 
+    api eid: 18.218.179.84
 
 Project Features:
 
