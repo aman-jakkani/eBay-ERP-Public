@@ -1,9 +1,7 @@
 export interface Product {
     id: string;
-    title: string;
-    quantity: number;
-    price: number;
-    model: string;
-    grade: string;
-    manifest_id: string;
+    sku: string;
+    quantity_sold: number;
+    prices_sold: number[];
+    item_ids: number[];
   }
