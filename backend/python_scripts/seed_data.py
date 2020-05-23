@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
 db = client.dev_db
+# client.drop_database("test_db")
 manifests_collection = db.manifests
 items_collection = db.items
 products_collection = db.products
@@ -116,16 +117,23 @@ def saveItems(browser, manifests):
                         items_dict[id]['quantity'] += detail
 
         for key in items_dict:
+            #ITEM
+            item = items_dict[key]
 
-            
+            #PRODUCT
             product_headers = ["sku","quantity_sold","prices_sold"]
+            product_count = products_collection.count_documents({})
+            product_count = "{0:0=6}".format(product_count)
+            sku = item['name'].split()[1] + str(product_count)
             product = {
-                "sku":"TestSKU--SDFHIUR",
+                "sku": sku,
                 "quantity_sold":0,
                 "prices_sold":[]
             }
             productId = products_collection.insert_one(product).inserted_id
-            item = items_dict[key]
+
+
+            #ITEM
             
             #add manifestID
             item["manifest_id"] = manifest["_id"]
