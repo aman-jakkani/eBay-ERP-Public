@@ -9,6 +9,7 @@ import { Item } from "./models/item.model";
 
 import { environment } from '../environments/environment';
 import { Product } from './models/product.model';
+import { stringify } from '@angular/compiler/src/util';
 
 const BACKEND_URL = environment.apiUrl ;
 
@@ -92,6 +93,20 @@ export class MainService {
         });
           return items;
       })).pipe(catchError(this.handleError));
+  }
+
+  getProduct(itemID){
+    return this.http.get<{ message: string; product: any}>(
+      BACKEND_URL + '/getProduct/'+itemID).pipe(map((productData) => {
+        return{
+          id: productData.product._id,
+          sku: productData.product.sku,
+          quantity_sold: productData.product.quantity_sold,
+          prices_sold: productData.product.prices_sold,
+          item_ids: productData.product.item_ids
+        }
+      })).pipe(catchError(this.handleError)
+    );
   }
 
   getLinkData(url, siteNum){
