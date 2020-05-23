@@ -27,6 +27,8 @@ export class HomeComponent implements OnInit {
   items: Item[];
   //Contains current manifest
   current_manifest: Manifest;
+  //products of current manifest
+  products: Product[];
 
 
 
@@ -74,6 +76,17 @@ export class HomeComponent implements OnInit {
           this.priceTotal += item.price * item.quantity;
         }
       });
+  }
+
+  getProducts(){
+    for (var item of this.items){
+      this.mainService.getProduct(item.id).subscribe(
+        data => {
+          console.log(data);
+          this.products.push(data);
+        }
+      );
+    }
   }
 
 }
