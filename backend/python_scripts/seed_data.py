@@ -11,7 +11,7 @@ client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-
 #Set db
 db = client.dev_db
 manifests_collection = db.manifests
-product_collection = db.products
+items_collection = db.items
 
 def main():
     #logging in to Liquidation Account
@@ -19,17 +19,17 @@ def main():
     #get and save manifest
     manifests_list = saveManifests(browser)
 
-    saveProducts(browser,manifests_list)
+    saveItems(browser,manifests_list)
 
 
     print("Data seeded")
 
-def saveProducts(browser, manifests):
+def saveItems(browser, manifests):
     print()
-    print("Saving products")
+    print("Saving items")
     print()
 
-    headers = ["title", "quantity", "price","model","grade"]
+    ITEM_HEADERS = ["name", "quantity", "price","model","grade"]
 
     for manifest in manifests:
         auctionId = manifest["auction_id"] 
@@ -41,12 +41,29 @@ def saveProducts(browser, manifests):
         if soup == None:
             soup = browser.get_current_page().table
 
-        #storing unique products
-        product_dict = {}
+        #storing unique items
+        items_dict = {}
 
         #going through rows of html table
         tr = soup.find_all("tr")
 
+        #Normalising headers from all manifests 
+        headers =  [x.get_text() for x in tr[0].find_all('td')]
+        print(headers)
+        for i in range(len(headers)):
+            if headers[i] in ["Item Description", "Item Title", "Title","Product"]:
+                headers[i] = "name"
+            if headers[i] in ["Qty", "Quantity"] :
+                headers[i] = "quantity"
+            if headers[i] in [ "Retail","Retail Price"]:
+                headers[i] = "price"
+            if headers[i] == "Model":
+                headers[i] = "model"
+            if headers[i] in ["Grade"] :
+                headers[i] = "grade"
+
+        print("normalised",headers)
+            
 
         for i in range(1,len(tr)-1):
         
@@ -55,45 +72,56 @@ def saveProducts(browser, manifests):
 
             #finding id based on site
             id = td[0].get_text()
-            #tallying up unique products
-            if id not in product_dict.keys():
+            #tallying up unique items
+            if id not in items_dict.keys():
                 #if product is not in dictionary add it
                 try:
-                    data_to_add = []
-                    for detailCount in range(len(td)):
+                    detailDict = {}
+
+                    for i in range(len(td)):
                         
-                        value = td[detailCount].get_text().strip()
-                        data_to_add.append(value)
-                        
-                    detailDict = {
-                        headers[0] : data_to_add[0],
-                        headers[1] : int(data_to_add[1]),
-                        headers[2] : float(data_to_add[2].strip("$")),
-                        headers[3] : data_to_add[4],
-                        headers[4] : data_to_add[5]
-                    }
+                        value = td[i].get_text().strip()
+                        key = headers[i]
+
+                        #filling out detail dictionary
+                        if key == "quantity":
+                            detail_format = int(value)
+                            detailDict[key] = detail_format
+                            
+                        elif key == "price":
+                            detail_format = float(value.strip("$"))
+                            detailDict[key] = detail_format
+
+                        else:
+                            detailDict[key] = value
+
+
                     
-                    product_dict[id] = detailDict
+                    items_dict[id] = detailDict
                 except Exception as ex:
                     print(ex)
+                    print(td)
+                    print(manifest)
+                    print()
             
             else:
                 #if product exists increase count
                 for i in range(len(td)):
                     detail = td[i].get_text()
+                    detailTitle = headers[i]
 
-                    if i == 1:
+                    if detailTitle == "quantity":
                         detail = int(detail.strip())
                     
-                        product_dict[id]['quantity'] += detail
+                        items_dict[id]['quantity'] += detail
 
-        for key in product_dict:
+        for key in items_dict:
 
-            product = product_dict[key]
-            product["manifest_id"] = manifest["_id"]
-            productId = product_collection.insert_one(product).inserted_id
+            item = items_dict[key]
+            item["manifest_id"] = manifest["_id"]
+            itemId = items_collection.insert_one(item).inserted_id
 
-            print(product)
+            print(item)
             print()
 
 def saveManifests(browser):
@@ -139,32 +167,42 @@ def saveManifests(browser):
     return manifests_list
 
 def logIn():
-    print("Trying to log in to liquidation")
-    # Connect to Google
-    browser = mechanicalsoup.StatefulBrowser()
-    browser.open("https://www.liquidation.com/login")
-    
-    browser.get_current_page()
-    # Fill-in the form
-    browser.select_form('form[id="loginForm"]')
 
-    # browser.get_current_form().print_summary()
-    browser["j_username"] = input("User Name: ")
-    browser["j_password"] = getpass.getpass("Password: ")
+    loggedIn = False
+    while loggedIn == False:
+        print("Trying to log in to liquidation")
+        # Connect to Google
+        browser = mechanicalsoup.StatefulBrowser()
+        browser.open("https://www.liquidation.com/login")
+        
+        browser.get_current_page()
+        # Fill-in the form
+        browser.select_form('form[id="loginForm"]')
 
-    browser.submit_selected()
-    #log in check
-    browser.open("https://www.liquidation.com/account/main")
-    soup = browser.get_current_page()
-    try:
-        name = soup.find(id='signDetails').span.get_text()
-        if name == None:
-            return False
-        print(name)
-        print("Logged In")
-       
-    except:
-        print("Not Logged In")
+        # browser.get_current_form().print_summary()
+        browser["j_username"] = input("User Name: ")
+        browser["j_password"] = getpass.getpass("Password: ")
+
+        browser.submit_selected()
+        #log in check
+        browser.open("https://www.liquidation.com/account/main")
+        soup = browser.get_current_page()
+        try:
+            name = soup.find(id='signDetails').span.get_text()
+            if name == None:
+                return False
+           
+            if name != "Sign In":
+                print(name)
+                print("Logged In")
+                loggedIn = True
+            else:
+                print("Not logged in. Try again.")
+        
+        except:
+
+            print("Not logged in. Try again.")
+
        
 
     return(browser)
