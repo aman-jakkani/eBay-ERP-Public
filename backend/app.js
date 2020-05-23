@@ -72,7 +72,7 @@ app.get("/api/getManifest/:manifestID", (req, res) => {
 
 });
 
-//getting products of a manifest
+//getting items of a manifest
 app.get("/api/getItems/:manifestID", (req, res) => {
 
   var url = req.params.url;
@@ -89,6 +89,23 @@ app.get("/api/getItems/:manifestID", (req, res) => {
 
 });
 
+//getting the product model of the item
+app.get("/api/getProduct/:itemID", (req, res) => {
+
+  var url = req.params.url;
+  var item_id = req.params.itemID;
+  console.log(req.params);
+  Item.find({id: item_id}).then(item => {
+    Product.findOne({id: item.product_id}).then(document => {
+      console.log(document);
+      res.status(200).json({
+        message: "Product fetched successfully",
+        product: document
+      });
+    });
+  });
+
+});
 
 
 
