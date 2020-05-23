@@ -4,6 +4,7 @@ import { map, retry, catchError  } from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
 
 import { Manifest } from "./models/manifest.model";
+import { Item } from "./models/item.model";
 
 
 import { environment } from '../environments/environment';
@@ -14,7 +15,7 @@ const BACKEND_URL = environment.apiUrl ;
 @Injectable({ providedIn: 'root' })
 export class MainService {
 
-  
+
 
   constructor(private http: HttpClient) {}
 
@@ -57,7 +58,7 @@ export class MainService {
     return this.http.get<{ message: string; manifest: any}>(
       BACKEND_URL + '/getManifest/'+manifestID)
       .pipe(map((response) =>    {
-        
+
         return {
           id: response.manifest._id,
           auction_title: response.manifest.auction_title,
@@ -67,29 +68,29 @@ export class MainService {
           total_price: response.manifest.total_price,
           date_purchased: response.manifest.date_purchased,
           status: response.manifest.status
-        } 
-      }           
+        }
+      }
 
       )).pipe(catchError(this.handleError));
   }
 
-  getProducts(manifestID) {
-    return this.http.get<{ message: string; products: any}>(
-      BACKEND_URL + '/getProducts/'+manifestID)
-      .pipe(map((productData) => {
-        var products: Product[] = productData.products.map ( product =>{
-          let productData: Product = {
-            id: product._id,
-            title: product.title,
-            quantity: product.quantity,
-            price: product.price,
-            model: product.model,
-            grade: product.grade,
-            manifest_id: product.manifest_id
+  getItems(manifestID) {
+    return this.http.get<{ message: string; items: any}>(
+      BACKEND_URL + '/getItems/'+manifestID)
+      .pipe(map((itemData) => {
+        var items: Item[] = itemData.items.map ( item =>{
+          let itemData: Item = {
+            id: item._id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            model: item.model,
+            grade: item.grade,
+            manifest_id: item.manifest_id
           };
-          return productData;
+          return itemData;
         });
-          return products;
+          return items;
       })).pipe(catchError(this.handleError));
   }
 

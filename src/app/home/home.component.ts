@@ -6,6 +6,7 @@ import { observable, VirtualTimeScheduler } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@angular/forms";
 import {Manifest} from '../models/manifest.model';
 import { Product } from '../models/product.model';
+import { Item } from '../models/item.model';
 import { formatDate } from "@angular/common";
 
 @Component({
@@ -22,8 +23,8 @@ export class HomeComponent implements OnInit {
   priceTotal: number = 0;
   //Contain list of all Manifests
   manifests: Manifest[];
-  //Contain products of current manifest
-  products: Product[];
+  //Contain items of current manifest
+  items: Item[];
   //Contains current manifest
   current_manifest: Manifest;
 
@@ -50,7 +51,7 @@ export class HomeComponent implements OnInit {
 
   getManifestDetails(manifestID){
     this.getManifest(manifestID);
-    this.getProducts(manifestID);
+    this.getItems(manifestID);
   }
 
   getManifest(manifestID){
@@ -63,14 +64,14 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  getProducts(manifestID){
-    this.mainService.getProducts(manifestID).subscribe(
+  getItems(manifestID){
+    this.mainService.getItems(manifestID).subscribe(
       data => {
         console.log((data));
-        this.products = data;
-        //Getting Products Total Value
-        for ( var product of data){
-          this.priceTotal += product.price * product.quantity;
+        this.items = data;
+        //Getting Items Total Value
+        for ( var item of data){
+          this.priceTotal += item.price * item.quantity;
         }
       });
   }

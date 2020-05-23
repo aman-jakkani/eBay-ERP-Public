@@ -17,7 +17,7 @@
 <table class="table table-striped">
   <thead>
     <tr style="font-weight: 700;" align="center" bgcolor="99CCFF">
-       <th>Product</th>
+       <th>Item</th>
        <th>Quantity</th>
        <th>Price</th>
        <th>Grade</th>
@@ -25,12 +25,12 @@
  </thead>
   <tbody>
 
-    <tr *ngFor="let product of products;let i = index">
+    <tr *ngFor="let item of items;let i = index">
 
-      <td >{{product.title}}</td>
-      <td style="text-align: left;">{{ product.quantity }}</td>
-      <td style="text-align: left;">{{ product.price }}</td>
-      <td style="text-align: left;">{{ product.grade }}</td>
+      <td >{{item.name}}</td>
+      <td style="text-align: left;">{{ item.quantity }}</td>
+      <td style="text-align: left;">{{ item.price }}</td>
+      <td style="text-align: left;">{{ item.grade }}</td>
 
 
     </tr>
