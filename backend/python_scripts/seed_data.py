@@ -12,6 +12,7 @@ client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-
 db = client.dev_db
 manifests_collection = db.manifests
 items_collection = db.items
+products_collection = db.products
 
 def main():
     #logging in to Liquidation Account
@@ -49,7 +50,6 @@ def saveItems(browser, manifests):
 
         #Normalising headers from all manifests 
         headers =  [x.get_text() for x in tr[0].find_all('td')]
-        print(headers)
         for i in range(len(headers)):
             if headers[i] in ["Item Description", "Item Title", "Title","Product"]:
                 headers[i] = "name"
@@ -62,7 +62,7 @@ def saveItems(browser, manifests):
             if headers[i] in ["Grade"] :
                 headers[i] = "grade"
 
-        print("normalised",headers)
+        print("Normalised Headers: ",headers)
             
 
         for i in range(1,len(tr)-1):
@@ -117,8 +117,21 @@ def saveItems(browser, manifests):
 
         for key in items_dict:
 
+            
+            product_headers = ["sku","quantity_sold","prices_sold"]
+            product = {
+                "sku":"TestSKU--SDFHIUR",
+                "quantity_sold":0,
+                "prices_sold":[]
+            }
+            productId = products_collection.insert_one(product).inserted_id
             item = items_dict[key]
+            
+            #add manifestID
             item["manifest_id"] = manifest["_id"]
+            item["product_id"] = product["_id"]
+
+            #insert item
             itemId = items_collection.insert_one(item).inserted_id
 
             print(item)
