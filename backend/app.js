@@ -92,11 +92,11 @@ app.get("/api/getItems/:manifestID", (req, res) => {
 //getting the product model of the item
 app.get("/api/getProduct/:itemID", (req, res) => {
 
-  var url = req.params.url;
   var item_id = req.params.itemID;
   console.log(req.params);
-  Item.find({id: item_id}).then(item => {
-    Product.findOne({id: item.product_id}).then(document => {
+  Item.findOne({ _id: item_id }).then(item => {
+    var product_id = item.product_id
+    Product.findOne({ _id: product_id }).then(document => {
       console.log(document);
       res.status(200).json({
         message: "Product fetched successfully",

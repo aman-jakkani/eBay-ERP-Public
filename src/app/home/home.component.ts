@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   //Contains current manifest
   current_manifest: Manifest;
   //products of current manifest
-  products: Product[];
+  products: Product[] = [];
 
 
 
@@ -75,14 +75,17 @@ export class HomeComponent implements OnInit {
         for ( var item of data){
           this.priceTotal += item.price * item.quantity;
         }
+        this.getProducts(data);
+        console.log("Logging products",this.products);
+        
+
       });
   }
 
-  getProducts(){
-    for (var item of this.items){
+  getProducts(data){
+    for (var item of data){
       this.mainService.getProduct(item.id).subscribe(
         data => {
-          console.log(data);
           this.products.push(data);
         }
       );
