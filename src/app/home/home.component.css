@@ -1,3 +1,32 @@
 .selector{
     padding-top: 1%;
 }
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.selector{
+    order: 0;
+}
+
+.auction-title{
+    order: 1;
+}
+.tables{
+    order: 2;
+    display: flex;
+}
+
+.summary{
+    order: 3;
+}
+
+
+.items-table{
+    order: 0;
+}
+
+.products-table{
+    order: 1;
+}
