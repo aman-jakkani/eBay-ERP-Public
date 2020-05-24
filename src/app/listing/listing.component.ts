@@ -83,6 +83,8 @@ export class ListingComponent implements OnInit {
         for ( var item of data){
           this.priceTotal += item.price * item.quantity;
         }
+        //clearing previous products
+        this.products = [];
         this.getProducts(data);
         console.log("Logging products",this.products);
 
