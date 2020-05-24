@@ -47,29 +47,41 @@
           <th>Listing Condition</th>
           <th>Quantity</th>
           <th>List Price</th>
+          <th></th>
+          <th></th>
+          <th></th>
+
         </tr>
       </thead>
       <tbody>
 
         <tr *ngFor="let product of products;let i = index" class="table-row">
 
-          <td class="table-detail">
+          <td  style="width: 15%;" class="table-detail">
             
-            <input  style="width: 80%;" class="form-control" formControlName="sku"   value={{product.sku}}>
+            <input  class="form-control" formControlName="sku"   value={{product.sku}}>
           </td>
           <td class="table-detail"> 
               <input  class="form-control" formControlName="title"  placeholder="Sony XM3">
           </td>
           <td class="table-detail"> 
               <select class="form-control"  formControlName="condition"  >
-                <option   value="Used"> Used</option>
+                <option value="Used"> Used</option>
                 <option value="New Open">New Open</option>
                 <option value="Parts">Parts</option>
               </select>
           </td>
           <td class="table-detail">1</td>
-          <td class="table-detail"><input  style="width: 30%;" class="form-control" formControlName="price" type="number" placeholder="$350" ></td>
-        
+          <td class="table-detail" style="width: 10%;"><input   class="form-control" formControlName="price" type="number" placeholder="$350" ></td>
+          <td class="table-detail btn-detail">
+            <button type="button" class="btn form-btn btn-sm">Save Draft</button>
+          </td>
+          <td class="table-detail btn-detail">
+            <button type="button" class="btn form-btn btn-sm">Update SKU</button>
+          </td>
+          <td class="table-detail btn-detail">
+            <button type="button" class="btn form-btn btn-sm">Not Listed</button>
+          </td>
 
         </tr>
 

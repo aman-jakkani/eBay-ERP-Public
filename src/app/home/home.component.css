@@ -32,6 +32,7 @@
 .products-table{
     order: 1;
     width: 70%;
+    margin-left: 20px;
 }
 
 .table-row{
@@ -40,4 +41,15 @@
 
 .table-detail{
     vertical-align: middle;
+}
+
+.form-btn{
+   width: 90px;
+   height: 80%;
+   margin:0 auto;
+   display:block;
+   font-size: 12px;
+}
+.btn-detail{
+    width: 5%;
 }
