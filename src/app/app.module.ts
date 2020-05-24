@@ -7,6 +7,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { MatSelectModule} from '@angular/material/select';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 import { AppComponent } from './app.component';
@@ -33,7 +34,8 @@ const appRoutes: Routes =  [
     RouterModule.forRoot(appRoutes),
     DeviceDetectorModule.forRoot(),
     NgbModule,
-    MatSelectModule
+    MatSelectModule,
+    MatTooltipModule
   ],
   providers: [],
   bootstrap: [AppComponent]

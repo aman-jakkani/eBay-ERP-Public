@@ -30,6 +30,7 @@ export class ListingComponent implements OnInit {
   //products of current manifest
   products: Product[] = [];
   draft: FormGroup;
+  ttInput: string;
 
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
@@ -44,9 +45,16 @@ export class ListingComponent implements OnInit {
       conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
     });
-
+    this.onValueChanges();
   }
 
+  onValueChanges(): void {
+    this.draft.get('title').valueChanges.subscribe(val => {
+      console.log(val);
+      this.ttInput = val;
+
+    })
+  }
   getManifests(){
     this.mainService.getManifests().subscribe(
       data => {
