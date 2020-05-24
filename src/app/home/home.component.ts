@@ -36,6 +36,13 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getManifests();
+    //Form for link input
+    this.draft = new FormGroup({
+      sku: new FormControl(null, {}),
+      title: new FormControl(null, {}),
+      condition: new FormControl("Used", {}),
+      price: new FormControl(null, {}),
+    });
 
   }
 
