@@ -80,7 +80,7 @@
             <button type="button" class="btn form-btn btn-sm">Update SKU</button>
           </td>
           <td class="table-detail btn-detail">
-            <button type="button" class="btn form-btn btn-sm">Not Listed</button>
+            <button type="button" class="btn form-btn btn-sm btn-danger">Not Listed</button>
           </td>
 
         </tr>
@@ -91,7 +91,7 @@
 </form>
 
   <br>
-  <h4 *ngIf="current_manifest" class="summary">ID: {{current_manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{current_manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{current_manifest.date_purchased | date: 'M/d/yyyy'}}</h4>
+  <h4 *ngIf="current_manifest" class="summary">ID: {{current_manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{current_manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{current_manifest.date_purchased | date: 'M/d/yyyy'}}  &nbsp; MSRP: ${{priceTotal}}</h4>
 
 </div>
 
