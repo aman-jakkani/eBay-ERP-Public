@@ -11,10 +11,10 @@ import { formatDate } from "@angular/common";
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './listing.component.html',
+  styleUrls: ['./listing.component.css']
 })
-export class HomeComponent implements OnInit {
+export class ListingComponent implements OnInit {
 
 
   //total quantity of items in auction
@@ -84,7 +84,7 @@ export class HomeComponent implements OnInit {
         }
         this.getProducts(data);
         console.log("Logging products",this.products);
-        
+
 
       });
   }

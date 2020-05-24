@@ -11,18 +11,18 @@ import { MatSelectModule} from '@angular/material/select';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { HomeComponent } from './home/home.component';
+import { ListingComponent } from './listing/listing.component';
 
 const appRoutes: Routes =  [
-  {path: '', component: HomeComponent},
-  {path: 'home', component: HomeComponent},
+  {path: '', component: ListingComponent},
+  {path: 'home', component: ListingComponent},
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent
+    ListingComponent
   ],
   imports: [
     BrowserModule,
