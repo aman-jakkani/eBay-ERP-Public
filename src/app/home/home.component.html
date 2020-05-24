@@ -13,56 +13,62 @@
 
 
   <h4 *ngIf="current_manifest" class="auction-title">{{ current_manifest.auction_title }}</h4>
+  <form>
 
   <div class="tables">
+
     <table class="table table-striped items-table">
       <thead>
         <tr style="font-weight: 700;" align="center" bgcolor="99CCFF">
           <th>Item</th>
           <th>Quantity</th>
-          <th>Price</th>
-          <th>Grade</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of items;let i = index">
-          <td >{{item.name}}</td>
-          <td style="text-align: left;">{{ item.quantity }}</td>
-          <td style="text-align: left;">{{ item.price }}</td>
-          <td style="text-align: left;">{{ item.grade }}</td>
+        <tr *ngFor="let item of items;let i = index" class="table-row ">
+          <td class="table-detail" >{{item.name}}</td>
+          <td class="table-detail">{{ item.quantity }}</td>
+        
         </tr>
         <tr style="font-weight: 700;" align="center" >
           <th >Total</th>
           <th>{{manifestQuantity}}</th>
-          <th>${{priceTotal.toFixed(2)}}</th>
-          <th></th>
         </tr>
       </tbody>
     </table>
+
+   
 
     <table class="table table-striped products-table">
       <thead>
         <tr style="font-weight: 700;" align="center" bgcolor="99CCFF">
           <th>SKU</th>
           <th>Listing Title</th>
-          <th>Listing Condition</th>
-          <th>Condition Description</th>
+          <!-- <th>Listing Condition</th>
           <th>Quantity</th>
-          <th>List Price</th>
+          <th>List Price</th> -->
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products;let i = index">
-          <td >{{product.sku}}</td>
-          <td style="text-align: left;">Sony MDRA 410AP</td>
-          <td style="text-align: left;">USED</td>
-          <td style="text-align: left;">Item like new</td>
+
+        <tr *ngFor="let product of products;let i = index" class="table-row">
+
+          <td class="table-detail">
+            {{product.sku}}
+          </td>
+          <td class="table-detail"> <input   class="form-control" type="text" placeholder="Enter Price"></td>
+          <!-- <td style="text-align: left;">USED</td>
           <td style="text-align: left;">1</td>
-          <td style="text-align: left;">$210</td>
+          <td style="text-align: left;">$210</td> -->
+        
+
         </tr>
+
       </tbody>
     </table>
+
   </div>
+</form>
 
   <br>
   <h4 *ngIf="current_manifest" class="summary">ID: {{current_manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{current_manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{current_manifest.date_purchased | date: 'M/d/yyyy'}}</h4>

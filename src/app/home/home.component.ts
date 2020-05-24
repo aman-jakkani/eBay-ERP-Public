@@ -29,10 +29,10 @@ export class HomeComponent implements OnInit {
   current_manifest: Manifest;
   //products of current manifest
   products: Product[] = [];
+  draft: FormGroup;
 
 
-
-  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute) { }
+  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.getManifests();

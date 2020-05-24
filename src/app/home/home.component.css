@@ -16,6 +16,7 @@
 .tables{
     order: 2;
     display: flex;
+    justify-content: center;
 }
 
 .summary{
@@ -25,8 +26,18 @@
 
 .items-table{
     order: 0;
+    width: 30%;
 }
 
 .products-table{
     order: 1;
+    width: 70%;
+}
+
+.table-row{
+    height: 60px;
+}
+
+.table-detail{
+    vertical-align: middle;
 }
