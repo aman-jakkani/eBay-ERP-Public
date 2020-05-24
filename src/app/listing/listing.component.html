@@ -68,7 +68,7 @@
             <input class="form-control" formControlName="sku"  value={{product.sku}}>
           </td>
           <td class="table-detail">
-              <input #titleInput class="form-control" formControlName="title" placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450">
+              <input #titleInput class="form-control" formControlName="title" placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450" maxlength="80">
           </td>
           <td class="table-detail">
               <select class="form-control"  formControlName="condition"  >
@@ -78,7 +78,7 @@
               </select>
           </td>
           <td style="width: 15%;" class="table-detail">
-            <input #condition class="form-control" formControlName="conditionDesc"  placeholder="Item is in used good condition" matTooltip="{{condition.value}}" [matTooltipShowDelay]="450">
+            <input #condition class="form-control" formControlName="conditionDesc"  placeholder="Item is in used good condition" matTooltip="{{condition.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
         </td>
           <td class="table-detail">1</td>
           <td class="table-detail" style="width: 10%;"><input   class="form-control" formControlName="price" type="number" placeholder="$350" ></td>
