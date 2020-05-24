@@ -123,7 +123,7 @@ def saveItems(browser, manifests):
             #PRODUCT
             product_headers = ["sku","quantity_sold","prices_sold"]
             product_count = products_collection.count_documents({})
-            product_count = "{0:0=6}".format(product_count)
+            product_count = "{0:0=4}".format(product_count)
             #Creating Unique SKU
             sku = item['name'].split()[1] + str(product_count)
             product = {
