@@ -65,3 +65,8 @@
   .mat-option-text.mat-option-text {
   white-space: normal;
   }
+
+  .light-text{
+      font-weight: 300;
+      /* font-size: 16px; */
+  }
