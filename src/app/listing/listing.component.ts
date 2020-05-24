@@ -41,6 +41,7 @@ export class ListingComponent implements OnInit {
       sku: new FormControl(null, {}),
       title: new FormControl(null, {}),
       condition: new FormControl("Used", {}),
+      conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
     });
 

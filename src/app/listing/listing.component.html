@@ -23,17 +23,20 @@
         <tr style="font-weight: 700;" align="center" bgcolor="99CCFF">
           <th>Item</th>
           <th>Quantity</th>
+          <th>MSRP</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let item of items;let i = index" class="table-row ">
           <td class="table-detail" >{{item.name}}</td>
           <td class="table-detail">{{ item.quantity }}</td>
+          <td class="table-detail">{{ item.price }}</td>
 
         </tr>
         <tr style="font-weight: 700;" align="center" >
           <th >Total</th>
           <th>{{manifestQuantity}}</th>
+          <th>${{priceTotal.toFixed(2)}}</th>
         </tr>
       </tbody>
     </table>
@@ -46,6 +49,8 @@
           <th>SKU</th>
           <th>Listing Title</th>
           <th>Listing Condition</th>
+          <th>Condition Desc</th>
+
           <th>Quantity</th>
           <th>List Price</th>
           <th></th>
@@ -72,6 +77,9 @@
                 <option value="Parts">Parts</option>
               </select>
           </td>
+          <td style="width: 15%;" class="table-detail">
+            <input  class="form-control" formControlName="conditionDesc"  placeholder="Item is in used good condition">
+        </td>
           <td class="table-detail">1</td>
           <td class="table-detail" style="width: 10%;"><input   class="form-control" formControlName="price" type="number" placeholder="$350" ></td>
           <td class="table-detail btn-detail">
@@ -92,7 +100,7 @@
 </form>
 
   <br>
-  <h4 *ngIf="current_manifest" class="summary">ID: {{current_manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{current_manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{current_manifest.date_purchased | date: 'M/d/yyyy'}}  &nbsp; MSRP: ${{priceTotal}}</h4>
+  <h4 *ngIf="current_manifest" class="summary">ID: {{current_manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{current_manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{current_manifest.date_purchased | date: 'M/d/yyyy'}} </h4>
 
 </div>
 
