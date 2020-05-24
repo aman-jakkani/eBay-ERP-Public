@@ -5,7 +5,8 @@
       <mat-label>Choose a manifest</mat-label>
       <mat-select name="manifest" (selectionChange)="getManifestDetails($event.value)">
         <mat-option *ngFor="let manifest of manifests;let i = index" value="{{manifest.id}}">
-          ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}}
+          <p *ngIf="manifest.total_price >= 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}}</p>
+          <p *ngIf="manifest.total_price < 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}} &nbsp; &nbsp; &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}}</p>
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -15,7 +16,7 @@
   <h4 *ngIf="current_manifest" class="auction-title">{{ current_manifest.auction_title }}</h4>
   <form class="tables" [formGroup]="draft">
 
-  
+
 
     <table class="table table-striped items-table">
       <thead>
@@ -28,7 +29,7 @@
         <tr *ngFor="let item of items;let i = index" class="table-row ">
           <td class="table-detail" >{{item.name}}</td>
           <td class="table-detail">{{ item.quantity }}</td>
-        
+
         </tr>
         <tr style="font-weight: 700;" align="center" >
           <th >Total</th>
@@ -37,7 +38,7 @@
       </tbody>
     </table>
 
-   
+
 
     <table class="table table-striped products-table">
       <thead>
@@ -58,13 +59,13 @@
         <tr *ngFor="let product of products;let i = index" class="table-row">
 
           <td  style="width: 15%;" class="table-detail">
-            
+
             <input  class="form-control" formControlName="sku"   value={{product.sku}}>
           </td>
-          <td class="table-detail"> 
+          <td class="table-detail">
               <input  class="form-control" formControlName="title"  placeholder="Sony XM3">
           </td>
-          <td class="table-detail"> 
+          <td class="table-detail">
               <select class="form-control"  formControlName="condition"  >
                 <option value="Used"> Used</option>
                 <option value="New Open">New Open</option>
