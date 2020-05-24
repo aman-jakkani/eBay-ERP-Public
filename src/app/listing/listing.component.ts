@@ -60,6 +60,8 @@ export class ListingComponent implements OnInit {
   }
 
   getManifestDetails(manifestID){
+    this.priceTotal = 0;
+    this.products = [];
     this.getManifest(manifestID);
     this.getItems(manifestID);
   }
@@ -84,7 +86,6 @@ export class ListingComponent implements OnInit {
           this.priceTotal += item.price * item.quantity;
         }
         //clearing previous products
-        this.products = [];
         this.getProducts(data);
         console.log("Logging products",this.products);
 
