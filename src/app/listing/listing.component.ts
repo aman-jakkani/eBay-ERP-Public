@@ -95,13 +95,17 @@ export class ListingComponent implements OnInit {
   }
 
   getProducts(data){
+    var localProducts: Product[] = [];
+
     for (var item of data){
       this.mainService.getProduct(item.id).subscribe(
         data => {
-          this.products.push(data);
+          localProducts.push(data);
         }
       );
     }
+    this.products = localProducts;
+
   }
 
 }
