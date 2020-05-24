@@ -45,16 +45,9 @@ export class ListingComponent implements OnInit {
       conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
     });
-    this.onValueChanges();
+
   }
 
-  onValueChanges(): void {
-    this.draft.get('title').valueChanges.subscribe(val => {
-      console.log(val);
-      this.ttInput = val;
-
-    })
-  }
   getManifests(){
     this.mainService.getManifests().subscribe(
       data => {
