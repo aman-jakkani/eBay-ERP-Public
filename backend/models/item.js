@@ -4,7 +4,7 @@ var mongooseUniqueValidator = require('mongoose-unique-validator');
 var item_schema = mongoose.Schema({
     id: {type: mongoose.Schema.Types.ObjectId, required: true},
     name: {type: String, required: true},
-    quantity: [{type: Number, required: true}],
+    quantity: {type: Number, required: true},
     price: {type: Number, required: true},
     model: {type: String},
     grade: {type: String},
