@@ -10,6 +10,7 @@ import { Item } from "./models/item.model";
 import { environment } from '../environments/environment';
 import { Product } from './models/product.model';
 import { stringify } from '@angular/compiler/src/util';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 const BACKEND_URL = environment.apiUrl ;
 
@@ -119,5 +120,13 @@ export class MainService {
 
       return movieCount;
     }));
+  }
+
+  updateSKU(productID, newSKU){
+    return this.http.get<{message: string; data: any}>(
+      BACKEND_URL + '/updateSKU/'+productID+'/'+encodeURIComponent(newSKU)).pipe(map((response: any) => {
+        const updatedItem = response;
+        return updatedItem;
+      }));
   }
 }

@@ -107,5 +107,8 @@ export class ListingComponent implements OnInit {
     this.products = localProducts;
 
   }
+  updateSKU(i){
+    alert(this.products[i].sku);
+  }
 
 }

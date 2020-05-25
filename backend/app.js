@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const querystring = require("querystring");
 
 //const Movie = require("./models/movie");
 
@@ -106,6 +107,28 @@ app.get("/api/getProduct/:itemID", (req, res) => {
   });
 
 });
+
+//updating sku
+app.get("/api/updateSKU/:productID/:newSKU", (req, res) => {
+  var productID = req.params.productID;
+  var newSKU = querystring.parse(req.params.newSKU);
+  console.log(req.params);
+  Item.findOne({product_id: productID}).then(item => {
+    if(Product.findOne({sku: newSKU}).id != "") {
+      item.product_id = Product.findOne({sku: newSKU})._id;
+      item.save();
+    }
+    else {
+      item.product_id = Product.create({sku: newSKU})._id;
+      item.save();
+    }
+    console.log(item);
+    res.status(200).json({
+      message: "SKU Updated successfully",
+      item: item
+    });
+  });
+})
 
 
 
