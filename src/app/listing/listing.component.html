@@ -65,7 +65,7 @@
 
           <td  style="width: 15%;" class="table-detail">
 
-            <input class="form-control" formControlName="sku"  value={{product.sku}}>
+            <input #skuInput class="form-control" formControlName="sku"  value={{product.sku}} matTooltip="{{skuInput.value}}">
           </td>
           <td class="table-detail">
               <input #titleInput class="form-control" formControlName="title" placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450" maxlength="80">
