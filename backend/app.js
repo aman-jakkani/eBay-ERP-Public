@@ -114,14 +114,21 @@ app.get("/api/updateSKU/:productID/:newSKU", (req, res) => {
   var newSKU = req.params.newSKU;
   console.log(req.params);
   Item.findOne({product_id: productID}).then(item => {
-    if(Product.findOne({sku: newSKU}).id != "") {
-      item.product_id = Product.findOne({sku: newSKU}).id;
-      item.save();
-    }
-    else {
-      item.product_id = Product.create({sku: newSKU}).id;
-      item.save();
-    }
+    Product.findOne({sku: newSKU}).then(product => {
+      if(!product){
+        var newProduct = new Product({_id: mongoose.Types.ObjectId(), sku: newSKU, quantity_sold: 0, prices_sold: []});
+        newProduct.save(function(err, prod) {
+          if (err) return console.error(err);
+          console.log(prod);
+        });
+        item.product_id = newProduct._id;
+        item.save();
+      }
+      else{
+        item.product_id = product._id;
+        item.save();
+      }
+    });
     console.log(item);
     res.status(200).json({
       message: "SKU Updated successfully",
