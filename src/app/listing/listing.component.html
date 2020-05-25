@@ -48,7 +48,7 @@
         <tr style="font-weight: 700;" align="center" bgcolor="99CCFF">
           <th>SKU</th>
           <th>Listing Title</th>
-          <th>Listing Condition</th>
+          <th>Condition</th>
           <th>Condition Desc</th>
 
           <th>Quantity</th>
@@ -103,7 +103,7 @@
   <h4 *ngIf="current_manifest" class="summary">Trans ID: <span class="light-text">{{current_manifest.transaction_id}}</span> &emsp; &nbsp; &nbsp; Amount: <span  class="light-text">
     {{current_manifest.total_price | currency: '$'}}
   </span>  &nbsp; &nbsp; Date: <span  class="light-text">
-    {{current_manifest.date_purchased | date: 'M/d/yyyy'}} 
+    {{current_manifest.date_purchased | date: 'M/d/yyyy'}}
   </span> </h4>
 
 </div>
