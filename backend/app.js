@@ -111,15 +111,15 @@ app.get("/api/getProduct/:itemID", (req, res) => {
 //updating sku
 app.get("/api/updateSKU/:productID/:newSKU", (req, res) => {
   var productID = req.params.productID;
-  var newSKU = querystring.parse(req.params.newSKU);
+  var newSKU = req.params.newSKU;
   console.log(req.params);
   Item.findOne({product_id: productID}).then(item => {
     if(Product.findOne({sku: newSKU}).id != "") {
-      item.product_id = Product.findOne({sku: newSKU})._id;
+      item.product_id = Product.findOne({sku: newSKU}).id;
       item.save();
     }
     else {
-      item.product_id = Product.create({sku: newSKU})._id;
+      item.product_id = Product.create({sku: newSKU}).id;
       item.save();
     }
     console.log(item);

@@ -107,8 +107,10 @@ export class ListingComponent implements OnInit {
     this.products = localProducts;
 
   }
-  updateSKU(i){
-    alert(this.products[i].sku);
+  updateSKU(productID, newSKU){
+    this.mainService.updateSKU(productID, newSKU).subscribe(data => {
+      console.log(data);
+    });
   }
 
 }
