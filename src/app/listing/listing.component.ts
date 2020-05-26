@@ -93,26 +93,7 @@ export class ListingComponent implements OnInit {
         //clearing previous products
         this.getProducts();
         // console.log("Logging products",this.products);
-        for (var each of this.products){
-          this.t.push(this.fb.group({
-            sku: [each.sku],
-            title: [''],
-            condition: [''],
-            conditionDesc: [''],
-            price: ['']
-          }));
-        }
       });
-  }
-  buildForm(product){
-    return this.fb.group({
-      sku: [product.sku],
-      title: [''],
-      condition: [''],
-      conditionDesc: [''],
-      price: ['']
-
-    })
   }
   getProducts(){
 
@@ -125,6 +106,13 @@ export class ListingComponent implements OnInit {
           data => {
               console.log("getting products",data);
               this.products.push(data);
+              this.t.push(this.fb.group({
+                sku: [data.sku],
+                title: [''],
+                condition: [''],
+                conditionDesc: [''],
+                price: ['']
+              }));
         });
       });
     }
