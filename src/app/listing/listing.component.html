@@ -60,8 +60,8 @@
         </tr>
       </thead>
       <tbody *ngIf="products">
-
-        <tr   *ngFor="let product of products;let i = index" class="table-row">
+        <ng-container formArrayName="rows" *ngFor="let row of rows; let i = index">
+        <tr [formGroupName]="i" class="table-row">
 
           <td  style="width: 15%;" class="table-detail">
 
@@ -93,7 +93,7 @@
           </td>
 
         </tr>
-
+        </ng-container>
       </tbody>
     </table>
 

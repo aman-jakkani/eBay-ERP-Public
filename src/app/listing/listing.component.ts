@@ -33,6 +33,7 @@ export class ListingComponent implements OnInit {
   draft: FormGroup;
   ttInput: string;
   skuUpdated: boolean[] = [];
+  rows: FormArray;
 
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
@@ -40,12 +41,13 @@ export class ListingComponent implements OnInit {
   ngOnInit() {
     this.getManifests();
     //Form for link input
+    this.rows = new FormArray([]);
     this.draft = new FormGroup({
       sku: new FormControl(null, {}),
       title: new FormControl(null, {}),
       condition: new FormControl("Used", {}),
       conditionDesc: new FormControl(null, {}),
-      price: new FormControl(null, {}),
+      price: new FormControl(null, {})
     });
 
   }
@@ -90,6 +92,16 @@ export class ListingComponent implements OnInit {
         //clearing previous products
         this.getProducts();
         // console.log("Logging products",this.products);
+        for (var each of this.products){
+          var row = new FormGroup({
+            sku: new FormControl(each.sku, {}),
+            title: new FormControl(null, {}),
+            condition: new FormControl("Used", {}),
+            conditionDesc: new FormControl(null, {}),
+            price: new FormControl(null, {})
+          });
+          this.rows.push(row);
+        }
       });
   }
 
