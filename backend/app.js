@@ -8,6 +8,7 @@ const querystring = require("querystring");
 const Manifest = require("./models/manifest");
 const Product = require("./models/product");
 const Item = require("./models/item");
+const Draft = require("./models/draft");
 
 const app = express();
 const {spawn} = require('child_process');

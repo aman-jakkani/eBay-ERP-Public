@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from "@ang
 import {Manifest} from '../models/manifest.model';
 import { Product } from '../models/product.model';
 import { Item } from '../models/item.model';
+import { Draft } from '../models/draft.model';
 import { formatDate } from "@angular/common";
 
 @Component({
@@ -31,6 +32,7 @@ export class ListingComponent implements OnInit {
   products: Product[] = [];
   draft: FormGroup;
   ttInput: string;
+  skuUpdated: boolean[] = [];
 
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
@@ -88,8 +90,6 @@ export class ListingComponent implements OnInit {
         //clearing previous products
         this.getProducts();
         // console.log("Logging products",this.products);
-
-
       });
   }
 
