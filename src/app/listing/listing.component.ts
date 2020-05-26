@@ -62,7 +62,7 @@ export class ListingComponent implements OnInit {
   getManifestDetails(manifestID){
     //reseting vars
     this.priceTotal = 0;
-
+    this.products = [];
     this.getManifest(manifestID);
     this.getItems(manifestID);
   }
