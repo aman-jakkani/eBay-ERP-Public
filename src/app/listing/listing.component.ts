@@ -51,7 +51,6 @@ export class ListingComponent implements OnInit {
   getManifests(){
     this.mainService.getManifests().subscribe(
       data => {
-        console.log((data));
         this.manifests = data;
         this.manifests.sort((a,b) => (a.date_purchased < b.date_purchased)?1 : -1);
         this.manifests.forEach(element => {
@@ -81,33 +80,46 @@ export class ListingComponent implements OnInit {
   getItems(manifestID){
     this.mainService.getItems(manifestID).subscribe(
       data => {
-        console.log((data));
         this.items = data;
         //Getting Items Total Value
         for ( var item of data){
           this.priceTotal += item.price * item.quantity;
         }
         //clearing previous products
-        this.getProducts(data);
-        console.log("Logging products",this.products);
+        this.getProducts();
+        // console.log("Logging products",this.products);
 
 
       });
   }
 
-  getProducts(data){
-    var localProducts: Product[] = [];
+  getProducts(){
 
-    for (var item of data){
-      this.mainService.getProduct(item.id).subscribe(
-        data => {
-          localProducts.push(data);
-        }
-      );
+    const sleep = ms => {
+      return new Promise(resolve => setTimeout(resolve, ms))
     }
-    this.products = localProducts;
+    const getProduct = itemid => {
+      return sleep(100).then(v => {
+        this.mainService.getProduct(itemid).subscribe(
+          data => {
+              console.log("getting products",data);
+              this.products.push(data);
+        });
+      });
+    }
+    const loopItems = async _ => {   
+      for (let index = 0; index < this.items.length; index++) {
+        // Get num of each fruit
+        const item_id = this.items[index].id
+        await getProduct(item_id);
+      }    
+    }
+ 
+    loopItems(text => console.log(text));
 
   }
+
+
   updateSKU(productID, newSKU){
     var itm = this.items.filter(x => x.product_id == productID);
     this.mainService.updateSKU(itm[0].id, newSKU).subscribe(data => {
