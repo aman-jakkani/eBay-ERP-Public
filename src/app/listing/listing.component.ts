@@ -30,7 +30,7 @@ export class ListingComponent implements OnInit {
   current_manifest: Manifest;
   //products of current manifest
   products: Product[] = [];
-  draft: FormGroup;
+  allRows: FormGroup;
   ttInput: string;
   skuUpdated: boolean[] = [];
   control: FormArray;
@@ -41,7 +41,7 @@ export class ListingComponent implements OnInit {
   ngOnInit() {
     this.getManifests();
     //Form for link input
-    this.draft = this.formBuilder.group({
+    this.allRows = this.formBuilder.group({
       tableRows: this.formBuilder.array([])
     });
     /*
@@ -52,7 +52,7 @@ export class ListingComponent implements OnInit {
       conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
     });*/
-    this.control = this.draft.get('tableRows') as FormArray;
+    this.control = this.allRows.get('tableRows') as FormArray;
   }
   getManifests(){
     this.mainService.getManifests().subscribe(
@@ -67,7 +67,7 @@ export class ListingComponent implements OnInit {
 
   getManifestDetails(manifestID){
     //reseting vars
-    this.draft = this.formBuilder.group({
+    this.allRows = this.formBuilder.group({
       tableRows: this.formBuilder.array([])
     });
     this.priceTotal = 0;
@@ -111,12 +111,12 @@ export class ListingComponent implements OnInit {
     });
   }
   addRow(product){
-      const control = this.draft.get('tableRows') as FormArray;
+      const control = this.allRows.get('tableRows') as FormArray;
       control.push(this.initiateForm(product));
       console.log(control);
   }
   get getFormControls() {
-    const control = this.draft.get('tableRows') as FormArray;
+    const control = this.allRows.get('tableRows') as FormArray;
     return control;
   }
   getProducts(){
