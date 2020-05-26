@@ -90,6 +90,7 @@ export class ListingComponent implements OnInit {
         //clearing previous products
         this.getProducts(data);
         console.log("Logging products",this.products);
+        console.log("Logging items", this.items);
 
 
       });
