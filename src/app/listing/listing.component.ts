@@ -99,7 +99,7 @@ export class ListingComponent implements OnInit {
       return new Promise(resolve => setTimeout(resolve, ms))
     }
     const getProduct = itemid => {
-      return sleep(100).then(v => {
+      return sleep(1000).then(v => {
         this.mainService.getProduct(itemid).subscribe(
           data => {
               console.log("getting products",data);
