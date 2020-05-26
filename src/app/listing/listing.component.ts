@@ -108,9 +108,9 @@ export class ListingComponent implements OnInit {
     this.products = localProducts;
 
   }
-  updateSKU(index, newSKU){
-    var itm = this.items[index];
-    this.mainService.updateSKU(itm.id, newSKU).subscribe(data => {
+  updateSKU(productID, newSKU){
+    var itm = this.items.filter(x => x.product_id == productID);
+    this.mainService.updateSKU(itm[0].id, newSKU).subscribe(data => {
       console.log(data);
     });
   }

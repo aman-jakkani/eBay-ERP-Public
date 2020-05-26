@@ -88,7 +88,8 @@ export class MainService {
             price: item.price,
             model: item.model,
             grade: item.grade,
-            manifest_id: item.manifest_id
+            manifest_id: item.manifest_id,
+            product_id: item.product_id
           };
           return itemData;
         });
