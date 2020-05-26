@@ -151,7 +151,15 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
 })
 
 
+app.get("/api/updateTitle/:newTitle/:draftID", (req, res) => {
+  var newTitle = req.params.newTitle;
+  var draftID = req.params.draftID;
+  console.log(req.params);
+  Draft.findOneAndUpdate({_id: draftID}, {title: newTitle}, {new: true}).then(draft =>{
+    console.log(draft, "found draft");
 
+  });
+})
 
 
 
