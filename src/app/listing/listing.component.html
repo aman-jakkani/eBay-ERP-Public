@@ -14,7 +14,7 @@
 
 
   <h4 *ngIf="current_manifest" class="auction-title">{{ current_manifest.auction_title }}</h4>
-  <form class="tables" [formGroup]="draft">
+  <form class="tables" [formGroup]="allRows">
 
 
 
@@ -60,12 +60,12 @@
         </tr>
       </thead>
       <tbody *ngIf="products">
-        <ng-container formArrayName="rows" *ngFor="let row of rows; let i = index">
-        <tr [formGroupName]="i" class="table-row">
+        <ng-component formArrayName="rows" *ngFor="let row of t.controls; let i = index">
+        <tr [formGroup]="row" class="table-row">
 
           <td  style="width: 15%;" class="table-detail">
 
-            <input #skuInput class="form-control" formControlName="sku" value={{product.sku}} matTooltip="{{skuInput.value}}">
+            <input #skuInput class="form-control" formControlName="sku" value={{products[i].sku}} matTooltip="{{skuInput.value}}">
           </td>
           <td class="table-detail">
               <input #titleInput class="form-control" formControlName="title" placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450" maxlength="80">
@@ -86,14 +86,14 @@
             <button type="button" class="btn form-btn btn-sm" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
           </td>
           <td class="table-detail btn-detail">
-            <button (click)="updateSKU(product.id, skuInput.value)" class="btn form-btn btn-sm" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
+            <button (click)="updateSKU(products[i].id, skuInput.value)" class="btn form-btn btn-sm" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
           </td>
           <td class="table-detail btn-detail">
             <button type="button" class="btn form-btn btn-sm btn-danger">Not Listed</button>
           </td>
 
         </tr>
-        </ng-container>
+      </ng-component>
       </tbody>
     </table>
 

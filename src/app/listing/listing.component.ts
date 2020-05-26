@@ -30,26 +30,27 @@ export class ListingComponent implements OnInit {
   current_manifest: Manifest;
   //products of current manifest
   products: Product[] = [];
-  draft: FormGroup;
+  allRows: FormGroup;
   ttInput: string;
   skuUpdated: boolean[] = [];
-  rows: FormArray;
 
 
-  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+
+  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) { }
 
   ngOnInit() {
     this.getManifests();
     //Form for link input
-    this.rows = new FormArray([]);
-    this.draft = new FormGroup({
-      sku: new FormControl(null, {}),
-      title: new FormControl(null, {}),
-      condition: new FormControl("Used", {}),
-      conditionDesc: new FormControl(null, {}),
-      price: new FormControl(null, {})
+    this.allRows = this.fb.group({
+      numberOfRows:[''],
+      rows: new FormArray([])
     });
-
+  }
+  get f(){
+    return this.allRows.controls;
+  }
+  get t(){
+    return this.f.rows as FormArray;
   }
 
   getManifests(){
@@ -93,18 +94,26 @@ export class ListingComponent implements OnInit {
         this.getProducts();
         // console.log("Logging products",this.products);
         for (var each of this.products){
-          var row = new FormGroup({
-            sku: new FormControl(each.sku, {}),
-            title: new FormControl(null, {}),
-            condition: new FormControl("Used", {}),
-            conditionDesc: new FormControl(null, {}),
-            price: new FormControl(null, {})
-          });
-          this.rows.push(row);
+          this.t.push(this.fb.group({
+            sku: [each.sku],
+            title: [''],
+            condition: [''],
+            conditionDesc: [''],
+            price: ['']
+          }));
         }
       });
   }
+  buildForm(product){
+    return this.fb.group({
+      sku: [product.sku],
+      title: [''],
+      condition: [''],
+      conditionDesc: [''],
+      price: ['']
 
+    })
+  }
   getProducts(){
 
     const sleep = ms => {
