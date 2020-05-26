@@ -134,9 +134,9 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
       else{
         console.log("need to save item",product._id);
         // item.product_id = product._id;
-        item.updateOne({product_id:product._id});
-        // item.save();
-        console.log("logging item",item);
+        Item.findOneAndUpdate({_id: itemID}, {product_id: product._id}, {new: true}).then(newitem =>{
+          console.log("logging item new",newitem, product);
+        });
 
       }
     });
