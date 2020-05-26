@@ -10,20 +10,22 @@ from datetime import datetime, timedelta
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
 db = client.dev_db
-# client.drop_database("test_db")
+client.drop_database("dev_db")
+
 manifests_collection = db.manifests
 items_collection = db.items
 products_collection = db.products
+drafts_collection = db.drafts
 
 def main():
     #logging in to Liquidation Account
     browser = logIn()
-    #get and save manifest
     manifests_list = saveManifests(browser)
 
     saveItems(browser,manifests_list)
 
 
+    #get and save manifest
     print("Data seeded")
 
 def saveItems(browser, manifests):
@@ -132,10 +134,10 @@ def saveItems(browser, manifests):
                 "prices_sold":[]
             }
             productId = products_collection.insert_one(product).inserted_id
+          
 
 
             #ITEM
-            
             #add manifestID
             item["manifest_id"] = manifest["_id"]
             item["product_id"] = product["_id"]
@@ -145,6 +147,18 @@ def saveItems(browser, manifests):
 
             print(item)
             print()
+
+            #DRAFT
+            draft = {"updated_SKU": False,
+                    "published_draft": False,
+                    "listed": False,
+                    "title": None,
+                    "condition": None,
+                    "condition_desc": None,
+                    "price": None,
+                    "item_id": item["_id"]}
+            draftId = drafts_collection.insert_one(draft).inserted_id
+            
 
 def saveManifests(browser):
 
@@ -159,7 +173,7 @@ def saveManifests(browser):
     manifests_list = []
     #geetting table rows
     tr = transactions_in_progress.find_all("tr")
-    for i in range(0,5):
+    for i in range(0,4):
 
         td = tr[i].find_all('td')
         data_to_add = []
