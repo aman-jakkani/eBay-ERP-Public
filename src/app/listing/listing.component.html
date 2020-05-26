@@ -60,39 +60,40 @@
         </tr>
       </thead>
       <tbody *ngIf="products">
+        <ng-container formArrayName="tableRows" *ngFor="let group of getFormControls.controls; let i = index">
+          <tr formGroupName="i" class="table-row">
 
-        <tr   *ngFor="let product of products;let i = index" class="table-row">
+            <td  style="width: 15%;" class="table-detail">
 
-          <td  style="width: 15%;" class="table-detail">
+              <input class="form-control" formControlName="sku" value={{products[i].sku}}>
+            </td>
+            <td class="table-detail">
+                <input #titleInput class="form-control" formControlName="title" placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450" maxlength="80">
+            </td>
+            <td class="table-detail">
+                <select class="form-control"  formControlName="condition"  >
+                  <option value="Used"> Used</option>
+                  <option value="New Open">New Open</option>
+                  <option value="Parts">Parts</option>
+                </select>
+            </td>
+            <td style="width: 15%;" class="table-detail">
+              <input #condition class="form-control" formControlName="condition_desc"  placeholder="Item is in used good condition" matTooltip="{{condition.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
+          </td>
+            <td class="table-detail">{{items[i].quantity}}</td>
+            <td class="table-detail" style="width: 10%;"><input   class="form-control" formControlName="price" type="number" placeholder="$350" ></td>
+            <td class="table-detail btn-detail">
+              <button type="button" class="btn form-btn btn-sm" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
+            </td>
+            <td class="table-detail btn-detail">
+              <button (click)="updateSKU(group.get('id').value)" class="btn form-btn btn-sm" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
+            </td>
+            <td class="table-detail btn-detail">
+              <button type="button" class="btn form-btn btn-sm btn-danger">Not Listed</button>
+            </td>
 
-            <input #skuInput class="form-control" formControlName="sku" value={{product.sku}} matTooltip="{{skuInput.value}}">
-          </td>
-          <td class="table-detail">
-              <input #titleInput class="form-control" formControlName="title" placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450" maxlength="80">
-          </td>
-          <td class="table-detail">
-              <select class="form-control"  formControlName="condition"  >
-                <option value="Used"> Used</option>
-                <option value="New Open">New Open</option>
-                <option value="Parts">Parts</option>
-              </select>
-          </td>
-          <td style="width: 15%;" class="table-detail">
-            <input #condition class="form-control" formControlName="conditionDesc"  placeholder="Item is in used good condition" matTooltip="{{condition.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
-        </td>
-          <td class="table-detail">{{items[i].quantity}}</td>
-          <td class="table-detail" style="width: 10%;"><input   class="form-control" formControlName="price" type="number" placeholder="$350" ></td>
-          <td class="table-detail btn-detail">
-            <button type="button" class="btn form-btn btn-sm" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
-          </td>
-          <td class="table-detail btn-detail">
-            <button (click)="updateSKU(product.id, skuInput.value)" class="btn form-btn btn-sm" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
-          </td>
-          <td class="table-detail btn-detail">
-            <button type="button" class="btn form-btn btn-sm btn-danger">Not Listed</button>
-          </td>
-
-        </tr>
+          </tr>
+        </ng-container>
 
       </tbody>
     </table>

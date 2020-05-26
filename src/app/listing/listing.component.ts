@@ -33,6 +33,7 @@ export class ListingComponent implements OnInit {
   draft: FormGroup;
   ttInput: string;
   skuUpdated: boolean[] = [];
+  control: FormArray;
 
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
@@ -40,16 +41,19 @@ export class ListingComponent implements OnInit {
   ngOnInit() {
     this.getManifests();
     //Form for link input
+    this.draft = this.formBuilder.group({
+      tableRows: this.formBuilder.array([])
+    });
+    /*
     this.draft = new FormGroup({
       sku: new FormControl(null, {}),
       title: new FormControl(null, {}),
       condition: new FormControl("Used", {}),
       conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
-    });
-
+    });*/
+    this.control = this.draft.get('tableRows') as FormArray;
   }
-
   getManifests(){
     this.mainService.getManifests().subscribe(
       data => {
@@ -63,6 +67,9 @@ export class ListingComponent implements OnInit {
 
   getManifestDetails(manifestID){
     //reseting vars
+    this.draft = this.formBuilder.group({
+      tableRows: this.formBuilder.array([])
+    });
     this.priceTotal = 0;
     this.products = [];
     this.getManifest(manifestID);
@@ -80,6 +87,7 @@ export class ListingComponent implements OnInit {
   }
 
   getItems(manifestID){
+    this.control = this.formBuilder.array([]);
     this.mainService.getItems(manifestID).subscribe(
       data => {
         this.items = data;
@@ -92,7 +100,25 @@ export class ListingComponent implements OnInit {
         // console.log("Logging products",this.products);
       });
   }
-
+  initiateForm(product) : FormGroup {
+    return this.formBuilder.group({
+      id: [product.id],
+      sku: [product.sku],
+      title: [''],
+      condition: [''],
+      condition_desc: [''],
+      price: ['']
+    });
+  }
+  addRow(product){
+      const control = this.draft.get('tableRows') as FormArray;
+      control.push(this.initiateForm(product));
+      console.log(control);
+  }
+  get getFormControls() {
+    const control = this.draft.get('tableRows') as FormArray;
+    return control;
+  }
   getProducts(){
 
     const sleep = ms => {
@@ -104,6 +130,7 @@ export class ListingComponent implements OnInit {
           data => {
               console.log("getting products",data);
               this.products.push(data);
+              this.addRow(data);
         });
       });
     }
