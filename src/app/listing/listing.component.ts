@@ -63,7 +63,7 @@ export class ListingComponent implements OnInit {
   getManifestDetails(manifestID){
     //reseting vars
     this.priceTotal = 0;
-    
+
     this.getManifest(manifestID);
     this.getItems(manifestID);
   }
@@ -108,8 +108,9 @@ export class ListingComponent implements OnInit {
     this.products = localProducts;
 
   }
-  updateSKU(productID, newSKU){
-    this.mainService.updateSKU(productID, newSKU).subscribe(data => {
+  updateSKU(index, newSKU){
+    var itm = this.items[index];
+    this.mainService.updateSKU(itm.id, newSKU).subscribe(data => {
       console.log(data);
     });
   }

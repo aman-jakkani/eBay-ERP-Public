@@ -109,11 +109,11 @@ app.get("/api/getProduct/:itemID", (req, res) => {
 });
 
 //updating sku
-app.get("/api/updateSKU/:productID/:newSKU", (req, res) => {
-  var productID = req.params.productID;
+app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
+  var itemID = req.params.itemID;
   var newSKU = req.params.newSKU;
   console.log(req.params);
-  Item.findOne({product_id: productID}).then(item => {
+  Item.findById(itemID).then(item => {
 
     Product.findOne({sku: newSKU}).then(product => {
       if(!product){
@@ -122,7 +122,7 @@ app.get("/api/updateSKU/:productID/:newSKU", (req, res) => {
           if (err) {
             console.error(err,"logging eerror");
             console.log(prod,"logging new product");
-          } 
+          }
         item.updateOne({product_id:prod._id});
         console.log("logging item1",item, prod);
         });

@@ -5,5 +5,6 @@ export interface Item {
   price: number;
   model: string;
   grade: string;
+  product_id: string;
   manifest_id: string;
 }

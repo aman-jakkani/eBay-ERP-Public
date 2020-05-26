@@ -122,9 +122,9 @@ export class MainService {
     }));
   }
 
-  updateSKU(productID, newSKU){
+  updateSKU(itemID, newSKU){
     return this.http.get<{message: string; data: any}>(
-      BACKEND_URL + '/updateSKU/'+productID+'/'+encodeURIComponent(newSKU)).pipe(map((response: any) => {
+      BACKEND_URL + '/updateSKU/'+itemID+'/'+encodeURIComponent(newSKU)).pipe(map((response: any) => {
         const updatedItem = response;
         return updatedItem;
       }));
