@@ -113,7 +113,7 @@ export class MainService {
   }
 
   updateSKU(itemID, newSKU){
-    return this.http.get<{message: string; data: any}>(
+    return this.http.get<{message: string; product: any}>(
       BACKEND_URL + '/updateSKU/'+itemID+'/'+encodeURIComponent(newSKU)).pipe(map((productData: any) => {
         let product = new Product ({
           id: productData.product._id,

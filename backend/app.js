@@ -116,22 +116,31 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
   console.log(req.params);
   Item.findById(itemID).then(item => {
     console.log("found item", item);
+
+
     Product.findOne({sku: newSKU}).then(product => {
+
+
       if(!product){
+
         var newProduct = new Product({ sku: newSKU, quantity_sold: 0, prices_sold: []});
         newProduct.save(function(err, prod) {
           if (err) {
             console.error(err,"logging eerror");
-          }
-          console.log(prod,"logging new product");
-          //item.updateOne({product_id:prod._id});
-          //console.log("logging item1",item, prod);
+          }          
         });
         console.log(newProduct._id);
         Item.findOneAndUpdate({_id: itemID}, {product_id: newProduct._id}, {new: true}).then(newitem =>{
           console.log("logging item new",newitem, newProduct);
         });
+
+        res.status(200).json({
+          message: "SKU Updated successfully",
+          product: newProduct
+        });
       }
+
+
       else{
         console.log("need to save item",product._id);
         // item.product_id = product._id;
@@ -139,14 +148,16 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
           console.log("logging item new",newitem, product);
         });
 
+        res.status(200).json({
+          message: "SKU Updated successfully",
+          product: product
+        });
       }
+
+
     });
 
-    console.log(item,"logging item");
-    res.status(200).json({
-      message: "SKU Updated successfully",
-      item: item
-    });
+
   });
 })
 
