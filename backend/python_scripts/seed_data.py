@@ -9,8 +9,8 @@ from datetime import datetime, timedelta
 #Mongo Detail
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
-db = client.dev_db
-client.drop_database("dev_db")
+db = client.test_db
+client.drop_database("test_db")
 
 manifests_collection = db.manifests
 items_collection = db.items
@@ -182,8 +182,8 @@ def saveManifests(browser):
         td = tr[i].find_all('td')
         data_to_add = []
 
-        #formatting data
-        for detailCount in range(len(headers)):
+        #formatting data -1 to not incude status
+        for detailCount in range(len(headers) - 1):
             value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
             data_to_add.append(value)
 
@@ -200,7 +200,7 @@ def saveManifests(browser):
         headers[4] : int("".join(filter(str.isdigit, data_to_add[4])))/100,
         headers[5] : data_to_add[5],
         headers[6] : data_to_add[6],
-        headers[7] : "Liquidation.com"}
+        headers[7] : "liquidation.com"}
 
         #inserting document into collection
         manifests_id = manifests_collection.insert_one(manifest).inserted_id
