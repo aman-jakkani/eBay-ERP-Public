@@ -168,7 +168,7 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
     });
 
   });
-  Draft.findOneAndUpdate({item_id: itemID}, {updatedSKU: true}, {new: true}).then(newDraft => {
+  Draft.findOneAndUpdate({item_id: itemID}, {updated_SKU: true}, {new: true}).then(newDraft => {
     console.log("draft updated", newDraft);
   })
 })
