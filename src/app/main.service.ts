@@ -90,7 +90,8 @@ export class MainService {
             model: item.model,
             grade: item.grade,
             manifest_id: item.manifest_id,
-            product_id: item.product_id
+            product_id: item.product_id,
+            draft_id: item.draft_id
           });
           return itemData;
         });

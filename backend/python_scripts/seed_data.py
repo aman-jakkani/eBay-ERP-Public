@@ -158,6 +158,10 @@ def saveItems(browser, manifests):
                     "price": None,
                     "item_id": item["_id"]}
             draftId = drafts_collection.insert_one(draft).inserted_id
+
+            #ITEM
+
+            items_collection.update_one({"_id":item["_id"]},{"$set": {"draft_id":draft["_id"]}})
             
 
 def saveManifests(browser):

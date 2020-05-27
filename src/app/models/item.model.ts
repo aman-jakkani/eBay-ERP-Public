@@ -7,6 +7,7 @@ interface ItemParameters {
   grade: string;
   product_id: string;
   manifest_id: string;
+  draft_id: string;
 }
 
 export class Item {
@@ -18,6 +19,7 @@ export class Item {
   readonly grade: string;
   readonly product_id: string;
   readonly manifest_id: string;
+  readonly draft_id: string;
 
   constructor({
     id,
@@ -27,7 +29,8 @@ export class Item {
     model,
     grade,
     product_id,
-    manifest_id
+    manifest_id,
+    draft_id
   }: ItemParameters){
     this.id = id;
     this.name = name;
@@ -37,5 +40,6 @@ export class Item {
     this.grade = grade;
     this.product_id = product_id;
     this.manifest_id = manifest_id;
+    this.draft_id = draft_id;
   }
 }
