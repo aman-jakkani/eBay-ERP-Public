@@ -71,7 +71,7 @@
           <input #titleInput class="form-control" formControlName="title" value={{drafts[i].title}} placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450" maxlength="80">
           </td>
           <td class="table-detail">
-              <select #conditionInput class="form-control"  formControlName="condition" [(value)]="drafts[i].condition" >
+              <select #conditionInput class="form-control"  formControlName="condition" [(value)]="drafts[i].condition" matTooltip="{{conditionInput.value}}">
                 <option value="Used"> Used</option>
                 <option value="New Open">New Open</option>
                 <option value="Parts">Parts</option>
