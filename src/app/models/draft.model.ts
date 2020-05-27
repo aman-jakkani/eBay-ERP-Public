@@ -7,6 +7,7 @@ interface DraftParameters {
   condition: string;
   condition_desc: string;
   price: number;
+  item_id: string;
 }
 
 export class Draft {
@@ -19,6 +20,8 @@ export class Draft {
   condition: string;
   condition_desc: string;
   price: number;
+  readonly item_id: string;
+
 
   constructor({
     id,
@@ -28,7 +31,8 @@ export class Draft {
     title,
     condition,
     condition_desc,
-    price
+    price,
+    item_id
   }: DraftParameters){
     this.id = id;
     this.updated_SKU = updated_SKU;
@@ -38,6 +42,7 @@ export class Draft {
     this.condition = condition;
     this.condition_desc = condition_desc;
     this.price = price;
+    this.item_id = item_id;
   }
 
 
