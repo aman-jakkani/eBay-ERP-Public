@@ -172,7 +172,7 @@ def saveManifests(browser):
     transactions_in_progress = soup.find("div",{"class": "flip-scroll"}).table.tbody
 
     #mongo attributes for manifest collection
-    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status"]
+    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source"]
     #stores all the manifests
     manifests_list = []
     #geetting table rows
@@ -186,9 +186,11 @@ def saveManifests(browser):
         for detailCount in range(len(headers)):
             value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
             data_to_add.append(value)
+
         #converting time to date time
         FMT = '%Y/%m/%d %H:%M:%S'
         data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
+
         #creating dictionary to pass
         manifest = {
         headers[0] : data_to_add[0],
@@ -197,7 +199,9 @@ def saveManifests(browser):
         headers[3] : int(data_to_add[3]),
         headers[4] : int("".join(filter(str.isdigit, data_to_add[4])))/100,
         headers[5] : data_to_add[5],
-        headers[6] : data_to_add[6]}
+        headers[6] : data_to_add[6],
+        headers[7] : "Liquidation.com"}
+
         #inserting document into collection
         manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
