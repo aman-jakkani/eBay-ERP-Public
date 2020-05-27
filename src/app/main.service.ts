@@ -47,7 +47,8 @@ export class MainService {
             quantity : manifest.quantity,
             total_price : manifest.total_price,
             date_purchased : manifest.date_purchased,
-            status : manifest.status
+            status : manifest.status,
+            source: manifest.source
            });
           return manifestData;
         });
@@ -69,7 +70,8 @@ export class MainService {
           quantity: response.manifest.quantity,
           total_price: response.manifest.total_price,
           date_purchased: response.manifest.date_purchased,
-          status: response.manifest.status
+          status: response.manifest.status,
+          source: response.manifest.source
         });
         return manifest;
       }
