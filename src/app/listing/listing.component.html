@@ -71,7 +71,7 @@
           <input #titleInput class="form-control" formControlName="title" value={{drafts[i].title}} placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450" maxlength="80">
           </td>
           <td class="table-detail">
-              <select #conditionInput class="form-control"  formControlName="condition"  >
+              <select #conditionInput class="form-control"  formControlName="condition" [(value)]="drafts[i].condition" >
                 <option value="Used"> Used</option>
                 <option value="New Open">New Open</option>
                 <option value="Parts">Parts</option>
@@ -81,7 +81,7 @@
           <input #conditionD class="form-control" formControlName="conditionDesc"  value={{drafts[i].condition_desc}} placeholder="Item is in used good condition" matTooltip="{{conditionD.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
         </td>
           <td class="table-detail">{{items[i].quantity}}</td>
-          <td class="table-detail" style="width: 10%;"><input  #price class="form-control" formControlName="price" type="number" placeholder="$350" ></td>
+          <td class="table-detail" style="width: 10%;"><input  #price class="form-control" formControlName="price" value={{drafts[i].price}} placeholder="$350" ></td>
           <td class="table-detail btn-detail">
             <button *ngIf="!drafts[i].published_draft" type="button" class="btn form-btn btn-light" (click)="updateDraft(i, titleInput.value, conditionInput.value, conditionD.value, price.value)" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
             <button *ngIf="drafts[i].published_draft" type="button" class="btn form-btn btn-success" (click)="updateDraftAgain(i, titleInput.value, conditionInput.value, conditionD.value, price.value)" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
