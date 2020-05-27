@@ -39,16 +39,16 @@ export class MainService {
       BACKEND_URL + '/getManifests')
       .pipe(map((manifestData) => {
         var manifests:Manifest[] = manifestData.manifests.map ( manifest =>{
-           let manifestData: Manifest = {
-            id: manifest._id,
-            auction_title: manifest.auction_title,
-            auction_id: manifest.auction_id,
-            transaction_id: manifest.transaction_id,
-            quantity: manifest.quantity,
-            total_price: manifest.total_price,
-            date_purchased: manifest.date_purchased,
-            status: manifest.status
-          };
+           let manifestData: Manifest = new Manifest ({
+            id : manifest._id,
+            auction_title : manifest.auction_title,
+            auction_id : manifest.auction_id,
+            transaction_id : manifest.transaction_id,
+            quantity : manifest.quantity,
+            total_price : manifest.total_price,
+            date_purchased : manifest.date_purchased,
+            status : manifest.status
+           });
           return manifestData;
         });
         return manifests;
