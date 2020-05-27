@@ -5,10 +5,10 @@ import {Observable, throwError} from 'rxjs';
 
 import { Manifest } from "./models/manifest.model";
 import { Item } from "./models/item.model";
-
+import { Product } from './models/product.model';
+import { Draft } from './models/draft.model';
 
 import { environment } from '../environments/environment';
-import { Product } from './models/product.model';
 import { stringify } from '@angular/compiler/src/util';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 
@@ -61,7 +61,7 @@ export class MainService {
       BACKEND_URL + '/getManifest/'+manifestID)
       .pipe(map((response) =>    {
 
-        return {
+        let manifest: Manifest = new Manifest({
           id: response.manifest._id,
           auction_title: response.manifest.auction_title,
           auction_id: response.manifest.auction_id,
@@ -70,7 +70,8 @@ export class MainService {
           total_price: response.manifest.total_price,
           date_purchased: response.manifest.date_purchased,
           status: response.manifest.status
-        }
+        });
+        return manifest;
       }
 
       )).pipe(catchError(this.handleError));
@@ -81,7 +82,7 @@ export class MainService {
       BACKEND_URL + '/getItems/'+manifestID)
       .pipe(map((itemData) => {
         var items: Item[] = itemData.items.map ( item =>{
-          let itemData: Item = {
+          let itemData: Item = new Item ({
             id: item._id,
             name: item.name,
             quantity: item.quantity,
@@ -90,7 +91,7 @@ export class MainService {
             grade: item.grade,
             manifest_id: item.manifest_id,
             product_id: item.product_id
-          };
+          });
           return itemData;
         });
           return items;
@@ -100,15 +101,29 @@ export class MainService {
   getProduct(itemID){
     return this.http.get<{ message: string; product: any}>(
       BACKEND_URL + '/getProduct/'+itemID).pipe(map((productData) => {
-        return{
+        let product = new Product ({
           id: productData.product._id,
           sku: productData.product.sku,
           quantity_sold: productData.product.quantity_sold,
           prices_sold: productData.product.prices_sold,
           item_ids: productData.product.item_ids
-        }
-      })).pipe(catchError(this.handleError)
-    );
+        })
+        return product;
+      })).pipe(catchError(this.handleError));
+  }
+
+  updateSKU(itemID, newSKU){
+    return this.http.get<{message: string; data: any}>(
+      BACKEND_URL + '/updateSKU/'+itemID+'/'+encodeURIComponent(newSKU)).pipe(map((productData: any) => {
+        let product = new Product ({
+          id: productData.product._id,
+          sku: productData.product.sku,
+          quantity_sold: productData.product.quantity_sold,
+          prices_sold: productData.product.prices_sold,
+          item_ids: productData.product.item_ids
+        })
+        return product;
+      })).pipe(catchError(this.handleError));
   }
 
   getLinkData(url, siteNum){
@@ -123,12 +138,5 @@ export class MainService {
     }));
   }
 
-  updateSKU(itemID, newSKU){
-    return this.http.get<{message: string; data: any}>(
-      BACKEND_URL + '/updateSKU/'+itemID+'/'+encodeURIComponent(newSKU)).pipe(map((response: any) => {
-        const updatedItem = response;
-        return updatedItem;
-      }));
-
-  }
+  
 }
