@@ -6,7 +6,8 @@ interface ManifestParameters {
   quantity: number,
   total_price: number,
   date_purchased: Date,
-  status: string
+  status: string,
+  source: string
 }
 
 export class Manifest  {
@@ -18,6 +19,7 @@ export class Manifest  {
    readonly total_price: number;
    readonly date_purchased: Date;
    readonly status: string;
+   readonly source: string;
   
   constructor({
     id,
@@ -27,7 +29,8 @@ export class Manifest  {
     quantity,
     total_price,
     date_purchased,
-    status
+    status,
+    source
   }:ManifestParameters){
       this.id = id;     
       this.auction_title = auction_title;
@@ -37,6 +40,7 @@ export class Manifest  {
       this.total_price = total_price;
       this.date_purchased = date_purchased;
       this.status = status;
+      this.source = source;
   }
 
 

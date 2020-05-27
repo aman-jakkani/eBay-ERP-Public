@@ -174,8 +174,11 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
 })
 
 
-app.get("/api/updateTitle/:newTitle/:draftID", (req, res) => {
+app.get("/api/updateDraft/:draftID/:newTitle/:newCondition/:newDesc/:newPrice", (req, res) => {
   var newTitle = req.params.newTitle;
+  var newCondition = req.params.newCondition;
+  var newDesc = req.params.newDesc;
+  var newPrice = req.params.newPrice;
   var draftID = req.params.draftID;
   console.log(req.params);
   Draft.findOneAndUpdate({_id: draftID}, {title: newTitle}, {new: true}).then(draft =>{
