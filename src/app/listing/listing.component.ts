@@ -63,8 +63,6 @@ export class ListingComponent implements OnInit {
   getManifestDetails(manifestID){
     //reseting vars
     this.priceTotal = 0;
-    this.products = [];
-    this.drafts= [];
     this.getManifest(manifestID);
     this.getItems(manifestID);
   }
@@ -95,6 +93,7 @@ export class ListingComponent implements OnInit {
       });
   }
   getDrafts(){
+    this.drafts = [];
 
     // anonymous async function to get drafts
     (async () => {
@@ -117,6 +116,7 @@ export class ListingComponent implements OnInit {
     })();
   }
   getProducts(){
+    this.products = [];
 
     // anonymous async function to get products
     (async () => {
@@ -148,6 +148,7 @@ export class ListingComponent implements OnInit {
       var product:Product = data;
       console.log(data);
       this.products[i] = product;
+      this.getDrafts();
     });
   }
   updateSKUAgain(productID, newSKU, i){
@@ -157,6 +158,8 @@ export class ListingComponent implements OnInit {
       var product:Product = data;
       console.log(data);
       this.products[i] = product;
+      this.getDrafts();
+
     });
   }
 }
