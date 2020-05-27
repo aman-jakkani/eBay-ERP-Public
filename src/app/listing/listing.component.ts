@@ -95,16 +95,30 @@ export class ListingComponent implements OnInit {
       });
   }
   getDrafts(){
-    for (var each of this.items){
-      this.mainService.getDraft(each.id).subscribe(data => {
-        console.log("getting draft", data);
-        this.drafts.push(data);
-      });
-    }
+    
+    // anonymous async function to get drafts
+    (async () => {
+      
+      for (var item of this.items) {
+
+        const item_id = item.id;
+
+        const one = new Promise<String>((resolve, reject) => {
+          this.mainService.getDraft(item_id).subscribe(
+            data => {
+              this.drafts.push(data);
+              resolve("Got Product!!"); 
+          });
+        });
+
+        await one;
+      }
+      return "out of loop"
+    })();
   }
   getProducts(){
 
-    // anonymous async function
+    // anonymous async function to get products
     (async () => {
       
       for (var item of this.items) {
