@@ -106,7 +106,7 @@ export class ListingComponent implements OnInit {
           this.mainService.getDraft(item_id).subscribe(
             data => {
               this.drafts.push(data);
-              resolve('Got Product!!');
+              resolve('Got Draft!!');
           });
         });
 
