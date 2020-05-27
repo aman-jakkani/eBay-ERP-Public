@@ -15,6 +15,7 @@ Fully test the code before merging commits into development. Commit the code on 
 Always move to the branch you want to merge INTO first and then merge the branch you moved FROM
 Merge conflicts will occur inevitably. Run git status to manually fix them or git mergetool to see a visualization of the conflicts
 
+To delete branches remotly: git branch origin --delete fix/authentication
 
 git reset --hard origin/development to move back to where the origin is. This will reset the state of the repository to the previous commit, and it will discard all local changes.
 
