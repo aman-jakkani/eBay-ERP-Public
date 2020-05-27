@@ -64,6 +64,7 @@ export class ListingComponent implements OnInit {
     //reseting vars
     this.priceTotal = 0;
     this.products = [];
+    this.drafts= [];
     this.getManifest(manifestID);
     this.getItems(manifestID);
   }
@@ -94,10 +95,10 @@ export class ListingComponent implements OnInit {
       });
   }
   getDrafts(){
-    
+
     // anonymous async function to get drafts
     (async () => {
-      
+
       for (var item of this.items) {
 
         const item_id = item.id;
@@ -106,7 +107,7 @@ export class ListingComponent implements OnInit {
           this.mainService.getDraft(item_id).subscribe(
             data => {
               this.drafts.push(data);
-              resolve("Got Product!!"); 
+              resolve("Got Product!!");
           });
         });
 
@@ -119,7 +120,7 @@ export class ListingComponent implements OnInit {
 
     // anonymous async function to get products
     (async () => {
-      
+
       for (var item of this.items) {
 
         const item_id = item.id;
@@ -128,7 +129,7 @@ export class ListingComponent implements OnInit {
           this.mainService.getProduct(item_id).subscribe(
             data => {
               this.products.push(data);
-              resolve("Got Product!!"); 
+              resolve("Got Product!!");
           });
         });
 
@@ -136,7 +137,7 @@ export class ListingComponent implements OnInit {
       }
       return "out of loop"
     })();
-    
+
 
 
   }
