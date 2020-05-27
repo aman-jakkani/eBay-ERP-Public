@@ -29,7 +29,6 @@ export class Manifest  {
     date_purchased,
     status
   }:ManifestParameters){
-
       this.id = id;     
       this.auction_title = auction_title;
       this.auction_id = auction_id;

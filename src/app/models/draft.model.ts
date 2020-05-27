@@ -11,7 +11,7 @@ interface DraftParameters {
 
 export class Draft {
 
-  id: string;
+  readonly id: string;
   updated_SKU: boolean;
   published_draft: boolean;
   listed: boolean;
