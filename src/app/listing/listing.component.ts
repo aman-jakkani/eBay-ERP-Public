@@ -9,6 +9,7 @@ import { Product } from '../models/product.model';
 import { Item } from '../models/item.model';
 import { Draft } from '../models/draft.model';
 import { formatDate } from "@angular/common";
+import { on } from 'cluster';
 
 @Component({
   selector: 'app-home',
@@ -103,27 +104,27 @@ export class ListingComponent implements OnInit {
   }
   getProducts(){
 
-    const sleep = ms => {
-      return new Promise(resolve => setTimeout(resolve, ms))
-    }
-    const getProduct = itemid => {
-      return sleep(1000).then(v => {
-        this.mainService.getProduct(itemid).subscribe(
-          data => {
-              console.log("getting products",data);
-              this.products.push(data);
-        });
-      });
-    }
-    const loopItems = async _ => {
-      for (let index = 0; index < this.items.length; index++) {
-        // Get num of each fruit
-        const item_id = this.items[index].id
-        await getProduct(item_id);
-      }
-    }
+    // anonymous async function
+    (async () => {
+      
+      for (var item of this.items) {
 
-    loopItems(text => console.log(text));
+        const item_id = item.id;
+
+        const one = new Promise<String>((resolve, reject) => {
+          this.mainService.getProduct(item_id).subscribe(
+            data => {
+              this.products.push(data);
+              resolve("Got Product!!"); 
+          });
+        });
+
+        await one;
+      }
+      return "out of loop"
+    })();
+    
+
 
   }
 
