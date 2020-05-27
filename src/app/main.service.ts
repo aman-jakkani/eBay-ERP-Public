@@ -146,6 +146,24 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
+  updateDraft(draftID, newTitle, newCondition, newDesc, newPrice){
+    return this.http.get<{message: string; draft: any}>(
+      BACKEND_URL+'/updateDraft/'+draftID+'/'+encodeURIComponent(newTitle)+'/'+newCondition+'/'+encodeURIComponent(newDesc)+'/'+newPrice).pipe(map((draftData: any) =>{
+        let newdraft = new Draft ({
+          id: draftData.draft._id,
+          updated_SKU: draftData.draft.updated_SKU,
+          published_draft: draftData.draft.published_draft,
+          listed: draftData.draft.listed,
+          title: draftData.draft.title,
+          condition: draftData.draft.condition,
+          condition_desc: draftData.draft.condition_desc,
+          price: draftData.draft.price,
+          item_id: draftData.draft.item_id
+        });
+        return newdraft;
+      })).pipe(catchError(this.handleError));
+  }
+
   getLinkData(url, siteNum){
     return this.http
     .get<{message: string; data: any}>(

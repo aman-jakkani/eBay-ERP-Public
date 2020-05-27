@@ -155,12 +155,20 @@ export class ListingComponent implements OnInit {
   updateSKUAgain(productID, newSKU, i) {
     if(confirm('Updating your SKU may affect your tracking capabilities')) {
       // const itm = this.items.filter(x => x.product_id === productID);
-      this.mainService.updateSKU(this.items[i], newSKU).subscribe(data => {
+      this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
         const product: Product = data;
         console.log(data);
         this.products[i] = product;
         this.drafts[i].updated_SKU = true;
       });
     }
+  }
+
+  updateDraft(i, title, cond, condDesc, price) {
+    this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
+      console.log(data);
+      const draft: Draft = data;
+      this.drafts[i] = draft;
+    })
   }
 }
