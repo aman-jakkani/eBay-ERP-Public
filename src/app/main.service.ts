@@ -123,7 +123,7 @@ export class MainService {
           condition: draftData.draft.condition,
           condition_desc: draftData.draft.condition_desc,
           price: draftData.draft.price,
-          item_id: draftData.draft.item_id;
+          item_id: draftData.draft.item_id
         })
         return draft;
       })).pipe(catchError(this.handleError));
