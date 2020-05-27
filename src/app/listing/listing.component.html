@@ -86,8 +86,8 @@
             <button type="button" class="btn form-btn btn-sm" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
           </td>
           <td class="table-detail btn-detail">
-              <button *ngIf="!drafts[i].updated_SKU" (click)="updateSKU(product.id, skuInput.value,i)" class="btn btn-light" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
-            <button *ngIf="drafts[i].updated_SKU" (click)="updateSKUAgain(product.id, skuInput.value,i)" class="btn btn-success" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
+              <button *ngIf="!drafts[i].updated_SKU" (click)="updateSKU(product.id, skuInput.value,i)" class="btn btn-light form-btn" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
+            <button *ngIf="drafts[i].updated_SKU" (click)="updateSKUAgain(product.id, skuInput.value,i)" class="btn btn-success form-btn" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
           </td>
           <td class="table-detail btn-detail">
             <button type="button" class="btn form-btn btn-sm btn-danger">Not Listed</button>
