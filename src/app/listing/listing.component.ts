@@ -107,34 +107,42 @@ export class ListingComponent implements OnInit {
     //     });
     //   });
     // }
-    // const loopItems = async _ => {
-    //   for (let index = 0; index < this.items.length; index++) {
-    //     // Get num of each fruit
-    //     const item_id = this.items[index].id
-    //     await getProduct(item_id);
-    //   }
-    // }
+    const loopItems = async _ => {
+     
+
+
+    
 
     // loopItems(text => console.log(text));
     for (let index = 0; index < this.items.length; index++) {
       // Get num of each fruit
       const item_id = this.items[index].id
-      const one = new Promise<string>((resolve, reject) => {
+      const one = new Promise<Product>((resolve, reject) => {
+        var product:Product;
+        this.mainService.getProduct(item_id).subscribe(
+          data => {
+              console.log("getting products",data);
+              // this.products.push(data);
+              product = data;
+              resolve(product);
+
+        });
+
+      });
+      const two = one.then(value => {this.products.push(value)});
       
 
-        resolve('Hello');
-      });
-      one.then(value => {});
+      let result = await two;
       
-      this.mainService.getProduct(item_id).subscribe(
-        data => {
-            console.log("getting products",data);
-            this.products.push(data);
-      });
+      
+
+
+    }
 
 
     }
     
+    loopItems(text => console.log(text));
 
 
   }
