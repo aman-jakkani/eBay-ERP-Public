@@ -1,14 +1,23 @@
-
+interface ManifestParameters {
+  id: string,
+  auction_title: string,
+  auction_id: number,
+  transaction_id: number,
+  quantity: number,
+  total_price: number,
+  date_purchased: Date,
+  status: string
+}
 
 export class Manifest  {
-   id: string;
-   auction_title: string;
-   auction_id: number;
-   transaction_id: number;
-   quantity: number;
-   total_price: number;
-   date_purchased: Date;
-   status: string;
+   readonly id: string;
+   readonly auction_title: string;
+   readonly auction_id: number;
+   readonly transaction_id: number;
+   readonly quantity: number;
+   readonly total_price: number;
+   readonly date_purchased: Date;
+   readonly status: string;
   
   constructor({
     id,
@@ -18,16 +27,8 @@ export class Manifest  {
     quantity,
     total_price,
     date_purchased,
-    status}:{
-    id: string,
-    auction_title: string,
-    auction_id: number,
-    transaction_id: number,
-    quantity: number,
-    total_price: number,
-    date_purchased: Date,
-    status: string
-  }){
+    status
+  }:ManifestParameters){
 
       this.id = id;     
       this.auction_title = auction_title;
