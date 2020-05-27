@@ -165,6 +165,7 @@ export class ListingComponent implements OnInit {
   }
 
   updateDraft(i, title, cond, condDesc, price) {
+    alert("The draft has been saved!");
     this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
       console.log(data);
       const draft: Draft = data;
