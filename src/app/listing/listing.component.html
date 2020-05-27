@@ -78,12 +78,13 @@
               </select>
           </td>
           <td style="width: 15%;" class="table-detail">
-            <input #conditionD class="form-control" formControlName="conditionDesc"  placeholder="Item is in used good condition" matTooltip="{{condition.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
+            <input #conditionD class="form-control" formControlName="conditionDesc"  placeholder="Item is in used good condition" matTooltip="{{conditionD.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
         </td>
           <td class="table-detail">{{items[i].quantity}}</td>
           <td class="table-detail" style="width: 10%;"><input  #price class="form-control" formControlName="price" type="number" placeholder="$350" ></td>
           <td class="table-detail btn-detail">
-            <button type="button" class="btn form-btn btn-sm" (click)="updateDraft(i, titleInput.value, conditionInput.value, conditionD.value, price.value)" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
+            <button *ngIf="!drafts[i].published_draft" type="button" class="btn form-btn btn-light" (click)="updateDraft(i, titleInput.value, conditionInput.value, conditionD.value, price.value)" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
+            <button *ngIf="drafts[i].published_draft" type="button" class="btn form-btn btn-success" (click)="updateDraft(i, titleInput.value, conditionInput.value, conditionD.value, price.value)" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
           </td>
           <td class="table-detail btn-detail">
               <button *ngIf="!drafts[i].updated_SKU" (click)="updateSKU(product.id, skuInput.value,i)" class="btn btn-light form-btn" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
