@@ -122,7 +122,8 @@ export class MainService {
           title: draftData.draft.title,
           condition: draftData.draft.condition,
           condition_desc: draftData.draft.condition_desc,
-          price: draftData.draft.price
+          price: draftData.draft.price,
+          item_id: draftData.draft.item_id;
         })
         return draft;
       })).pipe(catchError(this.handleError));
