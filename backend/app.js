@@ -106,7 +106,19 @@ app.get("/api/getProduct/:itemID", (req, res) => {
       });
     });
   });
+});
 
+//getting draft of the item
+app.get("/api/getDraft/:itemID", (req, res) => {
+  var item_id = req.params.itemID;
+  console.log(req.params);
+  Draft.findOne({item_id: item_id}).then(draft =>{
+    console.log(draft);
+    res.status(200).json({
+      message: "Draft fetched successfully",
+      draft: draft
+    });
+  });
 });
 
 //updating sku
@@ -127,7 +139,7 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
         newProduct.save(function(err, prod) {
           if (err) {
             console.error(err,"logging eerror");
-          }          
+          }
         });
         console.log(newProduct._id);
         Item.findOneAndUpdate({_id: itemID}, {product_id: newProduct._id}, {new: true}).then(newitem =>{

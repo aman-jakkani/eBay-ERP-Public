@@ -111,6 +111,22 @@ export class MainService {
         return product;
       })).pipe(catchError(this.handleError));
   }
+  getDraft(itemID){
+    return this.http.get<{message: string; draft: any}>(
+      BACKEND_URL+"/getDraft/"+itemID).pipe(map((draftData) => {
+        let draft = new Draft ({
+          id: draftData.draft._id,
+          updated_SKU: draftData.draft.updateSKU,
+          published_draft: draftData.draft.published_draft,
+          listed: draftData.draft.listed,
+          title: draftData.draft.title,
+          condition: draftData.draft.condition,
+          condition_desc: draftData.draft.condition_desc,
+          price: draftData.draft.price
+        })
+        return draft;
+      })).pipe(catchError(this.handleError));
+  }
 
   updateSKU(itemID, newSKU){
     return this.http.get<{message: string; product: any}>(
@@ -138,5 +154,5 @@ export class MainService {
     }));
   }
 
-  
+
 }

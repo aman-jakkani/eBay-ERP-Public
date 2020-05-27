@@ -33,7 +33,7 @@ export class ListingComponent implements OnInit {
   draft: FormGroup;
   ttInput: string;
   skuUpdated: boolean[] = [];
-
+  drafts: Draft[] = [];
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
@@ -90,9 +90,18 @@ export class ListingComponent implements OnInit {
         //clearing previous products
         this.getProducts();
         // console.log("Logging products",this.products);
+        this.getDrafts();
+        console.log("got drafts", this.drafts);
       });
   }
-
+  getDrafts(){
+    for (var each of this.items){
+      this.mainService.getDraft(each.id).subscribe(data => {
+        console.log("getting draft", data);
+        this.drafts.push(data);
+      });
+    }
+  }
   getProducts(){
 
     const sleep = ms => {
