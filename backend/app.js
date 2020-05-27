@@ -151,8 +151,6 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
           product: newProduct
         });
       }
-
-
       else{
         console.log("need to save item",product._id);
         // item.product_id = product._id;
@@ -169,8 +167,10 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
 
     });
 
-
   });
+  Draft.findOneAndUpdate({item_id: itemID}, {updatedSKU: true}, {new: true}).then(newDraft => {
+    console.log("draft updated", newDraft);
+  })
 })
 
 

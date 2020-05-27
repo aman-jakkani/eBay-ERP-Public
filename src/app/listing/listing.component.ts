@@ -128,7 +128,6 @@ export class ListingComponent implements OnInit {
 
   }
 
-
   updateSKU(productID, newSKU, i){
     var itm = this.items.filter(x => x.product_id == productID);
     this.mainService.updateSKU(itm[0].id, newSKU).subscribe(data => {
@@ -137,5 +136,13 @@ export class ListingComponent implements OnInit {
       this.products[i] = product;
     });
   }
-
+  updateSKUAgain(productID, newSKU, i){
+    alert("Updating your SKU may affect your tracking capabilities");
+    var itm = this.items.filter(x => x.product_id == productID);
+    this.mainService.updateSKU(itm[0].id, newSKU).subscribe(data => {
+      var product:Product = data;
+      console.log(data);
+      this.products[i] = product;
+    });
+  }
 }
