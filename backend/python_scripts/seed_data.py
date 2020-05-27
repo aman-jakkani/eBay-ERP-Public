@@ -230,9 +230,9 @@ def logIn():
         try:
             name = soup.find(id='signDetails').span.get_text()
             if name == None:
-                return False
+                print("Not logged in. Try again.")
            
-            if name != "Sign In":
+            elif name != "Sign In":
                 print(name)
                 print("Logged In")
                 loggedIn = True
