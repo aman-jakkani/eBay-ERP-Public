@@ -143,7 +143,7 @@ export class ListingComponent implements OnInit {
   }
 
   updateSKU(productID, newSKU, i) {
-    // const itm = this.items.filter(x => x.product_id === productID);
+    // const itm = this.items.filter(x => x.product_id === productID); - if multiple items have the same the products this wouldnt work
     this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
       const product: Product = data;
       console.log(data);
