@@ -95,27 +95,47 @@ export class ListingComponent implements OnInit {
 
   getProducts(){
 
-    const sleep = ms => {
-      return new Promise(resolve => setTimeout(resolve, ms))
-    }
-    const getProduct = itemid => {
-      return sleep(1000).then(v => {
-        this.mainService.getProduct(itemid).subscribe(
-          data => {
-              console.log("getting products",data);
-              this.products.push(data);
-        });
-      });
-    }
-    const loopItems = async _ => {
-      for (let index = 0; index < this.items.length; index++) {
-        // Get num of each fruit
-        const item_id = this.items[index].id
-        await getProduct(item_id);
-      }
-    }
+    // const sleep = ms => {
+    //   return new Promise(resolve => setTimeout(resolve, ms))
+    // }
+    // const getProduct = itemid => {
+    //   return sleep(1000).then(v => {
+    //     this.mainService.getProduct(itemid).subscribe(
+    //       data => {
+    //           console.log("getting products",data);
+    //           this.products.push(data);
+    //     });
+    //   });
+    // }
+    // const loopItems = async _ => {
+    //   for (let index = 0; index < this.items.length; index++) {
+    //     // Get num of each fruit
+    //     const item_id = this.items[index].id
+    //     await getProduct(item_id);
+    //   }
+    // }
 
-    loopItems(text => console.log(text));
+    // loopItems(text => console.log(text));
+    for (let index = 0; index < this.items.length; index++) {
+      // Get num of each fruit
+      const item_id = this.items[index].id
+      const one = new Promise<string>((resolve, reject) => {
+      
+
+        resolve('Hello');
+      });
+      one.then(value => {});
+      
+      this.mainService.getProduct(item_id).subscribe(
+        data => {
+            console.log("getting products",data);
+            this.products.push(data);
+      });
+
+
+    }
+    
+
 
   }
 
