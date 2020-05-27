@@ -116,7 +116,7 @@ export class MainService {
       BACKEND_URL+"/getDraft/"+itemID).pipe(map((draftData) => {
         let draft = new Draft ({
           id: draftData.draft._id,
-          updated_SKU: draftData.draft.updateSKU,
+          updated_SKU: draftData.draft.updated_SKU,
           published_draft: draftData.draft.published_draft,
           listed: draftData.draft.listed,
           title: draftData.draft.title,

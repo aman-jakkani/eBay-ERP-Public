@@ -32,7 +32,6 @@ export class ListingComponent implements OnInit {
   products: Product[] = [];
   draft: FormGroup;
   ttInput: string;
-  skuUpdated: boolean[] = [];
   drafts: Draft[] = [];
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
