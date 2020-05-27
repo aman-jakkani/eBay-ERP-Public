@@ -169,6 +169,15 @@ export class ListingComponent implements OnInit {
       console.log(data);
       const draft: Draft = data;
       this.drafts[i] = draft;
-    })
+    });
+  }
+  updateDraftAgain(i, title, cond, condDesc, price) {
+    if(confirm('This will create another draft which has already been created')) {
+      this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
+        console.log(data);
+        const draft: Draft = data;
+        this.drafts[i] = draft;
+      });
+    }
   }
 }
