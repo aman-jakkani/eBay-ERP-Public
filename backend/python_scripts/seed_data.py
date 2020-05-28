@@ -152,10 +152,10 @@ def saveItems(browser, manifests):
             draft = {"updated_SKU": False,
                     "published_draft": False,
                     "listed": False,
-                    "title": None,
-                    "condition": None,
-                    "condition_desc": None,
-                    "price": None,
+                    "title": "",
+                    "condition": "Used",
+                    "condition_desc": "",
+                    "price": 0,
                     "item_id": item["_id"]}
             draftId = drafts_collection.insert_one(draft).inserted_id
 
