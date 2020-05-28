@@ -170,8 +170,8 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
   });
   Draft.findOneAndUpdate({item_id: itemID}, {updated_SKU: true}, {new: true}).then(newDraft => {
     console.log("draft updated", newDraft);
-  })
-})
+  });
+});
 
 
 app.get("/api/updateDraft/:draftID/:newTitle/:newCondition/:newDesc/:newPrice", (req, res) => {
@@ -183,10 +183,36 @@ app.get("/api/updateDraft/:draftID/:newTitle/:newCondition/:newDesc/:newPrice", 
   console.log(req.params);
   Draft.findOneAndUpdate({_id: draftID}, {"$set":{title: newTitle, condition: newCondition, condition_desc: newDesc, price: newPrice, published_draft: true}}, {new: true}).then(draft =>{
     console.log(draft, "updated draft");
-
+    res.status(200).json({
+      message: "Draft updated successfully",
+      draft: draft
+    });
   });
-})
+});
 
+app.get("/api/listDraft/:draftID", (req, res) => {
+  var draftID = req.params.draftID;
+  console.log(req.params);
+  Draft.findOneAndUpdate({_id: draftID}, {listed: true}, {new: true}).then(draft => {
+    console.log(draft, "listed draft");
+    res.status(200).json({
+      message: "Draft listed successfully",
+      draft: draft
+    });
+  });
+});
+
+app.get("/api/unlistDraft/:draftID", (req, res) => {
+  var draftID = req.params.draftID;
+  console.log(req.params);
+  Draft.findOneAndUpdate({_id: draftID}, {listed: false}, {new: true}).then(draft => {
+    console.log(draft, "unlisted draft");
+    res.status(200).json({
+      message: "Draft unlisted successfully",
+      draft: draft
+    });
+  });
+});
 
 
 
