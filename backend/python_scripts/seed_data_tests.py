@@ -7,7 +7,6 @@ import getpass
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 import requests
-from requests_html import HTMLSession
 
 import time
 from selenium.webdriver.common.keys import Keys
@@ -24,31 +23,34 @@ def main():
     # manifests_list = saveManifests(browser)
 
 
+
 def saveManifests(browser):
+    browser.get("https://techliquidators.com/index.cfm/p/7")
+    stall(2)
+    top = browser.find_element_by_id("bidwon")
+    b = top.get_attribute('innerHTML')
 
 
-    browser.open("https://techliquidators.com/index.cfm/p/7")
-    soup = browser.get_current_page()
+    print(top)
+    print(b)
 
+    # transactions_in_progress = soup.prettify() #.find("div",{"id":{"no-more-tables"}}).table
 
-
-    transactions_in_progress = soup.prettify() #.find("div",{"id":{"no-more-tables"}}).table
-
-    print(transactions_in_progress)
+    # print(transactions_in_progress)
 
     #mongo attributes for manifest collection
     headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source"]
 
-    browser.download_link("https://techliquidators.com/csincludes/_wonAuctions_Query2Excel.cfm?UserID=1987480")
 
 
     return []
 
 #tech liquidation log in test
 def logInSelenium():
+    browser = webdriver.Chrome('./chromedriver')
+
     loggedIn = False
     while loggedIn == False:
-        browser = webdriver.Chrome('./chromedriver')
         browser.get("https://techliquidators.com/tl/index.cfm?action=account_login")
 
         username_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[1]/input'
@@ -56,15 +58,13 @@ def logInSelenium():
         login_submit = '//*[@id="loginSubmit"]'
         username = input("User Name: ")
         password = getpass.getpass("Password: ")
-        # browser.find_element_by_id('loginUsername')
+        
+
         browser.find_element_by_xpath(username_input)
 
-        # print(browser.page_source)
+        
         WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.XPATH,username_input)))
-        # username_script = "document.getElementById('loginUsername').value='{}'".format(username)
-        # stall(3)
-        # browser.execute_script("document.getElementById('loginUsername').value='v4ullc@gmail.com'")
-        # browser.execute_script("document.getElementById('loginPassword').value='Free1@mont'")
+        
 
 
         browser.find_element_by_xpath(username_input).send_keys(username)
@@ -72,15 +72,7 @@ def logInSelenium():
         browser.find_element_by_xpath(password_input).send_keys(password)
         browser.find_element_by_xpath(login_submit).click()
 
-        browser.get("https://techliquidators.com/index.cfm/p/7")
-        stall(2)
-        top = browser.find_element_by_id("bidwon")
-        b = top.get_attribute('innerHTML')
 
-
-        print(top)
-        print(b)
-        stall(1000000000)
 
 
         browser.get("https://techliquidators.com/index.cfm/p/6")
