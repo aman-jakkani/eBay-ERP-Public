@@ -60,7 +60,7 @@ def logInSelenium():
         browser.find_element_by_xpath(username_input)
 
         print(browser.page_source)
-        WebDriverWait(browser,10000).until(EC.visibility_of_element_located((By.username_input)))
+        WebDriverWait(browser,20).until(EC.visibility_of_element_located((By.XPATH,username_input)))
 
         browser.find_element_by_xpath(username_input).send_keys(username)
         break
