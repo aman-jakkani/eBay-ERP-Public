@@ -9,15 +9,19 @@ from bs4 import BeautifulSoup
 import requests
 from requests_html import HTMLSession
 
+import time
+from selenium.webdriver.common.keys import Keys
+from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
 
 def main():
 
-    session = HTMLSession()
-    r = session.get("https://techliquidators.com/index.cfm/p/7")
-    # r.html.render()
 
-    browser = logIn()
-    manifests_list = saveManifests(browser)
+    browser = logInSelenium()
+    # manifests_list = saveManifests(browser)
 
 
 def saveManifests(browser):
@@ -41,7 +45,51 @@ def saveManifests(browser):
     return []
 
 #tech liquidation log in test
-def logIn():
+def logInSelenium():
+    loggedIn = False
+    while loggedIn == False:
+        browser = webdriver.Chrome('./chromedriver')
+        browser.get("https://techliquidators.com/tl/index.cfm?action=account_login")
+
+        username_input = '//*[@id="loginUsername"]'
+        password_input = '//*[@id="loginPassword"]'
+        login_submit = '//*[@id="loginSubmit"]'
+        username = input("User Name: ")
+        password = getpass.getpass("Password: ")
+        # browser.find_element_by_id('loginUsername')
+        browser.find_element_by_xpath(username_input)
+
+        print(browser.page_source)
+        WebDriverWait(browser,10000).until(EC.visibility_of_element_located((By.username_input)))
+
+        browser.find_element_by_xpath(username_input).send_keys(username)
+        break
+
+        browser.find_element_by_xpath(password_input).send_keys(password)
+        browser.find_element_by_xpath(login_submit).click()
+
+        browser.get("https://techliquidators.com/index.cfm/p/6")
+        soup = BeautifulSoup(browser.page_source, "html.parser")
+
+        try:
+            name = soup.find("div",{"class" : "col-md-8 text-right"}).small.get_text()
+            if name == None:
+                print("Not logged in. Try again.")
+
+
+            elif "Welcome" in name:
+                print(name)
+                print("Logged In")
+                loggedIn = True
+            else:
+                print("Not logged in. Try again.")
+
+        except:
+
+            print("Not logged in. Try again.")
+
+
+def logInSoup():
 
     loggedIn = False
     while loggedIn == False:
