@@ -181,4 +181,24 @@ export class ListingComponent implements OnInit {
       });
     }
   }
+
+  listDraft(i) {
+    if(confirm('You are about to mark your draft as listed!')) {
+      this.mainService.listDraft(this.drafts[i].id).subscribe(data => {
+        console.log(data);
+        const draft: Draft = data;
+        this.drafts[i] = draft;
+      });
+    }
+  }
+
+  unlistDraft(i) {
+    if(confirm('You are about to mark your draft as unlisted!')) {
+      this.mainService.unlistDraft(this.drafts[i].id).subscribe(data => {
+        console.log(data);
+        const draft: Draft = data;
+        this.drafts[i] = draft;
+      });
+    }
+  }
 }

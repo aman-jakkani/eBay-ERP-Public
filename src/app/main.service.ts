@@ -164,6 +164,42 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
+  listDraft(draftID){
+    return this.http.get<{message: string; draft: any}>(
+      BACKEND_URL+'/listDraft/'+draftID).pipe(map((draftData: any) =>{
+        let newdraft = new Draft ({
+          id: draftData.draft._id,
+          updated_SKU: draftData.draft.updated_SKU,
+          published_draft: draftData.draft.published_draft,
+          listed: draftData.draft.listed,
+          title: draftData.draft.title,
+          condition: draftData.draft.condition,
+          condition_desc: draftData.draft.condition_desc,
+          price: draftData.draft.price,
+          item_id: draftData.draft.item_id
+        });
+        return newdraft;
+      })).pipe(catchError(this.handleError));
+  }
+
+  unlistDraft(draftID){
+    return this.http.get<{message: string; draft: any}>(
+      BACKEND_URL+'/unlistDraft/'+draftID).pipe(map((draftData: any) =>{
+        let newdraft = new Draft ({
+          id: draftData.draft._id,
+          updated_SKU: draftData.draft.updated_SKU,
+          published_draft: draftData.draft.published_draft,
+          listed: draftData.draft.listed,
+          title: draftData.draft.title,
+          condition: draftData.draft.condition,
+          condition_desc: draftData.draft.condition_desc,
+          price: draftData.draft.price,
+          item_id: draftData.draft.item_id
+        });
+        return newdraft;
+      })).pipe(catchError(this.handleError));
+  }
+
   getLinkData(url, siteNum){
     return this.http
     .get<{message: string; data: any}>(
