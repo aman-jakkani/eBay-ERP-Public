@@ -51,22 +51,37 @@ def logInSelenium():
         browser = webdriver.Chrome('./chromedriver')
         browser.get("https://techliquidators.com/tl/index.cfm?action=account_login")
 
-        username_input = '//*[@id="loginUsername"]'
-        password_input = '//*[@id="loginPassword"]'
+        username_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[1]/input'
+        password_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[2]/input'
         login_submit = '//*[@id="loginSubmit"]'
         username = input("User Name: ")
         password = getpass.getpass("Password: ")
         # browser.find_element_by_id('loginUsername')
         browser.find_element_by_xpath(username_input)
 
-        print(browser.page_source)
-        WebDriverWait(browser,20).until(EC.visibility_of_element_located((By.XPATH,username_input)))
+        # print(browser.page_source)
+        WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.XPATH,username_input)))
+        # username_script = "document.getElementById('loginUsername').value='{}'".format(username)
+        # stall(3)
+        # browser.execute_script("document.getElementById('loginUsername').value='v4ullc@gmail.com'")
+        # browser.execute_script("document.getElementById('loginPassword').value='Free1@mont'")
+
 
         browser.find_element_by_xpath(username_input).send_keys(username)
-        break
 
         browser.find_element_by_xpath(password_input).send_keys(password)
         browser.find_element_by_xpath(login_submit).click()
+
+        browser.get("https://techliquidators.com/index.cfm/p/7")
+        stall(2)
+        top = browser.find_element_by_id("bidwon")
+        b = top.get_attribute('innerHTML')
+
+
+        print(top)
+        print(b)
+        stall(1000000000)
+
 
         browser.get("https://techliquidators.com/index.cfm/p/6")
         soup = BeautifulSoup(browser.page_source, "html.parser")
