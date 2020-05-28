@@ -175,12 +175,16 @@ app.get("/api/updateSKU/:itemID/:newSKU", (req, res) => {
 
 
 app.get("/api/updateDraft/:draftID/:newTitle/:newCondition/:newDesc/:newPrice", (req, res) => {
-  var newTitle = req.params.newTitle;
-  var newCondition = req.params.newCondition;
-  var newDesc = req.params.newDesc;
-  var newPrice = req.params.newPrice;
-  var draftID = req.params.draftID;
-  console.log(req.params);
+  console.log("loggin parameters",req.params);
+
+  var newTitle = req.params.newTitle.split(":")[1];
+  var newCondition = req.params.newCondition.split(":")[1];
+  var newDesc = req.params.newDesc.split(":")[1];
+  var newPrice = req.params.newPrice.split(":")[1];
+  // newPrice = parseInt(newPrice);
+  var draftID = req.params.draftID.split(":")[1];
+  console.log("loggin newTitle"+newPrice);
+
   Draft.findOneAndUpdate({_id: draftID}, {"$set":{title: newTitle, condition: newCondition, condition_desc: newDesc, price: newPrice, published_draft: true}}, {new: true}).then(draft =>{
     console.log(draft, "updated draft");
     res.status(200).json({

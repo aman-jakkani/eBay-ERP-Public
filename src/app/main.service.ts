@@ -147,8 +147,10 @@ export class MainService {
   }
 
   updateDraft(draftID, newTitle, newCondition, newDesc, newPrice){
+    let url = '/updateDraft/'+  "draftID:" + draftID + '/' + "newTitle:" + encodeURIComponent(newTitle)+'/'+ "newCondition:" + newCondition+'/'+ "newDesc:" + encodeURIComponent(newDesc)+'/'+ "newDesc" + "newPrice:"+ newPrice
+    console.log("SErvice url",url)
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL+'/updateDraft/'+draftID+'/'+encodeURIComponent(newTitle)+'/'+newCondition+'/'+encodeURIComponent(newDesc)+'/'+newPrice).pipe(map((draftData: any) =>{
+      BACKEND_URL+url).pipe(map((draftData: any) =>{
         let newdraft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
