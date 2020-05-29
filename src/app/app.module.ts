@@ -16,12 +16,14 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ListingComponent } from './listing/listing.component';
-import { LoginComponent } from './auth/login.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 const appRoutes: Routes =  [
   {path: '', component: ListingComponent},
   {path: 'home', component: ListingComponent},
-  {path: 'login', component: LoginComponent}
+  {path: 'login', component: LoginComponent},
+  {path: 'signup', component: SignupComponent}
 ];
 
 @NgModule({
@@ -29,7 +31,8 @@ const appRoutes: Routes =  [
     AppComponent,
     HeaderComponent,
     ListingComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
