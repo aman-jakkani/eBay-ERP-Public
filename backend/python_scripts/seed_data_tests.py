@@ -18,38 +18,8 @@ from selenium.webdriver.support.ui import Select
 
 def main():
 
-    
-    #trying to use previous browser state and log in
-    try:
-        browser = webdriver.Chrome('./chromedriver')
-        browser.get("https://techliquidators.com")
-
-        #adding back cookies
-        cookies = pickle.load(open("techLiquidatorCookies.pickle", "rb"))
-        for cookie in cookies:
-            browser.add_cookie(cookie)
-        #checking if cookies are timed out
-        print("Checking browser log in status")
-        checkBrowserBool = checkBrowserLogInStatus(browser)
-
-        if  checkBrowserBool == False:
-            browser.close()
-            browser = webdriver.Chrome('./chromedriver')
-
-            print("Logging in with method")
-            browser = logInSelenium(browser)
-        else:
-            print("Logged in using pickle")
-    #if anything goes wrong
-    except Exception as ex:
-        print("Error", ex)
-        browser.close()
-        browser = webdriver.Chrome('./chromedriver')
-        browser = logInSelenium(browser)
-
-        checkBrowserBool = checkBrowserLogInStatus(browser)
-        if  checkBrowserBool == False:
-            print("check code something went wrong")
+    browser = getBrowser()
+    saveManifests(browser)
 
 
 
@@ -75,6 +45,39 @@ def saveManifests(browser):
 
     return []
 
+def getBrowser():
+    #trying to use previous browser state and log in
+    try:
+        browser = webdriver.Chrome('./chromedriver')
+        browser.get("https://techliquidators.com")
+
+        #adding back cookies
+        cookies = pickle.load(open("techLiquidatorCookies.pickle", "rb"))
+        for cookie in cookies:
+            browser.add_cookie(cookie)
+        #checking if cookies are timed out
+        print("Checking browser log in status")
+        checkBrowserBool = checkBrowserLogInStatus(browser)
+
+        if  checkBrowserBool == False:
+            browser.close()
+            browser = webdriver.Chrome('./chromedriver')
+
+            print("Logging in with method")
+            browser = logInSelenium(browser)
+
+            return browser
+        else:
+            print("Logged in using pickle")
+            return browser
+    #if anything goes wrong
+    except Exception as ex:
+        print("Error", ex)
+        browser.close()
+        browser = webdriver.Chrome('./chromedriver')
+        browser = logInSelenium(browser)
+        return browser
+#Checks if user is signed into website
 def checkBrowserLogInStatus(browser):
     browser.get("https://techliquidators.com/index.cfm/p/6")
     stall(3)
@@ -106,20 +109,17 @@ def logInSelenium(browser):
         username_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[1]/input'
         password_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[2]/input'
         remember_me_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[3]/label/input'
-
-
         login_submit = '//*[@id="loginSubmit"]'
+
+        #User Inputs
         username = input("User Name: ")
         password = getpass.getpass("Password: ")
         
 
-        browser.find_element_by_xpath(username_input)
-
-        
+        #making sure elements are on screen
         WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.XPATH,username_input)))
         
-
-
+        #Loading information
         browser.find_element_by_xpath(username_input).send_keys(username)
 
         browser.find_element_by_xpath(password_input).send_keys(password)
@@ -131,7 +131,7 @@ def logInSelenium(browser):
 
         loggedIn = checkBrowserLogInStatus(browser)
 
-   
+    #Saving cookies
     with open("techLiquidatorCookies.pickle","wb") as f:
         pickle.dump(browser.get_cookies(),f)
     
