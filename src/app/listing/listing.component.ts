@@ -37,7 +37,7 @@ export class ListingComponent implements OnInit {
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    //this.getManifests();
+    this.getLiquidationManifests();
     // Form for link input
     this.draft = new FormGroup({
       sku: new FormControl(null, {}),
