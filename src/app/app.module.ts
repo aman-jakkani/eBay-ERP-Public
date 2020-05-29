@@ -9,22 +9,27 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { MatSelectModule} from '@angular/material/select';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { ListingComponent } from './listing/listing.component';
+import { LoginComponent } from './auth/login.component';
 
 const appRoutes: Routes =  [
   {path: '', component: ListingComponent},
   {path: 'home', component: ListingComponent},
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ListingComponent
+    ListingComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +42,9 @@ const appRoutes: Routes =  [
     NgbModule,
     MatSelectModule,
     MatTooltipModule,
-    MatTabsModule
+    MatTabsModule,
+    MatCardModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]
