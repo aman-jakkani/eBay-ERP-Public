@@ -27,16 +27,15 @@ def main():
 def saveManifests(browser):
     browser.get("https://techliquidators.com/index.cfm/p/7")
     stall(2)
-    top = browser.find_element_by_id("bidwon")
-    b = top.get_attribute('innerHTML')
+    bidwon = browser.find_element_by_id("bidwon")
+    html = bidwon.get_attribute('innerHTML')
+    soup = BeautifulSoup(html, "html.parser")
 
+    
 
-    print(top)
-    print(b)
+    transactions_in_progress = soup.prettify() #.find("div",{"id":{"no-more-tables"}}).table
 
-    # transactions_in_progress = soup.prettify() #.find("div",{"id":{"no-more-tables"}}).table
-
-    # print(transactions_in_progress)
+    print(transactions_in_progress)
 
     #mongo attributes for manifest collection
     headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source"]
