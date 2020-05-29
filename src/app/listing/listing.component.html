@@ -1,5 +1,21 @@
 
 <div class="container" >
+  <div>
+    <mat-tab-group (selectedTabChange)="onTabChanged($event);" animationDuration="0ms">
+        <mat-tab label="Liquidation"></mat-tab>
+        <mat-tab label="Tech Liquidators"></mat-tab>
+    </mat-tab-group>
+  </div><!--
+  <div>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link-active" href="#">Liquidation</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">Tech Liquidators</a>
+      </li>
+    </ul>
+  </div>-->
   <div style="display: inline-flex;" class="selector">
     <mat-form-field style="padding-left: 1%; width: 400px;">
       <mat-label>Choose a manifest</mat-label>

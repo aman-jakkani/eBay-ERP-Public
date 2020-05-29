@@ -34,9 +34,9 @@ export class MainService {
     return throwError(errorMessage);
   }
 
-  getManifests() {
+  getLiquidationManifests() {
     return this.http.get<{ message: string; manifests: any}>(
-      BACKEND_URL + '/getManifests')
+      BACKEND_URL + '/getLiquidationManifests')
       .pipe(map((manifestData) => {
         var manifests:Manifest[] = manifestData.manifests.map ( manifest =>{
            let manifestData: Manifest = new Manifest ({
@@ -54,7 +54,28 @@ export class MainService {
         });
         return manifests;
       })).pipe(catchError(this.handleError));
+  }
 
+  getTechManifests() {
+    return this.http.get<{ message: string; manifests: any}>(
+      BACKEND_URL + '/getTechManifests')
+      .pipe(map((manifestData) => {
+        var manifests:Manifest[] = manifestData.manifests.map ( manifest =>{
+           let manifestData: Manifest = new Manifest ({
+            id : manifest._id,
+            auction_title : manifest.auction_title,
+            auction_id : manifest.auction_id,
+            transaction_id : manifest.transaction_id,
+            quantity : manifest.quantity,
+            total_price : manifest.total_price,
+            date_purchased : manifest.date_purchased,
+            status : manifest.status,
+            source: manifest.source
+           });
+          return manifestData;
+        });
+        return manifests;
+      })).pipe(catchError(this.handleError));
   }
 
   getManifest(manifestID) {

@@ -37,7 +37,7 @@ export class ListingComponent implements OnInit {
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.getManifests();
+    //this.getManifests();
     // Form for link input
     this.draft = new FormGroup({
       sku: new FormControl(null, {}),
@@ -49,8 +49,30 @@ export class ListingComponent implements OnInit {
 
   }
 
-  getManifests() {
-    this.mainService.getManifests().subscribe(
+  onTabChanged($event){
+    let clickedIndex = $event.index;
+    if( clickedIndex == 0){
+      this.getLiquidationManifests();
+    }
+    else {
+      this.getTechManifests();
+    }
+  }
+  getLiquidationManifests() {
+    this.manifests = [];
+    this.mainService.getLiquidationManifests().subscribe(
+      data => {
+        this.manifests = data;
+        this.manifests.sort((a, b) => (a.date_purchased < b.date_purchased) ? 1 : -1);
+        this.manifests.forEach(element => {
+          formatDate(element.date_purchased, 'mm/DD/yyyy', 'en-US');
+        });
+      });
+  }
+
+  getTechManifests() {
+    this.manifests = [];
+    this.mainService.getTechManifests().subscribe(
       data => {
         this.manifests = data;
         this.manifests.sort((a, b) => (a.date_purchased < b.date_purchased) ? 1 : -1);

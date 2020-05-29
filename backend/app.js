@@ -41,19 +41,33 @@ app.use((req, res, next) => {
 
 
 //getting all manifests from database
-app.get("/api/getManifests", (req, res) => {
+app.get("/api/getLiquidationManifests", (req, res) => {
 
   var url = req.params.url;
   console.log(req.params);
 
-  Manifest.find().then(documents => {
+  Manifest.find({source: "liquidation.com"}).then(documents => {
     console.log(documents);
     res.status(200).json({
-      message: "Manifests fetched succesfully",
+      message: "Liquidation Manifests fetched succesfully",
       manifests: documents
     });
   });
 
+});
+
+app.get("/api/getTechManifests", (req, res) => {
+
+  var url = req.params.url;
+  console.log(req.params);
+
+  Manifest.find({source: "techliquidators.com"}).then(documents => {
+    console.log(documents);
+    res.status(200).json({
+      message: "Tech Liquidation Manifests fetched succesfully",
+      manifests: documents
+    });
+  });
 
 });
 
