@@ -30,7 +30,7 @@ def saveManifests(browser):
     bidwon = browser.find_element_by_id("bidwon")
     html = bidwon.get_attribute('innerHTML')
     soup = BeautifulSoup(html, "html.parser")
-
+    #no-more-tables
     
 
     transactions_in_progress = soup.prettify() #.find("div",{"id":{"no-more-tables"}}).table
@@ -40,6 +40,12 @@ def saveManifests(browser):
     #mongo attributes for manifest collection
     headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source"]
 
+    manifests_list = []
+
+    tr = transactions_in_progress.find_all("tr")
+    for i in range(0,4):
+
+        
 
 
     return []
