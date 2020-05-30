@@ -8,6 +8,7 @@ import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 import { AuthData } from "./auth-data.model";
 import { Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 const BACKEND_URL = environment.apiUrl ;
 
@@ -16,7 +17,7 @@ export class AuthService {
   private isAuth = false;
   private token: string;
   private authStatusListener = new Subject<boolean>();
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getToken(){
     return this.token;
@@ -45,13 +46,16 @@ export class AuthService {
       if (token) {
         this.isAuth = true;
         this.authStatusListener.next(true);
+        this.router.navigate(['/home']);
       }
     });
+
   }
 
   logout(){
     this.token = null;
     this.isAuth = false;
     this.authStatusListener.next(false);
+    this.router.navigate(['/login']);
   }
 }
