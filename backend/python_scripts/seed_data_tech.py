@@ -1,13 +1,16 @@
 import json
 import mechanicalsoup
-import sys
+import sys, os
 import time
+import pickle
+
 from pymongo import MongoClient
+
 import getpass
+
 from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
-import pickle
 import time
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
@@ -43,15 +46,14 @@ def saveItems(manifests,browser):
         auction_id = manifest["auction_id"]
         auction_url = "https://techliquidators.com/tl/?action=marketplace_main.auction&id=" + str(auction_id)
         browser.get(auction_url)
-        browser.find_element_by_xpath('/html/body/div/div/div/div[2]/div[2]/div[4]/div/div[4]/div[2]/div/div[1]/div[2]/form/button').click
-        stall(2388377)
+
         #checking for all formats
         soup = BeautifulSoup(browser.page_source, "html.parser").table.table
         if soup == None:
             soup = BeautifulSoup(browser.page_source, "html.parser").table
 
-        print()
-        print(soup)
+
+
         #storing unique items
         items_dict = {}
 
@@ -59,29 +61,30 @@ def saveItems(manifests,browser):
         tr = soup.find_all("tr")
 
         #Normalising headers from all manifests
-        headers =  [x.get_text() for x in tr[0].find_all('td')]
+        headers =  [x.get_text().replace("\n","").replace("\t","").lower() for x in tr[0].find_all('th')]
+
         for i in range(len(headers)):
-            if headers[i] in ["Item Description", "Item Title", "Title","Product"]:
+            if headers[i] in ["item description", "item title", "title","product"]:
                 headers[i] = "name"
-            if headers[i] in ["Qty", "Quantity"] :
+            if headers[i] in ["qty", "quantity"] :
                 headers[i] = "quantity"
-            if headers[i] in [ "Retail","Retail Price"]:
+            if headers[i] in [ "retail","retail price","estimated msrp","est. msrp"]:
                 headers[i] = "price"
-            if headers[i] == "Model":
+            if headers[i] in ["model", "part #"]:
                 headers[i] = "model"
-            if headers[i] in ["Grade"] :
+            if headers[i] in ["grade"]:
                 headers[i] = "grade"
 
         print("Normalised Headers: ",headers)
 
 
-        for i in range(1,len(tr)-1):
+        for i in range(1,len(tr)):
 
             #getting all columns
             td = tr[i].find_all('td')
 
             #finding id based on site
-            id = td[0].get_text()
+            id = td[3].get_text()
             #tallying up unique items
             if id not in items_dict.keys():
                 #if product is not in dictionary add it
@@ -105,10 +108,13 @@ def saveItems(manifests,browser):
                         else:
                             detailDict[key] = value
 
-
-
                     items_dict[id] = detailDict
+
+
                 except Exception as ex:
+                    print(sys.exc_info())
+                    print(  sys.exc_info()[2].tb_lineno)
+
                     print(ex)
                     print(td)
                     print(manifest)
@@ -126,50 +132,51 @@ def saveItems(manifests,browser):
                         items_dict[id]['quantity'] += detail
         print(items_dict)
         print()
-        # for key in items_dict:
-        #     #ITEM
-        #     item = items_dict[key]
+        
+        for key in items_dict:
+            #ITEM
+            item = items_dict[key]
 
-        #     #PRODUCT
-        #     product_headers = ["sku","quantity_sold","prices_sold"]
-        #     product_count = products_collection.count_documents({})
-        #     product_count = "{0:0=4}".format(product_count)
-        #     #Creating Unique SKU
-        #     sku = item['name'].split()[1] + str(product_count)
-        #     product = {
-        #         "sku": sku,
-        #         "quantity_sold":0,
-        #         "prices_sold":[]
-        #     }
-        #     productId = products_collection.insert_one(product).inserted_id
+            #PRODUCT
+            product_headers = ["sku","quantity_sold","prices_sold"]
+            product_count = products_collection.count_documents({})
+            product_count = "{0:0=4}".format(product_count)
+            #Creating Unique SKU
+            sku = item['name'].split()[1] + str(product_count)
+            product = {
+                "sku": sku,
+                "quantity_sold":0,
+                "prices_sold":[]
+            }
+            productId = products_collection.insert_one(product).inserted_id
 
 
 
-        #     #ITEM
-        #     #add manifestID
-        #     item["manifest_id"] = manifest["_id"]
-        #     item["product_id"] = product["_id"]
+            #ITEM
+            #add manifestID
+            item["manifest_id"] = manifest["_id"]
+            item["product_id"] = product["_id"]
 
-        #     #insert item
-        #     itemId = items_collection.insert_one(item).inserted_id
+            #insert item
+            itemId = items_collection.insert_one(item).inserted_id
 
-        #     print(item)
-        #     print()
+            print(item)
+            print()
 
-        #     #DRAFT
-        #     draft = {"updated_SKU": False,
-        #             "published_draft": False,
-        #             "listed": False,
-        #             "title": "",
-        #             "condition": "Used",
-        #             "condition_desc": "",
-        #             "price": 0,
-        #             "item_id": item["_id"]}
-        #     draftId = drafts_collection.insert_one(draft).inserted_id
+            #DRAFT
+            draft = {"updated_SKU": False,
+                    "published_draft": False,
+                    "listed": False,
+                    "title": "",
+                    "condition": "Used",
+                    "condition_desc": "",
+                    "price": 0,
+                    "item_id": item["_id"]}
+            draftId = drafts_collection.insert_one(draft).inserted_id
 
-        #     #ITEM
+            #ITEM
 
-        #     items_collection.update_one({"_id":item["_id"]},{"$set": {"draft_id":draft["_id"]}})
+            items_collection.update_one({"_id":item["_id"]},{"$set": {"draft_id":draft["_id"]}})
 
 
 
@@ -236,13 +243,16 @@ def getBrowser():
         #adding back cookies
         cookies = pickle.load(open("techLiquidatorCookies.pickle", "rb"))
         for cookie in cookies:
+
+            
             browser.add_cookie(cookie)
+        
         #checking if cookies are timed out
         print("Checking browser log in status")
         checkBrowserBool = checkBrowserLogInStatus(browser)
 
         if  checkBrowserBool == False:
-            browser.close()
+            browser.quit()
             browser = webdriver.Chrome('./chromedriver')
 
             print("Logging in with method")
