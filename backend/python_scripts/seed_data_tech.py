@@ -26,6 +26,7 @@ client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-
 db = client.test_db
 # client.drop_database("test_db")
 
+#Collections
 manifests_collection = db.manifests
 items_collection = db.items
 products_collection = db.products
@@ -63,9 +64,10 @@ def saveItems(manifests,browser):
         #going through rows of html table
         tr = soup.find_all("tr")
 
-        #Normalising headers from all manifests
+        #Getting headers
         headers =  [x.get_text().replace("\n","").replace("\t","").lower() for x in tr[0].find_all('th')]
-
+        
+        #Normalising headers from all manifests
         for i in range(len(headers)):
             if headers[i] in ["item description", "item title", "title","product"]:
                 headers[i] = "name"
