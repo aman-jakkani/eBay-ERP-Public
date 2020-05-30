@@ -24,9 +24,12 @@ from selenium.webdriver.support.ui import Select
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
 db = client.test_db
-client.drop_database("test_db")
+# client.drop_database("test_db")
 
 manifests_collection = db.manifests
+items_collection = db.items
+products_collection = db.products
+drafts_collection = db.drafts
 
 
 def main():
