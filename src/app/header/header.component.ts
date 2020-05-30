@@ -34,6 +34,9 @@ onSearch(){
   this.router.navigate(['home'], { queryParams: { search: searchValue } } );
 }
 
+onLogout(){
+  this.authService.logout();
+}
 
 
 
