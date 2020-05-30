@@ -29,14 +29,14 @@ manifests_collection = db.manifests
 def main():
 
     browser = getBrowser()
-    saveManifests(browser)
+    manifests = saveManifests(browser)
+    print(manifests)
 
 
 
 
 def saveManifests(browser):
-    browser.get("https://techliquidators.com/index.cfm/p/7")
-    stall(2)
+    # browser.get("https://techliquidators.com/index.cfm/p/7")
     bidwon = browser.find_element_by_id("no-more-tables")
     html = bidwon.get_attribute('innerHTML')
     soup = BeautifulSoup(html, "html.parser")
@@ -77,17 +77,16 @@ def saveManifests(browser):
           "source" : "techliquidator.com" }
 
 
-        print(manifest)
-        print()
-        #inserting document into collection
-        #manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
-        #manifests_list.append(manifest)
+        # inserting document into collection
+        manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
+        manifests_list.append(manifest)
 
 
 
-    return []
+
+    return manifests_list
 
 def getBrowser():
     #trying to use previous browser state and log in
@@ -123,7 +122,7 @@ def getBrowser():
         return browser
 #Checks if user is signed into website
 def checkBrowserLogInStatus(browser):
-    browser.get("https://techliquidators.com/index.cfm/p/6")
+    browser.get("https://techliquidators.com/index.cfm/p/7")
     stall(3)
     soup = BeautifulSoup(browser.page_source, "html.parser")
 
