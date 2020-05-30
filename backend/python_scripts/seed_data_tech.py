@@ -32,6 +32,142 @@ def main():
     manifests = saveManifests(browser)
     print(manifests)
 
+    saveItems(manifests,browser)
+
+
+def saveItems(manifests,browser):
+
+    ITEM_HEADERS = ["name", "quantity", "price","model","grade"]
+
+    for manifest in manifests:
+        auction_id = manifest["auction_id"]
+        auction_url = "https://techliquidators.com/tl/?action=marketplace_main.auction&id=" + str(auction_id)
+        browser.get(auction_url)
+        #checking for all formats
+        soup = BeautifulSoup(browser.page_source, "html.parser").table.table
+        if soup == None:
+            soup = BeautifulSoup(browser.page_source, "html.parser").table
+
+        print()
+        print(soup)
+        #storing unique items
+        items_dict = {}
+
+        #going through rows of html table
+        tr = soup.find_all("tr")
+
+        #Normalising headers from all manifests
+        headers =  [x.get_text() for x in tr[0].find_all('td')]
+        for i in range(len(headers)):
+            if headers[i] in ["Item Description", "Item Title", "Title","Product"]:
+                headers[i] = "name"
+            if headers[i] in ["Qty", "Quantity"] :
+                headers[i] = "quantity"
+            if headers[i] in [ "Retail","Retail Price"]:
+                headers[i] = "price"
+            if headers[i] == "Model":
+                headers[i] = "model"
+            if headers[i] in ["Grade"] :
+                headers[i] = "grade"
+
+        print("Normalised Headers: ",headers)
+
+
+        for i in range(1,len(tr)-1):
+
+            #getting all columns
+            td = tr[i].find_all('td')
+
+            #finding id based on site
+            id = td[0].get_text()
+            #tallying up unique items
+            if id not in items_dict.keys():
+                #if product is not in dictionary add it
+                try:
+                    detailDict = {}
+
+                    for i in range(len(td)):
+
+                        value = td[i].get_text().strip()
+                        key = headers[i]
+
+                        #filling out detail dictionary
+                        if key == "quantity":
+                            detail_format = int(value)
+                            detailDict[key] = detail_format
+
+                        elif key == "price":
+                            detail_format = float(value.strip("$"))
+                            detailDict[key] = detail_format
+
+                        else:
+                            detailDict[key] = value
+
+
+
+                    items_dict[id] = detailDict
+                except Exception as ex:
+                    print(ex)
+                    print(td)
+                    print(manifest)
+                    print()
+
+            else:
+                #if product exists increase count
+                for i in range(len(td)):
+                    detail = td[i].get_text()
+                    detailTitle = headers[i]
+
+                    if detailTitle == "quantity":
+                        detail = int(detail.strip())
+
+                        items_dict[id]['quantity'] += detail
+        print(items_dict)
+        print()
+        # for key in items_dict:
+        #     #ITEM
+        #     item = items_dict[key]
+
+        #     #PRODUCT
+        #     product_headers = ["sku","quantity_sold","prices_sold"]
+        #     product_count = products_collection.count_documents({})
+        #     product_count = "{0:0=4}".format(product_count)
+        #     #Creating Unique SKU
+        #     sku = item['name'].split()[1] + str(product_count)
+        #     product = {
+        #         "sku": sku,
+        #         "quantity_sold":0,
+        #         "prices_sold":[]
+        #     }
+        #     productId = products_collection.insert_one(product).inserted_id
+
+
+
+        #     #ITEM
+        #     #add manifestID
+        #     item["manifest_id"] = manifest["_id"]
+        #     item["product_id"] = product["_id"]
+
+        #     #insert item
+        #     itemId = items_collection.insert_one(item).inserted_id
+
+        #     print(item)
+        #     print()
+
+        #     #DRAFT
+        #     draft = {"updated_SKU": False,
+        #             "published_draft": False,
+        #             "listed": False,
+        #             "title": "",
+        #             "condition": "Used",
+        #             "condition_desc": "",
+        #             "price": 0,
+        #             "item_id": item["_id"]}
+        #     draftId = drafts_collection.insert_one(draft).inserted_id
+
+        #     #ITEM
+
+        #     items_collection.update_one({"_id":item["_id"]},{"$set": {"draft_id":draft["_id"]}})
 
 
 
@@ -52,7 +188,6 @@ def saveManifests(browser):
     manifests_list = []
 
     tr = transactions.find_all("tr")
-    print(tr)
     for i in range(0,4):
         value = tr[i].find_all('td')
 
@@ -87,6 +222,8 @@ def saveManifests(browser):
 
 
     return manifests_list
+
+
 
 def getBrowser():
     #trying to use previous browser state and log in
