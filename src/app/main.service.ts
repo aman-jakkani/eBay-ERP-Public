@@ -36,7 +36,7 @@ export class MainService {
 
   getLiquidationManifests() {
     return this.http.get<{ message: string; manifests: any}>(
-      BACKEND_URL + '/getLiquidationManifests')
+      BACKEND_URL + '/listing/getLiquidationManifests')
       .pipe(map((manifestData) => {
         var manifests:Manifest[] = manifestData.manifests.map ( manifest =>{
            let manifestData: Manifest = new Manifest ({
@@ -58,7 +58,7 @@ export class MainService {
 
   getTechManifests() {
     return this.http.get<{ message: string; manifests: any}>(
-      BACKEND_URL + '/getTechManifests')
+      BACKEND_URL + '/listing/getTechManifests')
       .pipe(map((manifestData) => {
         var manifests:Manifest[] = manifestData.manifests.map ( manifest =>{
            let manifestData: Manifest = new Manifest ({
@@ -80,7 +80,7 @@ export class MainService {
 
   getManifest(manifestID) {
     return this.http.get<{ message: string; manifest: any}>(
-      BACKEND_URL + '/getManifest/'+manifestID)
+      BACKEND_URL + '/listing/getManifest/'+manifestID)
       .pipe(map((response) =>    {
 
         let manifest: Manifest = new Manifest({
@@ -102,7 +102,7 @@ export class MainService {
 
   getItems(manifestID) {
     return this.http.get<{ message: string; items: any}>(
-      BACKEND_URL + '/getItems/'+manifestID)
+      BACKEND_URL + '/listing/getItems/'+manifestID)
       .pipe(map((itemData) => {
         var items: Item[] = itemData.items.map ( item =>{
           let itemData: Item = new Item ({
@@ -124,7 +124,7 @@ export class MainService {
 
   getProduct(itemID){
     return this.http.get<{ message: string; product: any}>(
-      BACKEND_URL + '/getProduct/'+itemID).pipe(map((productData) => {
+      BACKEND_URL + '/listing/getProduct/'+itemID).pipe(map((productData) => {
         let product = new Product ({
           id: productData.product._id,
           sku: productData.product.sku,
@@ -137,7 +137,7 @@ export class MainService {
   }
   getDraft(itemID){
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL+"/getDraft/"+itemID).pipe(map((draftData) => {
+      BACKEND_URL+"/listing/getDraft/"+itemID).pipe(map((draftData) => {
         let draft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
@@ -155,7 +155,7 @@ export class MainService {
 
   updateSKU(itemID, newSKU){
     return this.http.get<{message: string; product: any}>(
-      BACKEND_URL + '/updateSKU/'+itemID+'/'+encodeURIComponent(newSKU)).pipe(map((productData: any) => {
+      BACKEND_URL + '/listing/updateSKU/'+itemID+'/'+encodeURIComponent(newSKU)).pipe(map((productData: any) => {
         let product = new Product ({
           id: productData.product._id,
           sku: productData.product.sku,
@@ -168,8 +168,8 @@ export class MainService {
   }
 
   updateDraft(draftID, newTitle, newCondition, newDesc, newPrice){
-    let url = '/updateDraft/'+  "draftID:" + draftID + '/' + "newTitle:" + encodeURIComponent(newTitle)+'/'+ "newCondition:" + newCondition+'/'+ "newDesc:" + encodeURIComponent(newDesc)+'/'+ "newDesc" + "newPrice:"+ newPrice
-    console.log("SErvice url",url)
+    let url = '/listing/updateDraft/'+  "draftID:" + draftID + '/' + "newTitle:" + encodeURIComponent(newTitle)+'/'+ "newCondition:" + newCondition+'/'+ "newDesc:" + encodeURIComponent(newDesc)+'/'+ "newDesc" + "newPrice:"+ newPrice
+    console.log("Service url",url)
     return this.http.get<{message: string; draft: any}>(
       BACKEND_URL+url).pipe(map((draftData: any) =>{
         let newdraft = new Draft ({
@@ -189,7 +189,7 @@ export class MainService {
 
   listDraft(draftID){
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL+'/listDraft/'+draftID).pipe(map((draftData: any) =>{
+      BACKEND_URL+'/listing/listDraft/'+draftID).pipe(map((draftData: any) =>{
         let newdraft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
@@ -207,7 +207,7 @@ export class MainService {
 
   unlistDraft(draftID){
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL+'/unlistDraft/'+draftID).pipe(map((draftData: any) =>{
+      BACKEND_URL+'/listing/unlistDraft/'+draftID).pipe(map((draftData: any) =>{
         let newdraft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
@@ -226,7 +226,7 @@ export class MainService {
   getLinkData(url, siteNum){
     return this.http
     .get<{message: string; data: any}>(
-      BACKEND_URL + '/getLinkData/' + encodeURIComponent(url) +'/'+ siteNum
+      BACKEND_URL + '/listing/getLinkData/' + encodeURIComponent(url) +'/'+ siteNum
     ).pipe(map((response: any) => {
 
       const movieCount = response;

@@ -42,7 +42,7 @@ router.post("/login", (req, res, next) => {
       });
     }
     const token = jwt.sign({email: fetchedUser.email, userID: fetchedUser._id},
-      'this_can_literally_be_anything_lol',
+      "this_can_literally_be_anything_lol",
       {expiresIn: "1h"});
     res.status(200).json({
       message: "Auth successful",
