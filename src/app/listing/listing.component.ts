@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainService } from '../main.service';
 import {Router} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { observable, VirtualTimeScheduler } from 'rxjs';
+import { observable, VirtualTimeScheduler, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import {Manifest} from '../models/manifest.model';
 import { Product } from '../models/product.model';
 import { Item } from '../models/item.model';
 import { Draft } from '../models/draft.model';
 import { formatDate } from '@angular/common';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './listing.component.html',
   styleUrls: ['./listing.component.css']
 })
-export class ListingComponent implements OnInit {
+export class ListingComponent implements OnInit, OnDestroy {
 
 
   // total quantity of items in auction
@@ -33,8 +34,10 @@ export class ListingComponent implements OnInit {
   draft: FormGroup;
   ttInput: string;
   drafts: Draft[] = [];
+  userIsAuth = false;
+  private authStatusSubs: Subscription;
 
-  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) { }
 
   ngOnInit() {
     this.getLiquidationManifests();
@@ -46,7 +49,14 @@ export class ListingComponent implements OnInit {
       conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
     });
+    this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
+      this.userIsAuth = isAuth;
+    });
 
+  }
+
+  ngOnDestroy(){
+    this.authStatusSubs.unsubscribe();
   }
 
   onTabChanged($event){
