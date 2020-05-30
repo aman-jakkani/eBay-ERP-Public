@@ -21,6 +21,7 @@ import { ListingComponent } from './listing/listing.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import {ErrorInterceptor} from './error-interceptor';
 import { AuthGuard } from './auth/auth.guard';
 
 const appRoutes: Routes =  [
@@ -55,7 +56,7 @@ const appRoutes: Routes =  [
     MatInputModule,
     MatProgressSpinnerModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, AuthGuard],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, AuthGuard, {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
