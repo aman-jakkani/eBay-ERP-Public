@@ -43,6 +43,8 @@ def saveItems(manifests,browser):
         auction_id = manifest["auction_id"]
         auction_url = "https://techliquidators.com/tl/?action=marketplace_main.auction&id=" + str(auction_id)
         browser.get(auction_url)
+        browser.find_element_by_xpath('/html/body/div/div/div/div[2]/div[2]/div[4]/div/div[4]/div[2]/div/div[1]/div[2]/form/button').click
+        stall(2388377)
         #checking for all formats
         soup = BeautifulSoup(browser.page_source, "html.parser").table.table
         if soup == None:
