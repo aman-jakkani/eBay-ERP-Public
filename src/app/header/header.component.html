@@ -8,7 +8,7 @@
     </div>
     <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-left">
-          <li class="nav-item">
+          <li *ngIf="userIsAuth" class="nav-item">
             <a class="nav-link" routerLink="/home" routerLinkActive="mat-accent">Listing<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
@@ -16,11 +16,14 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li class="nav-item">
+          <li *ngIf="!userIsAuth" class="nav-item">
             <a class="nav-link" routerLink="/login">Login</a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="!userIsAuth" class="nav-item">
             <a class="nav-link" routerLink="/signup">Sign Up</a>
+          </li>
+          <li *ngIf="userIsAuth" class="nav-item">
+            <button class="btn btn-dark">Logout</button>
           </li>
         </ul>
       </div>
