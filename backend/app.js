@@ -10,6 +10,8 @@ const Product = require("./models/product");
 const Item = require("./models/item");
 const Draft = require("./models/draft");
 
+const userRoutes = require("./routes/users");
+
 const app = express();
 const {spawn} = require('child_process');
 
@@ -39,6 +41,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/users", userRoutes);
 
 //getting all manifests from database
 app.get("/api/getLiquidationManifests", (req, res) => {
