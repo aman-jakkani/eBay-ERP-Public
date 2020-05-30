@@ -8,10 +8,10 @@ const Manifest = require("../models/manifest");
 const Product = require("../models/product");
 const Item = require("../models/item");
 const Draft = require("../models/draft");
-
+const checkAuth = require("../middleware/check-auth");
 
 //getting all manifests from database
-router.get("/getLiquidationManifests", (req, res) => {
+router.get("/getLiquidationManifests", checkAuth, (req, res) => {
 
   var url = req.params.url;
   console.log(req.params);
@@ -26,7 +26,7 @@ router.get("/getLiquidationManifests", (req, res) => {
 
 });
 
-router.get("/getTechManifests", (req, res) => {
+router.get("/getTechManifests", checkAuth, (req, res) => {
 
   var url = req.params.url;
   console.log(req.params);
@@ -42,7 +42,7 @@ router.get("/getTechManifests", (req, res) => {
 });
 
 //getting a specific manifest
-router.get("/getManifest/:manifestID", (req, res) => {
+router.get("/getManifest/:manifestID", checkAuth, (req, res) => {
 
   var url = req.params.url;
   var manifest_id = req.params.manifestID;
@@ -59,7 +59,7 @@ router.get("/getManifest/:manifestID", (req, res) => {
 });
 
 //getting items of a manifest
-router.get("/getItems/:manifestID", (req, res) => {
+router.get("/getItems/:manifestID", checkAuth, (req, res) => {
 
   var url = req.params.url;
   var manifest_id = req.params.manifestID;
@@ -76,7 +76,7 @@ router.get("/getItems/:manifestID", (req, res) => {
 });
 
 //getting the product model of the item
-router.get("/getProduct/:itemID", (req, res) => {
+router.get("/getProduct/:itemID", checkAuth, (req, res) => {
 
   var item_id = req.params.itemID;
   console.log(req.params);
@@ -93,7 +93,7 @@ router.get("/getProduct/:itemID", (req, res) => {
 });
 
 //getting draft of the item
-router.get("/getDraft/:itemID", (req, res) => {
+router.get("/getDraft/:itemID", checkAuth, (req, res) => {
   var item_id = req.params.itemID;
   console.log(req.params);
   Draft.findOne({item_id: item_id}).then(draft =>{
@@ -106,7 +106,7 @@ router.get("/getDraft/:itemID", (req, res) => {
 });
 
 //updating sku
-router.get("/updateSKU/:itemID/:newSKU", (req, res) => {
+router.get("/updateSKU/:itemID/:newSKU", checkAuth,  (req, res) => {
   var itemID = req.params.itemID;
   var newSKU = req.params.newSKU;
   console.log(req.params);
@@ -158,7 +158,7 @@ router.get("/updateSKU/:itemID/:newSKU", (req, res) => {
 });
 
 //updating the draft
-router.get("/updateDraft/:draftID/:newTitle/:newCondition/:newDesc/:newPrice", (req, res) => {
+router.get("/updateDraft/:draftID/:newTitle/:newCondition/:newDesc/:newPrice", checkAuth, (req, res) => {
   console.log("loggin parameters",req.params);
 
   var newTitle = req.params.newTitle.split(":")[1];
@@ -178,7 +178,7 @@ router.get("/updateDraft/:draftID/:newTitle/:newCondition/:newDesc/:newPrice", (
   });
 });
 
-router.get("/listDraft/:draftID", (req, res) => {
+router.get("/listDraft/:draftID", checkAuth, (req, res) => {
   var draftID = req.params.draftID;
   console.log(req.params);
   Draft.findOneAndUpdate({_id: draftID}, {listed: true}, {new: true}).then(draft => {
@@ -190,7 +190,7 @@ router.get("/listDraft/:draftID", (req, res) => {
   });
 });
 
-router.get("/unlistDraft/:draftID", (req, res) => {
+router.get("/unlistDraft/:draftID", checkAuth, (req, res) => {
   var draftID = req.params.draftID;
   console.log(req.params);
   Draft.findOneAndUpdate({_id: draftID}, {listed: false}, {new: true}).then(draft => {

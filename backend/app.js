@@ -12,7 +12,7 @@ const Draft = require("./models/draft");
 
 const userRoutes = require("./routes/users");
 const listingRoutes = require("./routes/listing");
-const checkAuth = require("./middleware/check-auth");
+
 
 const app = express();
 const {spawn} = require('child_process');
