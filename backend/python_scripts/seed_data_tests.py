@@ -54,31 +54,31 @@ def saveManifests(browser):
     tr = transactions.find_all("tr")
     print(tr)
     for i in range(0,4):
-        td = tr[i].find_all('td')
-        data_to_add = []
-        #formatting data -1 to not incude source
-        for detailCount in range(len(headers) - 1):
-            value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
-            data_to_add.append(value)
+        value = tr[i].find_all('td')
+        
 
-
+        def formatValue(value):
+            formattedValue = value.get_text().strip().replace("\n","").replace("\t","")
+            return formattedValue
+        
         #creating dictionary to pass
         manifest = {
-        headers[0] : data_to_add[1],
-        headers[1] : int(data_to_add[0]),
-        headers[2] : int(data_to_add[0]),
-        headers[3] : int(data_to_add[3]),
-        headers[4] : int("".join(filter(str.isdigit, data_to_add[4])))/100,
-        headers[5] : data_to_add[5],
-        headers[6] : data_to_add[6],
-        headers[7] : "techliquidator.com"}
+        "auction_title" : formatValue(value[1]),
+        "auction_id": int(formatValue(value[0])),
+        "transaction_id" : int(value[9].form.find("input",{"name":"appSaleID"}).get("value")),
+        "quantity" : int(value[3]),
+        "total_price" : int("".join(filter(str.isdigit, value[4])))/100,
+        "date_purchased" : int("".join(filter(str.isdigit, value[4])))/100,
+        "status" : value[5],
+        "source" : "techliquidator.com" }
 
-        #inserting document into collection
-        manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
         print(manifest)
         print()
-        manifests_list.append(manifest)
+        #inserting document into collection
+        #manifests_id = manifests_collection.insert_one(manifest).inserted_id
+
+        #manifests_list.append(manifest)
 
         
 
