@@ -49,6 +49,7 @@ export class ListingComponent implements OnInit, OnDestroy {
       conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
     });
+    this.userIsAuth = this.authService.getIsAuth();
     this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
       this.userIsAuth = isAuth;
     });

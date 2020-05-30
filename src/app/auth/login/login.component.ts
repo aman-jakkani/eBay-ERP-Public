@@ -16,6 +16,5 @@ export class LoginComponent{
       return
     }
     this.authService.login(form.value.email, form.value.password);
-    console.log(form.value);
   }
 }

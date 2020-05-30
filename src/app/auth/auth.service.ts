@@ -13,12 +13,17 @@ const BACKEND_URL = environment.apiUrl ;
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private isAuth = false;
   private token: string;
   private authStatusListener = new Subject<boolean>();
   constructor(private http: HttpClient) {}
 
   getToken(){
     return this.token;
+  }
+
+  getIsAuth(){
+    return this.isAuth;
   }
 
   getAuthStatusListener(){
@@ -37,7 +42,10 @@ export class AuthService {
     this.http.post<{token: string}>(BACKEND_URL+'/users/login', authData).subscribe(response => {
       const token = response.token;
       this.token = token;
-      this.authStatusListener.next(true);
+      if (token) {
+        this.isAuth = true;
+        this.authStatusListener.next(true);
+      }
     });
   }
 }
