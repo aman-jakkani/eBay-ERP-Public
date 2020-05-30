@@ -41,7 +41,7 @@ def saveManifests(browser):
     html = bidwon.get_attribute('innerHTML')
     soup = BeautifulSoup(html, "html.parser")
     #no-more-tables
-    
+
 
     transactions = soup.tbody
 
@@ -55,22 +55,26 @@ def saveManifests(browser):
     print(tr)
     for i in range(0,4):
         value = tr[i].find_all('td')
-        
+
 
         def formatValue(value):
             formattedValue = value.get_text().strip().replace("\n","").replace("\t","")
             return formattedValue
-        
+
+        FMT = '%m/%d/%y'
+        date = datetime.strptime(formatValue(value[8]).split(" ")[1], FMT)
+
+
         #creating dictionary to pass
         manifest = {
-        "auction_title" : formatValue(value[1]),
-        "auction_id": int(formatValue(value[0])),
-        "transaction_id" : int(value[9].form.find("input",{"name":"appSaleID"}).get("value")),
-        "quantity" : int(value[3]),
-        "total_price" : int("".join(filter(str.isdigit, value[4])))/100,
-        "date_purchased" : int("".join(filter(str.isdigit, value[4])))/100,
-        "status" : value[5],
-        "source" : "techliquidator.com" }
+          "auction_title" : formatValue(value[1]),
+          "auction_id": int(formatValue(value[0])),
+          "transaction_id" : int(value[8].form.find("input",{"name":"appSaleID"}).get("value")),
+          "quantity" : int(formatValue(value[3])),
+          "total_price" : int("".join(filter(str.isdigit, formatValue(value[4]))))/100,
+          "date_purchased" : date,
+          "status" : formatValue(value[8]).split(" ")[0],
+          "source" : "techliquidator.com" }
 
 
         print(manifest)
@@ -80,7 +84,7 @@ def saveManifests(browser):
 
         #manifests_list.append(manifest)
 
-        
+
 
 
     return []
@@ -154,11 +158,11 @@ def logInSelenium(browser):
         #User Inputs
         username = input("User Name: ")
         password = getpass.getpass("Password: ")
-        
+
 
         #making sure elements are on screen
         WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.XPATH,username_input)))
-        
+
         #Loading information
         browser.find_element_by_xpath(username_input).send_keys(username)
 
@@ -174,7 +178,7 @@ def logInSelenium(browser):
     #Saving cookies
     with open("techLiquidatorCookies.pickle","wb") as f:
         pickle.dump(browser.get_cookies(),f)
-    
+
 
     return(browser)
 
