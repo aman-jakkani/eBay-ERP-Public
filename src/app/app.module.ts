@@ -21,10 +21,11 @@ import { ListingComponent } from './listing/listing.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
+import { AuthGuard } from './auth/auth.guard';
 
 const appRoutes: Routes =  [
   {path: '', component: LoginComponent},
-  {path: 'home', component: ListingComponent},
+  {path: 'home', component: ListingComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent}
 ];
@@ -54,7 +55,7 @@ const appRoutes: Routes =  [
     MatInputModule,
     MatProgressSpinnerModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
