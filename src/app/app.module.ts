@@ -22,7 +22,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 
 const appRoutes: Routes =  [
-  {path: '', component: ListingComponent},
+  {path: '', component: LoginComponent},
   {path: 'home', component: ListingComponent},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent}

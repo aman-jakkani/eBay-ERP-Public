@@ -11,7 +11,7 @@
           <li *ngIf="userIsAuth" class="nav-item">
             <a class="nav-link" routerLink="/home" routerLinkActive="mat-accent">Listing<span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
+          <li *ngIf="userIsAuth" class="nav-item">
             <a class="nav-link" routerLink="/home" routerLinkActive="mat-accent">Analysis</a>
           </li>
         </ul>
