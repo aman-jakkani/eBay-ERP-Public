@@ -182,7 +182,7 @@ def saveManifests(browser):
         td = tr[i].find_all('td')
         data_to_add = []
 
-        #formatting data -1 to not incude status
+        #formatting data -1 to not incude source
         for detailCount in range(len(headers) - 1):
             value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
             data_to_add.append(value)

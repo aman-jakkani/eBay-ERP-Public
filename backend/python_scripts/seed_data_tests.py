@@ -16,6 +16,16 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
+
+#Mongo Detail
+client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
+#Set db
+db = client.test_db
+client.drop_database("test_db")
+
+manifests_collection = db.manifests
+
+
 def main():
 
     browser = getBrowser()
@@ -27,23 +37,48 @@ def main():
 def saveManifests(browser):
     browser.get("https://techliquidators.com/index.cfm/p/7")
     stall(2)
-    bidwon = browser.find_element_by_id("bidwon")
+    bidwon = browser.find_element_by_id("no-more-tables")
     html = bidwon.get_attribute('innerHTML')
     soup = BeautifulSoup(html, "html.parser")
     #no-more-tables
     
 
-    transactions_in_progress = soup.prettify() #.find("div",{"id":{"no-more-tables"}}).table
+    transactions = soup.tbody
 
-    print(transactions_in_progress)
 
     #mongo attributes for manifest collection
     headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source"]
 
     manifests_list = []
 
-    tr = transactions_in_progress.find_all("tr")
+    tr = transactions.find_all("tr")
+    print(tr)
     for i in range(0,4):
+        td = tr[i].find_all('td')
+        data_to_add = []
+        #formatting data -1 to not incude source
+        for detailCount in range(len(headers) - 1):
+            value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
+            data_to_add.append(value)
+
+
+        #creating dictionary to pass
+        manifest = {
+        headers[0] : data_to_add[1],
+        headers[1] : int(data_to_add[0]),
+        headers[2] : int(data_to_add[0]),
+        headers[3] : int(data_to_add[3]),
+        headers[4] : int("".join(filter(str.isdigit, data_to_add[4])))/100,
+        headers[5] : data_to_add[5],
+        headers[6] : data_to_add[6],
+        headers[7] : "techliquidator.com"}
+
+        #inserting document into collection
+        manifests_id = manifests_collection.insert_one(manifest).inserted_id
+
+        print(manifest)
+        print()
+        manifests_list.append(manifest)
 
         
 
