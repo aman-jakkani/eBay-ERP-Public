@@ -15,6 +15,7 @@ var manifest_schema = mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'
     }],
+    creator: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'}
 });
 
 manifest_schema.plugin(mongooseUniqueValidator);
