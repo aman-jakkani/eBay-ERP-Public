@@ -21,6 +21,7 @@ ngOnInit(){
   this.form = new FormGroup({
     search: new FormControl(null, {}),
   });
+  this.userIsAuth = this.authService.getIsAuth();
   this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
     this.userIsAuth = isAuth;
   });
