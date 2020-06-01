@@ -172,10 +172,10 @@ def saveItems(manifests,browser):
             draft = {"updated_SKU": False,
                     "published_draft": False,
                     "listed": False,
-                    "title": "",
+                    "title": None,
                     "condition": "Used",
-                    "condition_desc": "",
-                    "price": 0,
+                    "condition_desc": None,
+                    "price": None,
                     "item_id": item["_id"]}
             draftId = drafts_collection.insert_one(draft).inserted_id
 
