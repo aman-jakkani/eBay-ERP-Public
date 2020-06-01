@@ -40,7 +40,7 @@ def main():
     print(manifests)
 
     saveItems(manifests,browser)
-
+    print("Seeded data")
 
 def saveItems(manifests,browser):
 
