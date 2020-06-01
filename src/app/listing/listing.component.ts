@@ -175,7 +175,7 @@ export class ListingComponent implements OnInit {
     });
   }
   updateSKUAgain(productID, newSKU, i) {
-    if(confirm('Updating your SKU may affect your tracking capabilities')) {
+    if (confirm('Updating your SKU may affect your tracking capabilities')) {
       // const itm = this.items.filter(x => x.product_id === productID);
       this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
         const product: Product = data;
@@ -205,7 +205,7 @@ export class ListingComponent implements OnInit {
   }
 
   listDraft(i) {
-    if(confirm('You are about to mark your draft as listed!')) {
+    if (confirm('You are about to mark your item as listed!')) {
       this.mainService.listDraft(this.drafts[i].id).subscribe(data => {
         console.log(data);
         const draft: Draft = data;
@@ -215,7 +215,7 @@ export class ListingComponent implements OnInit {
   }
 
   unlistDraft(i) {
-    if(confirm('You are about to mark your draft as unlisted!')) {
+    if (confirm('You are about to mark your item as unlisted!')) {
       this.mainService.unlistDraft(this.drafts[i].id).subscribe(data => {
         console.log(data);
         const draft: Draft = data;
