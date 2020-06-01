@@ -225,7 +225,7 @@ def saveManifests(browser):
           "total_price" : int("".join(filter(str.isdigit, formatValue(value[4]))))/100,
           "date_purchased" : date,
           "status" : formatValue(value[8]).split(" ")[0],
-          "source" : "techliquidator.com" }
+          "source" : "techliquidators.com" }
 
 
 
