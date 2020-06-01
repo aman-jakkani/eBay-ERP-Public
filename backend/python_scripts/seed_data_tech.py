@@ -66,7 +66,7 @@ def saveItems(manifests,browser):
 
         #Getting headers
         headers =  [x.get_text().replace("\n","").replace("\t","").lower() for x in tr[0].find_all('th')]
-        
+
         #Normalising headers from all manifests
         for i in range(len(headers)):
             if headers[i] in ["item description", "item title", "title","product"]:
@@ -137,7 +137,7 @@ def saveItems(manifests,browser):
                         items_dict[id]['quantity'] += detail
         print(items_dict)
         print()
-        
+
         for key in items_dict:
             #ITEM
             item = items_dict[key]
@@ -187,13 +187,15 @@ def saveItems(manifests,browser):
 
 def saveManifests(browser):
     # browser.get("https://techliquidators.com/index.cfm/p/7")
-    bidwon = browser.find_element_by_id("no-more-tables")
+    # Already on right page
+    #Getting transcations
+    bidwon = browser.find_element_by_id("wonContent")
     html = bidwon.get_attribute('innerHTML')
     soup = BeautifulSoup(html, "html.parser")
     #no-more-tables
 
 
-    transactions = soup.tbody
+    transactions = soup.find(id='no-more-tables').tbody
 
 
     #mongo attributes for manifest collection
@@ -249,9 +251,9 @@ def getBrowser():
         cookies = pickle.load(open("techLiquidatorCookies.pickle", "rb"))
         for cookie in cookies:
 
-            
+
             browser.add_cookie(cookie)
-        
+
         #checking if cookies are timed out
         print("Checking browser log in status")
         checkBrowserBool = checkBrowserLogInStatus(browser)

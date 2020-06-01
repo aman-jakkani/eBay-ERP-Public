@@ -3,7 +3,7 @@ import mechanicalsoup
 import sys
 import time
 from pymongo import MongoClient
-import getpass 
+import getpass
 from datetime import datetime, timedelta
 
 #Mongo Detail
@@ -36,10 +36,10 @@ def saveItems(browser, manifests):
     ITEM_HEADERS = ["name", "quantity", "price","model","grade"]
 
     for manifest in manifests:
-        auctionId = manifest["auction_id"] 
+        auctionId = manifest["auction_id"]
         #open transcations page
         browser.open("https://www.liquidation.com/aucimg/" + str(auctionId)[0:5]+ "/m"+ str(auctionId) +".html")#14429946
-        
+
         #checking for all formats
         soup = browser.get_current_page().table.table
         if soup == None:
@@ -51,7 +51,7 @@ def saveItems(browser, manifests):
         #going through rows of html table
         tr = soup.find_all("tr")
 
-        #Normalising headers from all manifests 
+        #Normalising headers from all manifests
         headers =  [x.get_text() for x in tr[0].find_all('td')]
         for i in range(len(headers)):
             if headers[i] in ["Item Description", "Item Title", "Title","Product"]:
@@ -66,10 +66,10 @@ def saveItems(browser, manifests):
                 headers[i] = "grade"
 
         print("Normalised Headers: ",headers)
-            
+
 
         for i in range(1,len(tr)-1):
-        
+
             #getting all columns
             td = tr[i].find_all('td')
 
@@ -82,7 +82,7 @@ def saveItems(browser, manifests):
                     detailDict = {}
 
                     for i in range(len(td)):
-                        
+
                         value = td[i].get_text().strip()
                         key = headers[i]
 
@@ -90,7 +90,7 @@ def saveItems(browser, manifests):
                         if key == "quantity":
                             detail_format = int(value)
                             detailDict[key] = detail_format
-                            
+
                         elif key == "price":
                             detail_format = float(value.strip("$"))
                             detailDict[key] = detail_format
@@ -99,14 +99,14 @@ def saveItems(browser, manifests):
                             detailDict[key] = value
 
 
-                    
+
                     items_dict[id] = detailDict
                 except Exception as ex:
                     print(ex)
                     print(td)
                     print(manifest)
                     print()
-            
+
             else:
                 #if product exists increase count
                 for i in range(len(td)):
@@ -115,7 +115,7 @@ def saveItems(browser, manifests):
 
                     if detailTitle == "quantity":
                         detail = int(detail.strip())
-                    
+
                         items_dict[id]['quantity'] += detail
 
         for key in items_dict:
@@ -134,7 +134,7 @@ def saveItems(browser, manifests):
                 "prices_sold":[]
             }
             productId = products_collection.insert_one(product).inserted_id
-          
+
 
 
             #ITEM
@@ -162,7 +162,7 @@ def saveItems(browser, manifests):
             #ITEM
 
             items_collection.update_one({"_id":item["_id"]},{"$set": {"draft_id":draft["_id"]}})
-            
+
 
 def saveManifests(browser):
 
@@ -218,7 +218,7 @@ def logIn():
         # Connect to Google
         browser = mechanicalsoup.StatefulBrowser()
         browser.open("https://www.liquidation.com/login")
-        
+
         browser.get_current_page()
         # Fill-in the form
         browser.select_form('form[id="loginForm"]')
@@ -235,19 +235,19 @@ def logIn():
             name = soup.find(id='signDetails').span.get_text()
             if name == None:
                 print("Not logged in. Try again.")
-           
+
             elif name != "Sign In":
                 print(name)
                 print("Logged In")
                 loggedIn = True
             else:
                 print("Not logged in. Try again.")
-        
+
         except:
 
             print("Not logged in. Try again.")
 
-       
+
 
     return(browser)
 def stall(sec):
