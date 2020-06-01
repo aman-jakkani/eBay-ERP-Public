@@ -147,7 +147,7 @@ def saveItems(manifests,browser):
             product_count = products_collection.count_documents({})
             product_count = "{0:0=4}".format(product_count)
             #Creating Unique SKU
-            sku = item['name'].split()[1] + str(product_count)
+            sku = item['name'].split()[0] + str(product_count)
             product = {
                 "sku": sku,
                 "quantity_sold":0,
