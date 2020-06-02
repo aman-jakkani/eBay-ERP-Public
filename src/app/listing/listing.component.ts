@@ -49,12 +49,11 @@ export class ListingComponent implements OnInit {
 
   }
 
-  onTabChanged($event){
-    let clickedIndex = $event.index;
-    if( clickedIndex == 0){
+  onTabChanged($event) {
+    const clickedIndex = $event.index;
+    if ( clickedIndex === 0) {
       this.getLiquidationManifests();
-    }
-    else {
+    } else {
       this.getTechManifests();
     }
   }

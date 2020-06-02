@@ -21,8 +21,8 @@
       <mat-label>Choose a manifest</mat-label>
       <mat-select name="manifest" (selectionChange)="getManifestDetails($event.value)">
         <mat-option *ngFor="let manifest of manifests;let i = index" value="{{manifest.id}}">
-          <p *ngIf="manifest.total_price >= 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}}</p>
-          <p *ngIf="manifest.total_price < 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}} &nbsp; &nbsp; &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}}</p>
+          <p *ngIf="manifest.total_price >= 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}} &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}}</p>
+          <p *ngIf="manifest.total_price < 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; &nbsp;  Date: {{manifest.date_purchased | date: 'M/d/yyyy'}} &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}}</p>
         </mat-option>
       </mat-select>
     </mat-form-field>
