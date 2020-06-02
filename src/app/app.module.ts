@@ -26,7 +26,8 @@ import {ErrorInterceptor} from './error-interceptor';
 import { AuthGuard } from './auth/auth.guard';
 
 const appRoutes: Routes =  [
-  {path: '', component: LoginComponent, canActivate: [AuthGuard]},
+  {path: '', component: LoginComponent},
+  {path: '', component: ListingComponent, outlet: 'secondary'},
   {path: 'home', component: ListingComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent}
