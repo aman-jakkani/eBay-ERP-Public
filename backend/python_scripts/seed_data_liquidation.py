@@ -169,7 +169,7 @@ def saveManifests(browser):
     #open transcations page
     browser.open("https://www.liquidation.com/account/main?tab=Transactions")
     soup = browser.get_current_page()
-    transactions_in_progress = soup.find("div",{"class": "flip-scroll"}).table.tbody
+    transactions_in_progress = soup.find("div",{"id": "content"})
 
     #mongo attributes for manifest collection
     headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source"]
@@ -177,9 +177,17 @@ def saveManifests(browser):
     manifests_list = []
     #geetting table rows
     tr = transactions_in_progress.find_all("tr")
-    for i in range(0,4):
 
-        td = tr[i].find_all('td')
+
+    for i in range(12):
+
+        try: 
+            td = tr[i].find_all('td')
+        except:
+            continue
+        if len(td) == 0:
+            continue
+
         data_to_add = []
 
         #formatting data -1 to not incude source
@@ -188,8 +196,22 @@ def saveManifests(browser):
             data_to_add.append(value)
 
         #converting time to date time
-        FMT = '%Y/%m/%d %H:%M:%S'
-        data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
+        
+        try:
+            FMT = '%Y/%m/%d %H:%M:%S'
+            data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
+        except Exception as ex  :
+            print("Exception occured while converting data",ex)
+            try:
+                status = data_to_add.pop(3)
+                data_to_add.append(status)
+                FMT = '%m/%d/%Y'
+                data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
+            except Exception as ex  :
+                print("Exception occured while converting data",ex)
+                raise Exception("Could not convert text to time")
+
+
 
         #creating dictionary to pass
         manifest = {
@@ -208,6 +230,7 @@ def saveManifests(browser):
         print(manifest)
         print()
         manifests_list.append(manifest)
+
     return manifests_list
 
 def logIn():
