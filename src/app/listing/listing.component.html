@@ -26,8 +26,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button *ngIf="!userSeeded" type="button" class="btn btn-sm btn-danger" (click)="seedUser()">Seed!</button>
-    <button *ngIf="userSeeded" type="button" class="btn btn-sm btn-success">Update Data</button>
+    <button *ngIf="!userSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser()">Seed!</button>
+    <button *ngIf="userSeeded" type="button" class="btn btn-sm btn-success seed">Update Data</button>
   </div>
 
 
