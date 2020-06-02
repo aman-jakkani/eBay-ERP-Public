@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import{Router, NavigationEnd} from '@angular/router';
 import { AuthService } from './auth/auth.service';
+import { Subscription } from 'rxjs';
 
 
 
@@ -17,7 +18,8 @@ declare let ga: Function;
 
 export class AppComponent implements OnInit{
   title = 'angularGoogleAnalytics';
-
+  userIsAuth = false;
+  private authListenerSubs: Subscription;
   constructor(public router: Router, private authService: AuthService){
 
     this.router.events.subscribe(event => {
@@ -33,5 +35,9 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     this.authService.autoAuthUser();
+    this.userIsAuth = this.authService.getIsAuth();
+    this.authListenerSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
+      this.userIsAuth = isAuth;
+    });
   }
 }
