@@ -1,13 +1,13 @@
 interface ManifestParameters {
-  id: string,
-  auction_title: string,
-  auction_id: number,
-  transaction_id: number,
-  quantity: number,
-  total_price: number,
-  date_purchased: Date,
-  status: string,
-  source: string
+  id: string;
+  auction_title: string;
+  auction_id: number;
+  transaction_id: number;
+  quantity: number;
+  total_price: number;
+  date_purchased: Date;
+  status: string;
+  source: string;
 }
 
 export class Manifest  {
@@ -20,7 +20,7 @@ export class Manifest  {
    readonly date_purchased: Date;
    readonly status: string;
    readonly source: string;
-  
+
   constructor({
     id,
     auction_title,
@@ -31,8 +31,8 @@ export class Manifest  {
     date_purchased,
     status,
     source
-  }:ManifestParameters){
-      this.id = id;     
+  }: ManifestParameters) {
+      this.id = id;
       this.auction_title = auction_title;
       this.auction_id = auction_id;
       this.transaction_id = transaction_id;

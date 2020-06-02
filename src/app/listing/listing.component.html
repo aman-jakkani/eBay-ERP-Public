@@ -21,8 +21,8 @@
       <mat-label>Choose a manifest</mat-label>
       <mat-select name="manifest" (selectionChange)="getManifestDetails($event.value)">
         <mat-option *ngFor="let manifest of manifests;let i = index" value="{{manifest.id}}">
-          <p *ngIf="manifest.total_price >= 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}} &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}}</p>
-          <p *ngIf="manifest.total_price < 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}} &nbsp; &nbsp; &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/d/yyyy'}}</p>
+          <p *ngIf="manifest.total_price >= 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; &nbsp; Date: {{manifest.date_purchased | date: 'M/dd/yyyy'}} &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}}</p>
+          <p *ngIf="manifest.total_price < 1000;">ID: {{manifest.transaction_id}} &emsp; &nbsp; &nbsp; &nbsp;  Date: {{manifest.date_purchased | date: 'M/dd/yyyy'}} &nbsp; &nbsp; Amount: {{manifest.total_price | currency: '$'}}</p>
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -79,7 +79,7 @@
 
         <tr   *ngFor="let product of products;let i = index" class="table-row">
 
-          <td  style="width: 15%;" class="table-detail">
+          <td  style="width: 13%;" class="table-detail">
 
             <input #skuInput class="form-control" formControlName="sku" value={{product.sku}} matTooltip="{{skuInput.value}}">
           </td>
@@ -93,7 +93,7 @@
                 <option value="Parts">Parts</option>
               </select>
           </td>
-          <td style="width: 15%;" class="table-detail">
+          <td style="width: 13%;" class="table-detail">
           <input #conditionD class="form-control" formControlName="conditionDesc"  value={{drafts[i].condition_desc}} placeholder="Item is in used good condition" matTooltip="{{conditionD.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
         </td>
           <td class="table-detail">{{items[i].quantity}}</td>

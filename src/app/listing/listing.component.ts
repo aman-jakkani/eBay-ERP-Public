@@ -60,12 +60,11 @@ export class ListingComponent implements OnInit, OnDestroy {
     this.authStatusSubs.unsubscribe();
   }
 
-  onTabChanged($event){
-    let clickedIndex = $event.index;
-    if( clickedIndex == 0){
+  onTabChanged($event) {
+    const clickedIndex = $event.index;
+    if ( clickedIndex === 0) {
       this.getLiquidationManifests();
-    }
-    else {
+    } else {
       this.getTechManifests();
     }
   }
@@ -186,7 +185,7 @@ export class ListingComponent implements OnInit, OnDestroy {
     });
   }
   updateSKUAgain(productID, newSKU, i) {
-    if(confirm('Updating your SKU may affect your tracking capabilities')) {
+    if (confirm('Updating your SKU may affect your tracking capabilities.')) {
       // const itm = this.items.filter(x => x.product_id === productID);
       this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
         const product: Product = data;
@@ -198,7 +197,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   updateDraft(i, title, cond, condDesc, price) {
-    alert("The draft has been saved!");
+    alert('The draft has been saved!');
     this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
       console.log(data);
       const draft: Draft = data;
@@ -206,7 +205,7 @@ export class ListingComponent implements OnInit, OnDestroy {
     });
   }
   updateDraftAgain(i, title, cond, condDesc, price) {
-    if(confirm('This will create another draft which has already been created')) {
+    if (confirm('Draft updated!')) {
       this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
         console.log(data);
         const draft: Draft = data;
@@ -216,7 +215,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   listDraft(i) {
-    if(confirm('You are about to mark your draft as listed!')) {
+    if (confirm('You are about to mark your item as listed!')) {
       this.mainService.listDraft(this.drafts[i].id).subscribe(data => {
         console.log(data);
         const draft: Draft = data;
@@ -226,7 +225,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   unlistDraft(i) {
-    if(confirm('You are about to mark your draft as unlisted!')) {
+    if (confirm('You are about to mark your item as unlisted!')) {
       this.mainService.unlistDraft(this.drafts[i].id).subscribe(data => {
         console.log(data);
         const draft: Draft = data;

@@ -20,3 +20,5 @@ To delete branches remotly: git branch origin --delete fix/authentication
 git reset --hard origin/development to move back to where the origin is. This will reset the state of the repository to the previous commit, and it will discard all local changes.
 
 More handy documentation: https://www.atlassian.com/git/tutorials/using-branches
+
+

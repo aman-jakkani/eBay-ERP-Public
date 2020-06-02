@@ -3,14 +3,14 @@ import mechanicalsoup
 import sys
 import time
 from pymongo import MongoClient
-import getpass 
+import getpass
 from datetime import datetime, timedelta
 
 #Mongo Detail
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
-db = client.dev_db
-client.drop_database("dev_db")
+db = client.test_db
+client.drop_database("test_db")
 
 manifests_collection = db.manifests
 items_collection = db.items
@@ -36,10 +36,10 @@ def saveItems(browser, manifests):
     ITEM_HEADERS = ["name", "quantity", "price","model","grade"]
 
     for manifest in manifests:
-        auctionId = manifest["auction_id"] 
+        auctionId = manifest["auction_id"]
         #open transcations page
         browser.open("https://www.liquidation.com/aucimg/" + str(auctionId)[0:5]+ "/m"+ str(auctionId) +".html")#14429946
-        
+
         #checking for all formats
         soup = browser.get_current_page().table.table
         if soup == None:
@@ -51,7 +51,7 @@ def saveItems(browser, manifests):
         #going through rows of html table
         tr = soup.find_all("tr")
 
-        #Normalising headers from all manifests 
+        #Normalising headers from all manifests
         headers =  [x.get_text() for x in tr[0].find_all('td')]
         for i in range(len(headers)):
             if headers[i] in ["Item Description", "Item Title", "Title","Product"]:
@@ -66,10 +66,10 @@ def saveItems(browser, manifests):
                 headers[i] = "grade"
 
         print("Normalised Headers: ",headers)
-            
+
 
         for i in range(1,len(tr)-1):
-        
+
             #getting all columns
             td = tr[i].find_all('td')
 
@@ -82,7 +82,7 @@ def saveItems(browser, manifests):
                     detailDict = {}
 
                     for i in range(len(td)):
-                        
+
                         value = td[i].get_text().strip()
                         key = headers[i]
 
@@ -90,7 +90,7 @@ def saveItems(browser, manifests):
                         if key == "quantity":
                             detail_format = int(value)
                             detailDict[key] = detail_format
-                            
+
                         elif key == "price":
                             detail_format = float(value.strip("$"))
                             detailDict[key] = detail_format
@@ -99,14 +99,14 @@ def saveItems(browser, manifests):
                             detailDict[key] = value
 
 
-                    
+
                     items_dict[id] = detailDict
                 except Exception as ex:
                     print(ex)
                     print(td)
                     print(manifest)
                     print()
-            
+
             else:
                 #if product exists increase count
                 for i in range(len(td)):
@@ -115,7 +115,7 @@ def saveItems(browser, manifests):
 
                     if detailTitle == "quantity":
                         detail = int(detail.strip())
-                    
+
                         items_dict[id]['quantity'] += detail
 
         for key in items_dict:
@@ -134,7 +134,7 @@ def saveItems(browser, manifests):
                 "prices_sold":[]
             }
             productId = products_collection.insert_one(product).inserted_id
-          
+
 
 
             #ITEM
@@ -153,7 +153,7 @@ def saveItems(browser, manifests):
                     "published_draft": False,
                     "listed": False,
                     "title": None,
-                    "condition": None,
+                    "condition": "Used",
                     "condition_desc": None,
                     "price": None,
                     "item_id": item["_id"]}
@@ -162,7 +162,7 @@ def saveItems(browser, manifests):
             #ITEM
 
             items_collection.update_one({"_id":item["_id"]},{"$set": {"draft_id":draft["_id"]}})
-            
+
 
 def saveManifests(browser):
 
@@ -172,7 +172,7 @@ def saveManifests(browser):
     transactions_in_progress = soup.find("div",{"class": "flip-scroll"}).table.tbody
 
     #mongo attributes for manifest collection
-    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status"]
+    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source"]
     #stores all the manifests
     manifests_list = []
     #geetting table rows
@@ -182,13 +182,15 @@ def saveManifests(browser):
         td = tr[i].find_all('td')
         data_to_add = []
 
-        #formatting data
-        for detailCount in range(len(headers)):
+        #formatting data -1 to not incude source
+        for detailCount in range(len(headers) - 1):
             value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
             data_to_add.append(value)
+
         #converting time to date time
         FMT = '%Y/%m/%d %H:%M:%S'
         data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
+
         #creating dictionary to pass
         manifest = {
         headers[0] : data_to_add[0],
@@ -197,7 +199,9 @@ def saveManifests(browser):
         headers[3] : int(data_to_add[3]),
         headers[4] : int("".join(filter(str.isdigit, data_to_add[4])))/100,
         headers[5] : data_to_add[5],
-        headers[6] : data_to_add[6]}
+        headers[6] : data_to_add[6],
+        headers[7] : "liquidation.com"}
+
         #inserting document into collection
         manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
@@ -214,7 +218,7 @@ def logIn():
         # Connect to Google
         browser = mechanicalsoup.StatefulBrowser()
         browser.open("https://www.liquidation.com/login")
-        
+
         browser.get_current_page()
         # Fill-in the form
         browser.select_form('form[id="loginForm"]')
@@ -230,20 +234,20 @@ def logIn():
         try:
             name = soup.find(id='signDetails').span.get_text()
             if name == None:
-                return False
-           
-            if name != "Sign In":
+                print("Not logged in. Try again.")
+
+            elif name != "Sign In":
                 print(name)
                 print("Logged In")
                 loggedIn = True
             else:
                 print("Not logged in. Try again.")
-        
+
         except:
 
             print("Not logged in. Try again.")
 
-       
+
 
     return(browser)
 def stall(sec):
