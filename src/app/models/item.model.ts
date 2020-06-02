@@ -31,7 +31,7 @@ export class Item {
     product_id,
     manifest_id,
     draft_id
-  }: ItemParameters){
+  }: ItemParameters) {
     this.id = id;
     this.name = name;
     this.quantity = quantity;
