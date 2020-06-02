@@ -101,7 +101,11 @@ router.get("/getProduct/:itemID", checkAuth, (req, res) => {
         product: document
       });
     });
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Product wasn't retrieved for the item!"
+    });
+  })
 });
 
 //getting draft of the item
@@ -114,7 +118,11 @@ router.get("/getDraft/:itemID", checkAuth, (req, res) => {
       message: "Draft fetched successfully",
       draft: draft
     });
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Could not get the draft of the item!"
+    });
+  })
 });
 
 //updating sku
