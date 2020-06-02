@@ -174,7 +174,7 @@ export class ListingComponent implements OnInit {
     });
   }
   updateSKUAgain(productID, newSKU, i) {
-    if (confirm('Updating your SKU may affect your tracking capabilities')) {
+    if (confirm('Updating your SKU may affect your tracking capabilities.')) {
       // const itm = this.items.filter(x => x.product_id === productID);
       this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
         const product: Product = data;
@@ -186,7 +186,7 @@ export class ListingComponent implements OnInit {
   }
 
   updateDraft(i, title, cond, condDesc, price) {
-    alert("The draft has been saved!");
+    alert('The draft has been saved!');
     this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
       console.log(data);
       const draft: Draft = data;
@@ -194,7 +194,7 @@ export class ListingComponent implements OnInit {
     });
   }
   updateDraftAgain(i, title, cond, condDesc, price) {
-    if (confirm('Updating draft!')) {
+    if (confirm('Draft updated!')) {
       this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
         console.log(data);
         const draft: Draft = data;
