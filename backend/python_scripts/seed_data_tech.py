@@ -24,7 +24,7 @@ from selenium.webdriver.support.ui import Select
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
 db = client.test_db
-# client.drop_database("test_db")
+client.drop_database("test_db")
 
 #Collections
 manifests_collection = db.manifests
@@ -34,11 +34,12 @@ drafts_collection = db.drafts
 
 
 def main():
-
-    browser = getBrowser()
+    #Logging in
+    browser = logInSelenium()
+    #Saving Manifests
     manifests = saveManifests(browser)
     print(manifests)
-
+    #Saving items
     saveItems(manifests,browser)
     print("Seeded data")
 
@@ -204,7 +205,7 @@ def saveManifests(browser):
     manifests_list = []
 
     tr = transactions.find_all("tr")
-    for i in range(0,4):
+    for i in range(0,10):
         value = tr[i].find_all('td')
 
 
@@ -299,7 +300,8 @@ def checkBrowserLogInStatus(browser):
         return False
 
 #tech liquidation log in test
-def logInSelenium(browser):
+def logInSelenium():
+    browser = webdriver.Chrome('./chromedriver')
 
     loggedIn = False
     while loggedIn == False:
