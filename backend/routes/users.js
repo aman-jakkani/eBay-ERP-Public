@@ -63,7 +63,8 @@ router.post("/login", (req, res, next) => {
       message: "Auth successful",
       token: token,
       expiresIn: 3600,
-      userID: fetchedUser._id
+      userID: fetchedUser._id,
+      seeded: fetchedUser.seeded
     });
   }).catch(err => {
     console.log(err);

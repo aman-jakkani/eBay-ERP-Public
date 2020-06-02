@@ -37,6 +37,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   userIsAuth = false;
   userId: string;
   private authStatusSubs: Subscription;
+  userSeeded: boolean;
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) { }
 
@@ -55,6 +56,7 @@ export class ListingComponent implements OnInit, OnDestroy {
       this.userIsAuth = isAuth;
     });
     this.userId = this.authService.getUserId();
+    this.userSeeded = this.authService.getSeeded();
 
   }
 
@@ -238,5 +240,6 @@ export class ListingComponent implements OnInit, OnDestroy {
 
   seedUser(){
     this.mainService.seedUser(this.userId);
+    this.userSeeded = true;
   }
 }
