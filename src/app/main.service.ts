@@ -230,6 +230,10 @@ export class MainService {
     });
   }
 
+  updateUserManifests(userId){
+
+  }
+
   getLinkData(url, siteNum){
     return this.http
     .get<{message: string; data: any}>(

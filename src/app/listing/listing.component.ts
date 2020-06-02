@@ -242,4 +242,8 @@ export class ListingComponent implements OnInit, OnDestroy {
     this.mainService.seedUser(this.userId);
     this.userSeeded = true;
   }
+
+  updateUser(){
+    this.mainService.updateUserManifests(this.userId);
+  }
 }
