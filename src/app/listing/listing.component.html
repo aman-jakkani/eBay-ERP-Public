@@ -79,7 +79,7 @@
 
         <tr   *ngFor="let product of products;let i = index" class="table-row">
 
-          <td  style="width: 15%;" class="table-detail">
+          <td  style="width: 13%;" class="table-detail">
 
             <input #skuInput class="form-control" formControlName="sku" value={{product.sku}} matTooltip="{{skuInput.value}}">
           </td>
@@ -93,7 +93,7 @@
                 <option value="Parts">Parts</option>
               </select>
           </td>
-          <td style="width: 15%;" class="table-detail">
+          <td style="width: 13%;" class="table-detail">
           <input #conditionD class="form-control" formControlName="conditionDesc"  value={{drafts[i].condition_desc}} placeholder="Item is in used good condition" matTooltip="{{conditionD.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
         </td>
           <td class="table-detail">{{items[i].quantity}}</td>
