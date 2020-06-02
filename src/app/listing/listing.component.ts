@@ -35,6 +35,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   ttInput: string;
   drafts: Draft[] = [];
   userIsAuth = false;
+  userId: string;
   private authStatusSubs: Subscription;
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) { }
@@ -53,6 +54,7 @@ export class ListingComponent implements OnInit, OnDestroy {
     this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
       this.userIsAuth = isAuth;
     });
+    this.userId = this.authService.getUserId();
 
   }
 
@@ -232,5 +234,9 @@ export class ListingComponent implements OnInit, OnDestroy {
         this.drafts[i] = draft;
       });
     }
+  }
+
+  seedUser(){
+    this.mainService.seedUser(this.userId);
   }
 }
