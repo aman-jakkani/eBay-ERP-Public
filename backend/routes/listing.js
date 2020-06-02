@@ -22,7 +22,11 @@ router.get("/getLiquidationManifests", checkAuth, (req, res) => {
       message: "Liquidation Manifests fetched succesfully",
       manifests: documents
     });
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Liquidation manifests couldn't be fetched!"
+    });
+  })
 
 });
 
@@ -37,7 +41,11 @@ router.get("/getTechManifests", checkAuth, (req, res) => {
       message: "Tech Liquidation Manifests fetched succesfully",
       manifests: documents
     });
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Tech Liquidator manifests couldn't be fetched!"
+    });
+  })
 
 });
 
@@ -71,7 +79,11 @@ router.get("/getItems/:manifestID", checkAuth, (req, res) => {
       message: "Items fetched succesfully",
       items: documents
     });
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Something went wrong while fetching items!"
+    });
+  })
 
 });
 
@@ -149,12 +161,20 @@ router.get("/updateSKU/:itemID/:newSKU", checkAuth,  (req, res) => {
       }
 
 
-    });
+    }).catch(err => {
+      res.status(500).json({
+        message: "SKU wasn't updated successfully!"
+      });
+    })
 
   });
   Draft.findOneAndUpdate({item_id: itemID}, {updated_SKU: true}, {new: true}).then(newDraft => {
     console.log("draft updated", newDraft);
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Draft wasn't updated successfully!"
+    });
+  })
 });
 
 //updating the draft
@@ -175,7 +195,11 @@ router.get("/updateDraft/:draftID/:newTitle/:newCondition/:newDesc/:newPrice", c
       message: "Draft updated successfully",
       draft: draft
     });
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Draft wasn't updated successfully!"
+    });
+  })
 });
 
 router.get("/listDraft/:draftID", checkAuth, (req, res) => {
@@ -187,7 +211,11 @@ router.get("/listDraft/:draftID", checkAuth, (req, res) => {
       message: "Draft listed successfully",
       draft: draft
     });
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Draft wasn't updated successfully!"
+    });
+  })
 });
 
 router.get("/unlistDraft/:draftID", checkAuth, (req, res) => {
@@ -199,7 +227,11 @@ router.get("/unlistDraft/:draftID", checkAuth, (req, res) => {
       message: "Draft unlisted successfully",
       draft: draft
     });
-  });
+  }).catch(err => {
+    res.status(500).json({
+      message: "Draft wasn't updated successfully!"
+    });
+  })
 });
 
 
