@@ -225,13 +225,13 @@ export class MainService {
   }
 
   seedUser(userId, source){
-    this.http.post<{message: string}>(BACKEND_URL+'/users/seed'+source, userId).subscribe(response => {
+    this.http.post<{message: string}>(BACKEND_URL+'/users/seed/'+source, userId).subscribe(response => {
       console.log("user seeded");
     });
   }
 
   updateUserManifests(userId,source){
-    this.http.post<{message: string}>(BACKEND_URL+'/users/updateData'+source, userId).subscribe(response => {
+    this.http.post<{message: string}>(BACKEND_URL+'/users/updateData/'+source, userId).subscribe(response => {
       console.log("user seeded");
     });
   }

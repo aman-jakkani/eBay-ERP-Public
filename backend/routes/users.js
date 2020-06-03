@@ -39,18 +39,18 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
   const password = prompt('What is your password' + source + '?');
 
   // spawn new child process to call the python script
-
+  var fileName;
   if (source === 'liquidation'){
-    const python = spawn('python3', ['../backend/python_scripts/seed_data_liquidation.py',username,password]);
+    fileName = 'seed_data_liquidation.py'
   } else if (source === 'techliquidators'){
-    const python = spawn('python3', ['../backend/python_scripts/seed_data_tech.py',username,password]);
+    fileName = 'seed_data_tech.py'
   } else {
     res.status(400).json({
       message: "Error source not found"
     });
   }
 
-
+  const python = spawn('python3', [('../backend/python_scripts/' + fileName)  ,username,password]);
   
   // collect data from script
   python.stdout.on('data', function (data) {
