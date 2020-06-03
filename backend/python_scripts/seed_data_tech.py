@@ -32,6 +32,9 @@ items_collection = db.items
 products_collection = db.products
 drafts_collection = db.drafts
 
+#Log in credentails from node
+userName = sys.argv[1]
+passWord = sys.argv[2]
 
 def main():
     #Logging in
@@ -185,7 +188,6 @@ def saveItems(manifests,browser):
             items_collection.update_one({"_id":item["_id"]},{"$set": {"draft_id":draft["_id"]}})
 
 
-
 def saveManifests(browser):
     # browser.get("https://techliquidators.com/index.cfm/p/7")
     # Already on right page
@@ -239,7 +241,6 @@ def saveManifests(browser):
 
 
     return manifests_list
-
 
 
 def getBrowser():
@@ -301,7 +302,7 @@ def checkBrowserLogInStatus(browser):
 
 #tech liquidation log in test
 def logInSelenium():
-    browser = webdriver.Chrome('./chromedriver')
+    browser = webdriver.Chrome('../backend/python_scripts/chromedriver')
 
     loggedIn = False
     while loggedIn == False:
@@ -313,8 +314,8 @@ def logInSelenium():
         login_submit = '//*[@id="loginSubmit"]'
 
         #User Inputs
-        username = input("User Name: ")
-        password = getpass.getpass("Password: ")
+        username = userName#input("User Name: ")
+        password = passWord#getpass.getpass("Password: ")
 
 
         #making sure elements are on screen

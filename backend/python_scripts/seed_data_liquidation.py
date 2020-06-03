@@ -17,7 +17,7 @@ items_collection = db.items
 products_collection = db.products
 drafts_collection = db.drafts
 
-
+#Log in credentails from node
 username = sys.argv[1]
 password = sys.argv[2]
 
