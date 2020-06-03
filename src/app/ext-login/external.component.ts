@@ -6,8 +6,9 @@ import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
   templateUrl: './external.component.html'
 })
 export class ExternalLoginComponent{
-
-  constructor(private dialogRef: MatDialogRef<ExternalLoginComponent>, @Inject(MAT_DIALOG_DATA) public data: {source: string}) {}
+  source: string;
+  constructor(private dialogRef: MatDialogRef<ExternalLoginComponent>, @Inject(MAT_DIALOG_DATA) data)
+    {this.source = data.source;}
 
   save(form: NgForm){
     this.dialogRef.close(form.value);

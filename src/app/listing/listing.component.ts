@@ -10,7 +10,7 @@ import { Item } from '../models/item.model';
 import { Draft } from '../models/draft.model';
 import { formatDate } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ExternalLoginComponent } from '../ext-login/external.component';
 
 @Component({
@@ -247,10 +247,14 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   updateUser(source: string){
-    const dialogRef = this.dialog.open(ExternalLoginComponent);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      source: source
+    };
+    const dialogRef = this.dialog.open(ExternalLoginComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(data => {
-      console.log(data);
+      this.mainService.updateUserManifests(data.username, data.password, this.userId, source);
     });
-    //this.mainService.updateUserManifests(this.userId,source);
+
   }
 }

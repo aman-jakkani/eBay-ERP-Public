@@ -33,12 +33,12 @@ router.post("/signup", (req, res, next) => {
 
 
 router.post("/updateData/:source", checkAuth, (req, res, next) => {
-  
+
   userId = req.userData.userID;
   const source = req.params.source;
 
-  const username = prompt('What is your username for ' + source + '?');
-  const password = prompt('What is your password' + source + '?');
+  const username = req.body.username;
+  const password = req.body.password;
 
   // spawn new child process to call the python script
   var fileName;
@@ -53,7 +53,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
   }
 
   const python = spawn('python3', [('../backend/python_scripts/' + fileName), username, password, userId]);
-  
+
   // collect data from script
   python.stdout.on('data', function (data) {
 
@@ -65,7 +65,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
   // in close event we are sure that stream is from child process is closed
   python.on('close', (code) => {
     console.log(`child process close all stdio with code ${code}`);
-  
+
     // res.status(200).json({
     //   message: "got link data",
     //   data: JSON.parse(largeDataSet.join(""))
@@ -84,16 +84,15 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     console.log("stderr");
     console.log(uint8arrayToString(data));
   });
-  
+
   python.on('exit', (code) => {
     console.log("Process quit with code : " + code);
   });
-
 });
 
 router.post("/seed/:source", checkAuth, (req, res, next) => {
   const source = req.params.source
-  
+
   User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{seeded: true}}).then(user => {
     res.status(200).json({
       message: "User updated!"
@@ -104,7 +103,7 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
       message: "Update failed"
     });
   })
-  
+
 });
 
 router.post("/login", (req, res, next) => {
