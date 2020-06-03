@@ -4,13 +4,15 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 const User = require("../models/user");
+const checkAuth = require("../middleware/check-auth");
 
 
 router.post("/signup", (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
     const user = new User({
       email: req.body.email,
-      password: hash
+      password: hash,
+      seeded: false
     });
     user.save().then(result =>{
       res.status(201).json({
@@ -19,10 +21,24 @@ router.post("/signup", (req, res, next) => {
       });
     }).catch(err => {
       res.status(500).json({
+        message: "This user already exists!",
         error: err
       })
     })
   });
+});
+
+router.post("/seed", checkAuth, (req, res, next) => {
+  User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{seeded: true}}).then(user => {
+    res.status(200).json({
+      message: "User updated!"
+    });
+  }).catch(err => {
+    console.log(err);
+    return res.status(401).json({
+      message: "Update failed"
+    });
+  })
 });
 
 router.post("/login", (req, res, next) => {
@@ -47,12 +63,14 @@ router.post("/login", (req, res, next) => {
     res.status(200).json({
       message: "Auth successful",
       token: token,
-      expiresIn: 3600
+      expiresIn: 3600,
+      userID: fetchedUser._id,
+      seeded: fetchedUser.seeded
     });
   }).catch(err => {
     console.log(err);
     return res.status(401).json({
-      message: "Auth failed"
+      message: "Invalid Authentication Credentials!"
     });
   });
 });

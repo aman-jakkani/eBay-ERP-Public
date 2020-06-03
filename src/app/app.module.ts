@@ -14,6 +14,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatDialogModule} from '@angular/material/dialog';
+import {MatButtonModule} from '@angular/material/button';
 
 
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import {ErrorInterceptor} from './error-interceptor';
 import { AuthGuard } from './auth/auth.guard';
+import { ErrorComponent } from './error/error.component';
 
 const appRoutes: Routes =  [
   {path: '', component: LoginComponent},
@@ -39,7 +41,8 @@ const appRoutes: Routes =  [
     HeaderComponent,
     ListingComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -57,9 +60,11 @@ const appRoutes: Routes =  [
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonModule
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, AuthGuard, {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ErrorComponent]
 })
 export class AppModule {}

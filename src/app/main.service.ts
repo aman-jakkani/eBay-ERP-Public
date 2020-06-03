@@ -11,6 +11,8 @@ import { Draft } from './models/draft.model';
 import { environment } from '../environments/environment';
 import { stringify } from '@angular/compiler/src/util';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { AuthData } from './auth/auth-data.model';
+import { AuthService } from './auth/auth.service';
 
 const BACKEND_URL = environment.apiUrl ;
 
@@ -18,8 +20,7 @@ const BACKEND_URL = environment.apiUrl ;
 export class MainService {
 
 
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   handleError(error) {
     let errorMessage = '';
@@ -221,6 +222,16 @@ export class MainService {
         });
         return newdraft;
       })).pipe(catchError(this.handleError));
+  }
+
+  seedUser(userId){
+    this.http.post<{message: string}>(BACKEND_URL+'/users/seed', userId).subscribe(response => {
+      console.log("user seeded");
+    });
+  }
+
+  updateUserManifests(userId){
+
   }
 
   getLinkData(url, siteNum){
