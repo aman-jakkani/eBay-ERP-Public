@@ -17,6 +17,10 @@ items_collection = db.items
 products_collection = db.products
 drafts_collection = db.drafts
 
+
+username = sys.argv[1]
+password = sys.argv[2]
+
 def main():
     #logging in to Liquidation Account
     browser = logIn()
@@ -247,8 +251,8 @@ def logIn():
         browser.select_form('form[id="loginForm"]')
 
         # browser.get_current_form().print_summary()
-        browser["j_username"] = input("User Name: ")
-        browser["j_password"] = getpass.getpass("Password: ")
+        browser["j_username"] =  username#input("User Name: ")
+        browser["j_password"] = password#getpass.getpass("Password: ")
 
         browser.submit_selected()
         #log in check

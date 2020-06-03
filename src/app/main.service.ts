@@ -231,7 +231,9 @@ export class MainService {
   }
 
   updateUserManifests(userId){
-
+    this.http.post<{message: string}>(BACKEND_URL+'/users/updateData', userId).subscribe(response => {
+      console.log("user seeded");
+    });
   }
 
   getLinkData(url, siteNum){

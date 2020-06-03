@@ -6,6 +6,9 @@ const router = express.Router();
 const User = require("../models/user");
 const checkAuth = require("../middleware/check-auth");
 
+const {spawn} = require('child_process');
+const prompt = require('prompt-sync')();
+
 
 router.post("/signup", (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
@@ -27,42 +30,32 @@ router.post("/signup", (req, res, next) => {
     })
   });
 });
+router.post("/updateData", checkAuth, (req, res, next) => {
 
-router.post("/seed", checkAuth, (req, res, next) => {
-  User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{seeded: true}}).then(user => {
-    res.status(200).json({
-      message: "User updated!"
-    });
-  }).catch(err => {
-    console.log(err);
-    return res.status(401).json({
-      message: "Update failed"
-    });
-  })
-
-
-  //USING FOR SEEDDATA TESTING
   const username = prompt('What is your username?');
   const password = prompt('What is your password?');
 
-  	// spawn new child process to call the python script
+    // spawn new child process to call the python script
   const python = spawn('python3', ['../backend/python_scripts/seed_data_liquidation.py',username,password]);
-	// collect data from script
-	python.stdout.on('data', function (data) {
+  // collect data from script
+  python.stdout.on('data', function (data) {
 
     pythonData = data;
     console.log(uint8arrayToString(data));
   });
 
 
-	// in close event we are sure that stream is from child process is closed
-	python.on('close', (code) => {
+  // in close event we are sure that stream is from child process is closed
+  python.on('close', (code) => {
     console.log(`child process close all stdio with code ${code}`);
   
     // res.status(200).json({
     //   message: "got link data",
     //   data: JSON.parse(largeDataSet.join(""))
     // });
+    res.status(200).json({
+      message: "data updated!"
+    });
   });
 
   var uint8arrayToString = function(data){
@@ -79,6 +72,24 @@ router.post("/seed", checkAuth, (req, res, next) => {
     console.log("Process quit with code : " + code);
   });
 
+  
+
+
+});
+router.post("/seed", checkAuth, (req, res, next) => {
+  User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{seeded: true}}).then(user => {
+    res.status(200).json({
+      message: "User updated!"
+    });
+  }).catch(err => {
+    console.log(err);
+    return res.status(401).json({
+      message: "Update failed"
+    });
+  })
+
+
+ 
   
 });
 
