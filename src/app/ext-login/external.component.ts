@@ -3,7 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
 
 @Component({
-  templateUrl: './external.component.html'
+  templateUrl: './external.component.html',
+  styleUrls: ['./external.component.css']
 })
 export class ExternalLoginComponent{
   source: string;
