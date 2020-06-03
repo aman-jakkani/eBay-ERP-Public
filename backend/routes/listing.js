@@ -20,7 +20,7 @@ router.get("/getLiquidationManifests", checkAuth, (req, res) => {
   var url = req.params.url;
   console.log(req.params);
 
-  Manifest.find({source: "liquidation.com"}).then(documents => {
+  Manifest.find({source: "liquidation.com", creator: req.userData.userId}).then(documents => {
     console.log(documents);
     res.status(200).json({
       message: "Liquidation Manifests fetched succesfully",
@@ -39,7 +39,7 @@ router.get("/getTechManifests", checkAuth, (req, res) => {
   var url = req.params.url;
   console.log(req.params);
 
-  Manifest.find({source: "techliquidators.com"}).then(documents => {
+  Manifest.find({source: "techliquidators.com", creator: req.userData.userId}).then(documents => {
     console.log(documents);
     res.status(200).json({
       message: "Tech Liquidation Manifests fetched succesfully",
@@ -292,7 +292,7 @@ router.get("/getLinkData/:url/:siteNum", (req, res) => {
     console.log("stderr");
     console.log(uint8arrayToString(data));
   });
-  
+
   python.on('exit', (code) => {
     console.log("Process quit with code : " + code);
   });
