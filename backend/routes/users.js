@@ -39,6 +39,47 @@ router.post("/seed", checkAuth, (req, res, next) => {
       message: "Update failed"
     });
   })
+
+
+  //USING FOR SEEDDATA TESTING
+  const username = prompt('What is your username?');
+  const password = prompt('What is your password?');
+
+  	// spawn new child process to call the python script
+  const python = spawn('python3', ['../backend/python_scripts/seed_data_liquidation.py',username,password]);
+	// collect data from script
+	python.stdout.on('data', function (data) {
+
+    pythonData = data;
+    console.log(uint8arrayToString(data));
+  });
+
+
+	// in close event we are sure that stream is from child process is closed
+	python.on('close', (code) => {
+    console.log(`child process close all stdio with code ${code}`);
+  
+    // res.status(200).json({
+    //   message: "got link data",
+    //   data: JSON.parse(largeDataSet.join(""))
+    // });
+  });
+
+  var uint8arrayToString = function(data){
+    return String.fromCharCode.apply(null, data);
+  };
+
+  python.stderr.on('data', (data) => {
+    // As said before, convert the Uint8Array to a readable string.
+    console.log("stderr");
+    console.log(uint8arrayToString(data));
+  });
+  
+  python.on('exit', (code) => {
+    console.log("Process quit with code : " + code);
+  });
+
+  
 });
 
 router.post("/login", (req, res, next) => {
