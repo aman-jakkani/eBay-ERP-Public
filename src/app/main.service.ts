@@ -230,7 +230,7 @@ export class MainService {
     });
   }
 
-  updateUserManifests(userId,source){
+  updateUserManifests(emal: string, password: string, userId, source){
     this.http.post<{message: string}>(BACKEND_URL+'/users/updateData/'+source, userId).subscribe(response => {
       console.log("user seeded");
     });

@@ -10,6 +10,8 @@ import { Item } from '../models/item.model';
 import { Draft } from '../models/draft.model';
 import { formatDate } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ExternalLoginComponent } from '../ext-login/external.component';
 
 @Component({
   selector: 'app-home',
@@ -41,7 +43,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   //local variable to track website
   source: string = "liquidation";
 
-  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getLiquidationManifests();
@@ -245,6 +247,10 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   updateUser(source: string){
-    this.mainService.updateUserManifests(this.userId,source);
+    const dialogRef = this.dialog.open(ExternalLoginComponent);
+    dialogRef.afterClosed().subscribe(data => {
+      console.log(data);
+    });
+    //this.mainService.updateUserManifests(this.userId,source);
   }
 }

@@ -26,6 +26,7 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import {ErrorInterceptor} from './error-interceptor';
 import { AuthGuard } from './auth/auth.guard';
 import { ErrorComponent } from './error/error.component';
+import {ExternalLoginComponent} from './ext-login/external.component';
 
 const appRoutes: Routes =  [
   {path: '', component: LoginComponent},
@@ -42,7 +43,8 @@ const appRoutes: Routes =  [
     ListingComponent,
     LoginComponent,
     SignupComponent,
-    ErrorComponent
+    ErrorComponent,
+    ExternalLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -65,6 +67,6 @@ const appRoutes: Routes =  [
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}, AuthGuard, {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}],
   bootstrap: [AppComponent],
-  entryComponents: [ErrorComponent]
+  entryComponents: [ErrorComponent, ExternalLoginComponent]
 })
 export class AppModule {}

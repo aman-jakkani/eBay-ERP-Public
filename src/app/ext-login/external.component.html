@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Enter your {{source}} credentials</h1>
+<mat-dialog-content>
+  <form #loginForm="ngForm">
+      <mat-form-field>
+        <input matInput name="username" ngModel class="form-control" placeholder="Username" #usernameInput="ngModel" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput name="password" ngModel class="form-control" type="password" placeholder="Password" #passwordInput="ngModel" required>
+        <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
+      </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="save(loginForm)">Get Data</button>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
