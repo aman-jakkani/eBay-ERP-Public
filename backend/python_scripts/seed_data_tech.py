@@ -337,8 +337,8 @@ def logInSelenium():
         loggedIn = checkBrowserLogInStatus(browser)
 
     #Saving cookies
-    with open("techLiquidatorCookies.pickle","wb") as f:
-        pickle.dump(browser.get_cookies(),f)
+    # with open("techLiquidatorCookies.pickle","wb") as f:
+    #     pickle.dump(browser.get_cookies(),f)
 
 
     return(browser)

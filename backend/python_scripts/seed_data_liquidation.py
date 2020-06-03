@@ -146,6 +146,7 @@ def saveItems(browser, manifests):
             #add manifestID
             item["manifest_id"] = manifest["_id"]
             item["product_id"] = product["_id"]
+            item["user_id"] = userID
 
             #insert item
             itemId = items_collection.insert_one(item).inserted_id
@@ -177,7 +178,7 @@ def saveManifests(browser):
     transactions_in_progress = soup.find("div",{"id": "content"})
 
     #mongo attributes for manifest collection
-    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source"]
+    headers = ["auction_title", "auction_id", "transaction_id","quantity","total_price","date_purchased","status","source","user_id"]
     #stores all the manifests
     manifests_list = []
     #geetting table rows
@@ -195,8 +196,8 @@ def saveManifests(browser):
 
         data_to_add = []
 
-        #formatting data -1 to not incude source
-        for detailCount in range(len(headers) - 1):
+        #formatting data -1 to not incude source and userid
+        for detailCount in range(len(headers) - 2):
             value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
             data_to_add.append(value)
 
@@ -227,7 +228,8 @@ def saveManifests(browser):
         headers[4] : int("".join(filter(str.isdigit, data_to_add[4])))/100,
         headers[5] : data_to_add[5],
         headers[6] : data_to_add[6],
-        headers[7] : "liquidation.com"}
+        headers[7] : "liquidation.com",
+        headers[8] : userID}
 
         #inserting document into collection
         manifests_id = manifests_collection.insert_one(manifest).inserted_id
