@@ -224,14 +224,14 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
-  seedUser(userId){
-    this.http.post<{message: string}>(BACKEND_URL+'/users/seed', userId).subscribe(response => {
+  seedUser(userId, source){
+    this.http.post<{message: string}>(BACKEND_URL+'/users/seed'+source, userId).subscribe(response => {
       console.log("user seeded");
     });
   }
 
-  updateUserManifests(userId){
-    this.http.post<{message: string}>(BACKEND_URL+'/users/updateData', userId).subscribe(response => {
+  updateUserManifests(userId,source){
+    this.http.post<{message: string}>(BACKEND_URL+'/users/updateData'+source, userId).subscribe(response => {
       console.log("user seeded");
     });
   }

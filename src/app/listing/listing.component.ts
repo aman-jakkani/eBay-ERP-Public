@@ -38,6 +38,8 @@ export class ListingComponent implements OnInit, OnDestroy {
   userId: string;
   private authStatusSubs: Subscription;
   userSeeded: boolean;
+  //local variable to track website
+  source: string = "liquidation";
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService) { }
 
@@ -67,8 +69,10 @@ export class ListingComponent implements OnInit, OnDestroy {
   onTabChanged($event) {
     const clickedIndex = $event.index;
     if ( clickedIndex === 0) {
+      this.source= "liquidation";
       this.getLiquidationManifests();
     } else {
+      this.source= "techliquidators";
       this.getTechManifests();
     }
   }
@@ -173,9 +177,6 @@ export class ListingComponent implements OnInit, OnDestroy {
       }
       return 'out of loop';
     })();
-
-
-
   }
 
   updateSKU(productID, newSKU, i) {
@@ -238,12 +239,12 @@ export class ListingComponent implements OnInit, OnDestroy {
     }
   }
 
-  seedUser(){
-    this.mainService.seedUser(this.userId);
+  seedUser(source: string){
+    this.mainService.seedUser(this.userId, source);
     this.userSeeded = true;
   }
 
-  updateUser(){
-    this.mainService.updateUserManifests(this.userId);
+  updateUser(source: string){
+    this.mainService.updateUserManifests(this.userId,source);
   }
 }

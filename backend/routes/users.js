@@ -30,13 +30,28 @@ router.post("/signup", (req, res, next) => {
     })
   });
 });
-router.post("/updateData", checkAuth, (req, res, next) => {
 
-  const username = prompt('What is your username?');
-  const password = prompt('What is your password?');
 
-    // spawn new child process to call the python script
-  const python = spawn('python3', ['../backend/python_scripts/seed_data_liquidation.py',username,password]);
+router.post("/updateData/:source", checkAuth, (req, res, next) => {
+  const source = req.params.source
+
+  const username = prompt('What is your username for ' + source + '?');
+  const password = prompt('What is your password' + source + '?');
+
+  // spawn new child process to call the python script
+
+  if (source === 'liquidation'){
+    const python = spawn('python3', ['../backend/python_scripts/seed_data_liquidation.py',username,password]);
+  } else if (source === 'techliquidators'){
+    const python = spawn('python3', ['../backend/python_scripts/seed_data_tech.py',username,password]);
+  } else {
+    res.status(400).json({
+      message: "Error source not found"
+    });
+  }
+
+
+  
   // collect data from script
   python.stdout.on('data', function (data) {
 
@@ -76,7 +91,9 @@ router.post("/updateData", checkAuth, (req, res, next) => {
 
 
 });
-router.post("/seed", checkAuth, (req, res, next) => {
+router.post("/seed/:source", checkAuth, (req, res, next) => {
+  const source = req.params.source
+  
   User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{seeded: true}}).then(user => {
     res.status(200).json({
       message: "User updated!"
