@@ -11,6 +11,7 @@ var manifest_schema = mongoose.Schema({
     date_purchased: {type: Date, required: true},
     status: {type: String},
     source: {type: String},
+    user_id: {type: String},
     products: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product'

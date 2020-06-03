@@ -20,6 +20,7 @@ drafts_collection = db.drafts
 #Log in credentails from node
 username = sys.argv[1]
 password = sys.argv[2]
+userID = sys.argv[3]
 
 def main():
     #logging in to Liquidation Account

@@ -33,7 +33,9 @@ router.post("/signup", (req, res, next) => {
 
 
 router.post("/updateData/:source", checkAuth, (req, res, next) => {
-  const source = req.params.source
+  
+  userId = req.userData.userID;
+  const source = req.params.source;
 
   const username = prompt('What is your username for ' + source + '?');
   const password = prompt('What is your password' + source + '?');
@@ -50,7 +52,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     });
   }
 
-  const python = spawn('python3', [('../backend/python_scripts/' + fileName)  ,username,password]);
+  const python = spawn('python3', [('../backend/python_scripts/' + fileName), username, password, userId]);
   
   // collect data from script
   python.stdout.on('data', function (data) {
@@ -87,10 +89,8 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     console.log("Process quit with code : " + code);
   });
 
-  
-
-
 });
+
 router.post("/seed/:source", checkAuth, (req, res, next) => {
   const source = req.params.source
   
@@ -104,9 +104,6 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
       message: "Update failed"
     });
   })
-
-
- 
   
 });
 

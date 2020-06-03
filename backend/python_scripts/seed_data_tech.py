@@ -35,6 +35,7 @@ drafts_collection = db.drafts
 #Log in credentails from node
 userName = sys.argv[1]
 passWord = sys.argv[2]
+userID = sys.argv[3]
 
 def main():
     #Logging in
@@ -165,6 +166,7 @@ def saveItems(manifests,browser):
             #add manifestID
             item["manifest_id"] = manifest["_id"]
             item["product_id"] = product["_id"]
+            item["user_id"] = userID
 
             #insert item
             itemId = items_collection.insert_one(item).inserted_id
@@ -228,7 +230,8 @@ def saveManifests(browser):
           "total_price" : int("".join(filter(str.isdigit, formatValue(value[4]))))/100,
           "date_purchased" : date,
           "status" : formatValue(value[8]).split(" ")[0],
-          "source" : "techliquidators.com" }
+          "source" : "techliquidators.com" ,
+          "user_id": userID}
 
 
 
