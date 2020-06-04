@@ -18,9 +18,12 @@ products_collection = db.products
 drafts_collection = db.drafts
 
 #Log in credentails from node
-username = sys.argv[1]
-password = sys.argv[2]
-userID = sys.argv[3]
+try:
+    username = sys.argv[1]
+    password = sys.argv[2]
+    userID = sys.argv[3]
+except:
+    print("ERROR Could not get Parameters")
 
 def main():
     #logging in to Liquidation Account
@@ -247,20 +250,28 @@ def logIn():
         print("Trying to log in to liquidation")
         # Connect to Google
         browser = mechanicalsoup.StatefulBrowser()
+        
+        browser.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
+        })
         browser.open("https://www.liquidation.com/login")
-
+        
+        
+        print(browser.session.headers)
+        
         browser.get_current_page()
         # Fill-in the form
         browser.select_form('form[id="loginForm"]')
 
         # browser.get_current_form().print_summary()
-        browser["j_username"] =  username#input("User Name: ")
-        browser["j_password"] = password#getpass.getpass("Password: ")
+        browser["j_username"] =  input("User Name: ")
+        browser["j_password"] = getpass.getpass("Password: ")
 
         browser.submit_selected()
         #log in check
         browser.open("https://www.liquidation.com/account/main")
         soup = browser.get_current_page()
+        
         try:
             name = soup.find(id='signDetails').span.get_text()
             if name == None:
