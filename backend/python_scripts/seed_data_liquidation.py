@@ -257,8 +257,8 @@ def logIn():
         browser.select_form('form[id="loginForm"]')
 
         # browser.get_current_form().print_summary()
-        browser["j_username"] =  input("User Name: ")
-        browser["j_password"] = getpass.getpass("Password: ")
+        browser["j_username"] = username#input("User Name: ")
+        browser["j_password"] = password#getpass.getpass("Password: ")
 
         browser.submit_selected()
         #log in check
