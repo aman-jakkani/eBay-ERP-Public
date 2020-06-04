@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from "@angular/core";
+import { Component, Inject} from "@angular/core";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
+import { NgForm } from "@angular/forms";
 
 @Component({
   templateUrl: './external.component.html',
