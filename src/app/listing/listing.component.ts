@@ -189,6 +189,7 @@ export class ListingComponent implements OnInit, OnDestroy {
       console.log(data);
       this.products[i] = product;
       this.drafts[i].updated_SKU = true;
+      this.drafts[i].listed = true;
     });
   }
   updateSKUAgain(productID, newSKU, i) {
@@ -199,6 +200,7 @@ export class ListingComponent implements OnInit, OnDestroy {
         console.log(data);
         this.products[i] = product;
         this.drafts[i].updated_SKU = true;
+        this.drafts[i].listed = true;
       });
     }
   }

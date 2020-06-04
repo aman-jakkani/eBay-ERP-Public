@@ -180,7 +180,7 @@ router.get("/updateSKU/:itemID/:newSKU", checkAuth,  (req, res) => {
     })
 
   });
-  Draft.findOneAndUpdate({item_id: itemID}, {updated_SKU: true}, {new: true}).then(newDraft => {
+  Draft.findOneAndUpdate({item_id: itemID}, {"$set":{updated_SKU: true, listed: true}}, {new: true}).then(newDraft => {
     console.log("draft updated", newDraft);
   }).catch(err => {
     res.status(500).json({
