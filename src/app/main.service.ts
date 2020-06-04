@@ -230,8 +230,9 @@ export class MainService {
     });
   }
 
-  updateUserManifests(userId,source){
-    this.http.post<{message: string}>(BACKEND_URL+'/users/updateData/'+source, userId).subscribe(response => {
+  updateUserManifests(username: string, password: string, userId, source){
+    const dataPackage = {username: username, password: password, userId: userId};
+    this.http.post<{message: string}>(BACKEND_URL+'/users/updateData/'+source, dataPackage).subscribe(response => {
       console.log("user seeded");
     });
   }

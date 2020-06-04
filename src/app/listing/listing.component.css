@@ -23,6 +23,11 @@
     order: 3;
 }
 
+.dialog{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  }
 
 .items-table{
     order: 0;
