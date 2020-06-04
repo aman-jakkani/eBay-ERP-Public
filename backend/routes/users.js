@@ -56,7 +56,6 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
 
   // collect data from script
   python.stdout.on('data', function (data) {
-
     pythonData = data;
     console.log(uint8arrayToString(data));
   });
@@ -66,10 +65,6 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
   python.on('close', (code) => {
     console.log(`child process close all stdio with code ${code}`);
 
-    // res.status(200).json({
-    //   message: "got link data",
-    //   data: JSON.parse(largeDataSet.join(""))
-    // });
     res.status(200).json({
       message: "data updated!"
     });

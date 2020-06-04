@@ -23,17 +23,16 @@ try:
     password = sys.argv[2]
     userID = sys.argv[3]
 except:
-    print("ERROR Could not get Parameters")
+    sys.exit("ERROR Could not get Parameters")
 
 def main():
     #logging in to Liquidation Account
     browser = logIn()
-    manifests_list = saveManifests(browser)
-
-    saveItems(browser,manifests_list)
-
-
     #get and save manifest
+    manifests_list = saveManifests(browser)
+    #save items to db
+    saveItems(browser,manifests_list)
+    #Signify seeding was successful
     print("Data seeded")
 
 def saveItems(browser, manifests):
@@ -74,6 +73,7 @@ def saveItems(browser, manifests):
                 headers[i] = "grade"
 
         print("Normalised Headers: ",headers)
+        print()
 
 
         for i in range(1,len(tr)-1):
@@ -111,8 +111,8 @@ def saveItems(browser, manifests):
                     items_dict[id] = detailDict
                 except Exception as ex:
                     print(ex)
-                    print(td)
-                    print(manifest)
+                    print("Row:", td)
+                    print("Manifest",manifest)
                     print()
 
             else:
@@ -154,8 +154,7 @@ def saveItems(browser, manifests):
             #insert item
             itemId = items_collection.insert_one(item).inserted_id
 
-            print(item)
-            print()
+
 
             #DRAFT
             draft = {"updated_SKU": False,
@@ -217,8 +216,7 @@ def saveManifests(browser):
                 FMT = '%m/%d/%Y'
                 data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
             except Exception as ex  :
-                print("Exception occured while converting data",ex)
-                raise Exception("Could not convert text to time")
+                print("Exception occured while converting data. This should not happen.",ex)
 
 
 
@@ -237,8 +235,6 @@ def saveManifests(browser):
         #inserting document into collection
         manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
-        print(manifest)
-        print()
         manifests_list.append(manifest)
 
     return manifests_list
@@ -255,10 +251,7 @@ def logIn():
             'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
         })
         browser.open("https://www.liquidation.com/login")
-        
-        
-        print(browser.session.headers)
-        
+                
         browser.get_current_page()
         # Fill-in the form
         browser.select_form('form[id="loginForm"]')
