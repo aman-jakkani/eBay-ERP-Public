@@ -14,5 +14,8 @@ export class ExternalLoginComponent{
   save(form: NgForm){
     this.dialogRef.close(form.value);
   }
+  close(){
+    this.dialogRef.close();
+  }
 
 }
