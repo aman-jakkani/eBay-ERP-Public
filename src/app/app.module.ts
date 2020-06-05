@@ -27,13 +27,15 @@ import {ErrorInterceptor} from './error-interceptor';
 import { AuthGuard } from './auth/auth.guard';
 import { ErrorComponent } from './error/error.component';
 import {ExternalLoginComponent} from './ext-login/external.component';
+import { AnalysisComponent } from './analysis/analysis.component';
 
 const appRoutes: Routes =  [
   {path: '', component: LoginComponent},
   {path: '', component: ListingComponent, outlet: 'secondary'},
   {path: 'home', component: ListingComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
-  {path: 'signup', component: SignupComponent}
+  {path: 'signup', component: SignupComponent},
+  {path: 'analysis', component: AnalysisComponent}
 ];
 
 @NgModule({
@@ -44,7 +46,8 @@ const appRoutes: Routes =  [
     LoginComponent,
     SignupComponent,
     ErrorComponent,
-    ExternalLoginComponent
+    ExternalLoginComponent,
+    AnalysisComponent
   ],
   imports: [
     BrowserModule,

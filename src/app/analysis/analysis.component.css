@@ -1,0 +1,87 @@
+.selector{
+  padding-top: 1%;
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.selector{
+  order: 0;
+}
+
+.auction-title{
+  order: 1;
+}
+.tables{
+  order: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.summary{
+  order: 3;
+}
+
+.dialog{
+display: flex;
+flex-direction: row;
+justify-content: center;
+}
+
+.items-table{
+  order: 0;
+  width: 30%;
+}
+
+.products-table{
+  order: 1;
+  width: 70%;
+  margin-left: 20px;
+}
+
+.table-row{
+  height: 60px;
+}
+
+.table-detail{
+  vertical-align: middle;
+}
+
+.form-btn{
+ width: 90px;
+ height: 80%;
+ margin:0 auto;
+ display:block;
+ font-size: 12px;
+}
+
+.seed{
+width: 120px;
+margin-left: 20px;
+height: 40px;
+}
+.btn-detail{
+  width: 5%;
+}
+
+.mat-select-panel mat-option.mat-option {
+margin: 1rem 0;
+overflow: visible;
+line-height: initial;
+word-wrap: break-word;
+white-space: pre-wrap;
+}
+
+.mat-option-text.mat-option-text {
+white-space: normal;
+}
+
+.light-text{
+    font-weight: 300;
+    /* font-size: 16px; */
+}
+
+::ng-deep .colorGreen{
+  color:green;
+}
