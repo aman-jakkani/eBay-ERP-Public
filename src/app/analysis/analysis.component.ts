@@ -18,7 +18,7 @@ import { ExternalLoginComponent } from '../ext-login/external.component';
   templateUrl: './analysis.component.html',
   styleUrls: ['./analysis.component.css']
 })
-export class AnalysisComponent {
+export class AnalysisComponent implements OnInit, OnDestroy {
 
 
   // total quantity of items in auction
@@ -47,14 +47,6 @@ export class AnalysisComponent {
 
   ngOnInit() {
     this.getLiquidationManifests();
-    // Form for link input
-    this.draft = new FormGroup({
-      sku: new FormControl(null, {}),
-      title: new FormControl(null, {}),
-      condition: new FormControl('Used', {}),
-      conditionDesc: new FormControl(null, {}),
-      price: new FormControl(null, {}),
-    });
     this.userIsAuth = this.authService.getIsAuth();
     this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
       this.userIsAuth = isAuth;
@@ -179,68 +171,6 @@ export class AnalysisComponent {
       }
       return 'out of loop';
     })();
-  }
-
-  updateSKU(productID, newSKU, i) {
-    alert("The SKU has been updated!");
-    // const itm = this.items.filter(x => x.product_id === productID); - if multiple items have the same the products this wouldnt work
-    this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
-      const product: Product = data;
-      console.log(data);
-      this.products[i] = product;
-      this.drafts[i].updated_SKU = true;
-      this.drafts[i].listed = true;
-    });
-  }
-  updateSKUAgain(productID, newSKU, i) {
-    if (confirm('Updating your SKU may affect your tracking capabilities.')) {
-      // const itm = this.items.filter(x => x.product_id === productID);
-      this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
-        const product: Product = data;
-        console.log(data);
-        this.products[i] = product;
-        this.drafts[i].updated_SKU = true;
-        this.drafts[i].listed = true;
-      });
-    }
-  }
-
-  updateDraft(i, title, cond, condDesc, price) {
-    alert('The draft has been saved!');
-    this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
-      console.log(data);
-      const draft: Draft = data;
-      this.drafts[i] = draft;
-    });
-  }
-  updateDraftAgain(i, title, cond, condDesc, price) {
-    if (confirm('Draft updated!')) {
-      this.mainService.updateDraft(this.drafts[i].id, title, cond, condDesc, price).subscribe(data => {
-        console.log(data);
-        const draft: Draft = data;
-        this.drafts[i] = draft;
-      });
-    }
-  }
-
-  listDraft(i) {
-    if (confirm('You are about to mark your item as listed!')) {
-      this.mainService.listDraft(this.drafts[i].id).subscribe(data => {
-        console.log(data);
-        const draft: Draft = data;
-        this.drafts[i] = draft;
-      });
-    }
-  }
-
-  unlistDraft(i) {
-    if (confirm('You are about to mark your item as unlisted!')) {
-      this.mainService.unlistDraft(this.drafts[i].id).subscribe(data => {
-        console.log(data);
-        const draft: Draft = data;
-        this.drafts[i] = draft;
-      });
-    }
   }
 
   seedUser(source: string){

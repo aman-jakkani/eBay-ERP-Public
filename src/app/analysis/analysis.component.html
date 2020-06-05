@@ -32,93 +32,28 @@
 
 
   <h4 *ngIf="current_manifest" class="auction-title">{{ current_manifest.auction_title }}</h4>
-  <form class="tables" [formGroup]="draft">
+  <table class="table table-striped items-table">
+    <thead>
+      <tr style="font-weight: 700;" align="center" bgcolor="99CCFF">
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>MSRP</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of items;let i = index" class="table-row ">
+        <td class="table-detail" >{{item.name}}</td>
+        <td class="table-detail">{{ item.quantity }}</td>
+        <td class="table-detail">{{ item.price }}</td>
 
-
-
-    <table class="table table-striped items-table">
-      <thead>
-        <tr style="font-weight: 700;" align="center" bgcolor="99CCFF">
-          <th>Item</th>
-          <th>Quantity</th>
-          <th>MSRP</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of items;let i = index" class="table-row ">
-          <td class="table-detail" >{{item.name}}</td>
-          <td class="table-detail">{{ item.quantity }}</td>
-          <td class="table-detail">{{ item.price }}</td>
-
-        </tr>
-        <tr style="font-weight: 700;" align="center" >
-          <th >Total</th>
-          <th>{{manifestQuantity}}</th>
-          <th>${{priceTotal.toFixed(2)}}</th>
-        </tr>
-      </tbody>
-    </table>
-
-
-
-    <table class="table table-striped products-table">
-      <thead>
-        <tr style="font-weight: 700;" align="center" bgcolor="99CCFF">
-          <th>SKU</th>
-          <th>Listing Title</th>
-          <th>Condition</th>
-          <th>Condition Desc</th>
-
-          <th>Quantity</th>
-          <th>List Price</th>
-          <th></th>
-          <th></th>
-          <th></th>
-
-        </tr>
-      </thead>
-      <tbody *ngIf="products">
-
-        <tr   *ngFor="let product of products;let i = index" class="table-row">
-
-          <td  style="width: 13%;" class="table-detail">
-
-            <input #skuInput class="form-control" formControlName="sku" value={{product.sku}} matTooltip="{{skuInput.value}}">
-          </td>
-          <td class="table-detail">
-          <input #titleInput class="form-control" formControlName="title" value={{drafts[i].title}} placeholder="Sony XM3" matTooltip="{{titleInput.value}}" [matTooltipShowDelay]="450" maxlength="80">
-          </td>
-          <td class="table-detail">
-              <select #conditionInput class="form-control"  formControlName="condition" [(value)]="drafts[i].condition" matTooltip="{{conditionInput.value}}">
-                <option value="Used"> Used</option>
-                <option value="New Open">New Open</option>
-                <option value="Parts">Parts</option>
-              </select>
-          </td>
-          <td style="width: 13%;" class="table-detail">
-          <input #conditionD class="form-control" formControlName="conditionDesc"  value={{drafts[i].condition_desc}} placeholder="Item is in used good condition" matTooltip="{{conditionD.value}}" [matTooltipShowDelay]="450"  maxlength="1000">
-        </td>
-          <td class="table-detail">{{items[i].quantity}}</td>
-          <td class="table-detail" style="width: 10%;"><input  #price class="form-control" formControlName="price" value={{drafts[i].price}} placeholder="$350" ></td>
-          <td class="table-detail btn-detail">
-            <button *ngIf="!drafts[i].published_draft" type="button" class="btn form-btn btn-light" (click)="updateDraft(i, titleInput.value, conditionInput.value, conditionD.value, price.value)" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
-            <button *ngIf="drafts[i].published_draft" type="button" class="btn form-btn btn-success" (click)="updateDraftAgain(i, titleInput.value, conditionInput.value, conditionD.value, price.value)" matTooltip="Save this draft" [matTooltipShowDelay]="500">Save Draft</button>
-          </td>
-          <td class="table-detail btn-detail">
-              <button *ngIf="!drafts[i].updated_SKU" (click)="updateSKU(product.id, skuInput.value,i)" class="btn btn-light form-btn" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
-            <button *ngIf="drafts[i].updated_SKU" (click)="updateSKUAgain(product.id, skuInput.value,i)" class="btn btn-success form-btn" matTooltip="Update the SKU value" [matTooltipShowDelay]="500">Update SKU</button>
-          </td>
-          <td class="table-detail btn-detail">
-            <button *ngIf="!drafts[i].listed" (click)="listDraft(i)" type="button" class="btn form-btn btn-sm btn-danger">Not Listed</button>
-            <button *ngIf="drafts[i].listed" (click)="unlistDraft(i)" type="button" class="btn form-btn btn-sm btn-success">Listed</button>
-          </td>
-
-        </tr>
-
-      </tbody>
-    </table>
-
-</form>
+      </tr>
+      <tr style="font-weight: 700;" align="center" >
+        <th >Total</th>
+        <th>{{manifestQuantity}}</th>
+        <th>${{priceTotal.toFixed(2)}}</th>
+      </tr>
+    </tbody>
+  </table>
 
   <br>
   <h4 *ngIf="current_manifest" class="summary">Trans ID: <span class="light-text">{{current_manifest.transaction_id}}</span> &emsp; &nbsp; &nbsp; Amount: <span  class="light-text">
