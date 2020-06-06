@@ -12,7 +12,9 @@ const Draft = require("./models/draft");
 
 const userRoutes = require("./routes/users");
 const listingRoutes = require("./routes/listing");
+const analysisRoutes = require("./routes/analysis");
 
+const Ebay = require('ebay-node-api');
 
 const app = express();
 const {spawn} = require('child_process');
@@ -43,8 +45,25 @@ app.use((req, res, next) => {
   next();
 });
 
+let ebay = new Ebay({
+  clientID: "V4ULLC-Inventor-PRD-c2eba4255-ca5c65cc",
+  clientSecret: "PRD-2eba425576de-54b9-4b1c-aee8-51e4",
+  body: {
+    grant_type: 'client_credentials',
+    scope: 'https://api.ebay.com/oauth/api_scope'
+  }
+});
+
 app.use("/api/users", userRoutes);
 app.use("/api/listing", listingRoutes);
+
+app.get("/testEbay", (req, res) => {
+  ebay.getAccessToken().then((data) => {
+    console.log(data); // data.access_token
+  }, (error) => {
+    console.log(error);
+  });
+});
 
 
 module.exports = app;
