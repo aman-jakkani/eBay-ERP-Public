@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="!userIsAuth">
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form (submit)="onLogin(loginForm)" *ngIf="!isLoading" #loginForm="ngForm">
     <div class="form-group">
@@ -17,5 +17,11 @@
     <button *ngIf="!isLoading" mat-raised-button color="accent" class="btn-default btn-lg" type="submit">Login</button>
     </div>
   </form>
+</mat-card>
+
+<mat-card *ngIf="userIsAuth">
+  <div>
+    <p>Welcome to the eBay ERP Tool! Select above to navigate to the desired page.</p>
+  </div>
 </mat-card>
 

@@ -11,12 +11,15 @@ import { Router } from "@angular/router";
 export class LoginComponent implements OnInit, OnDestroy{
   isLoading = false;
   private authStatusSub: Subscription;
+  userIsAuth: boolean;
   constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit(){
+    this.userIsAuth = this.authService.getIsAuth();
+
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe(authStatus => {
       this.isLoading = false;
-      console.log(authStatus);
+      this.userIsAuth = authStatus;
     });
   }
 

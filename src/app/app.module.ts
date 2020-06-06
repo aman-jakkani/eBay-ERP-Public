@@ -31,7 +31,6 @@ import { AnalysisComponent } from './analysis/analysis.component';
 
 const appRoutes: Routes =  [
   {path: '', component: LoginComponent},
-  {path: '', component: ListingComponent, outlet: 'secondary'},
   {path: 'home', component: ListingComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'signup', component: SignupComponent},
