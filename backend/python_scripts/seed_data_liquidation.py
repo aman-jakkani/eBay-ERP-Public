@@ -243,39 +243,38 @@ def saveManifests(browser):
 def logIn():
 
     loggedIn = False
-    while loggedIn == False:
-        print("Trying to log in to liquidation")
-        # Connect to Google
-        browser = mechanicalsoup.StatefulBrowser()
-        browser.open("https://www.liquidation.com/login")
+    print("Trying to log in to liquidation")
+    # Connect to Google
+    browser = mechanicalsoup.StatefulBrowser()
+    browser.open("https://www.liquidation.com/login")
 
-        browser.get_current_page()
-        # Fill-in the form
-        browser.select_form('form[id="loginForm"]')
+    browser.get_current_page()
+    # Fill-in the form
+    browser.select_form('form[id="loginForm"]')
 
-        # browser.get_current_form().print_summary()
-        browser["j_username"] =  username#input("User Name: ")
-        browser["j_password"] = password#getpass.getpass("Password: ")
+    # browser.get_current_form().print_summary()
+    browser["j_username"] =  username   #input("User Name: ")
+    browser["j_password"] = password    #getpass.getpass("Password: ")
 
-        browser.submit_selected()
-        #log in check
-        browser.open("https://www.liquidation.com/account/main")
-        soup = browser.get_current_page()
-        try:
-            name = soup.find(id='signDetails').span.get_text()
-            if name == None:
-                print("Not logged in. Try again.")
-
-            elif name != "Sign In":
-                print(name)
-                print("Logged In")
-                loggedIn = True
-            else:
-                print("Not logged in. Try again.")
-
-        except:
-
+    browser.submit_selected()
+    #log in check
+    browser.open("https://www.liquidation.com/account/main")
+    soup = browser.get_current_page()
+    try:
+        name = soup.find(id='signDetails').span.get_text()
+        if name == None:
             print("Not logged in. Try again.")
+
+        elif name != "Sign In":
+            print(name)
+            print("Logged In")
+            loggedIn = True
+        else:
+            print("Not logged in. Try again.")
+
+    except:
+
+        print("Not logged in. Try again.")
 
 
 
