@@ -209,7 +209,7 @@ def saveManifests(browser):
             FMT = '%Y/%m/%d %H:%M:%S'
             data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
         except Exception as ex  :
-            print("Exception occured while converting data",ex)
+            # print("Exception occured while converting data",ex)
             try:
                 status = data_to_add.pop(3)
                 data_to_add.append(status)

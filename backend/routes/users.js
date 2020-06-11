@@ -76,7 +76,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     //Checks if response has already been sent
     if ( res.headersSent != true){
       res.status(200).json({
-        message: "data updated!"
+        message: "Success!"
       });
     }
     

@@ -208,7 +208,7 @@ export class MainService {
 
   unlistDraft(draftID){
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL+'/listing/unlistDraft/'+draftID).pipe(map((draftData: any) =>{
+      BACKEND_URL + '/listing/unlistDraft/' + draftID).pipe(map((draftData: any) => {
         let newdraft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
@@ -224,23 +224,24 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
-  seedUser(userId, source){
-    this.http.post<{message: string}>(BACKEND_URL+'/users/seed/'+source, userId).subscribe(response => {
-      console.log("user seeded");
+  seedUser(userId, source) {
+    this.http.post<{message: string}>(BACKEND_URL + '/users/seed/' + source, userId).subscribe(response => {
+      console.log('user seeded');
     });
   }
 
-  updateUserManifests(username: string, password: string, userId, source){
+  updateUserManifests(username: string, password: string, userId, source) {
     const dataPackage = {username: username, password: password, userId: userId};
-    this.http.post<{message: string}>(BACKEND_URL+'/users/updateData/'+source, dataPackage).subscribe(response => {
-      console.log("user seeded");
-    });
+    return this.http.post<{message: string}>(BACKEND_URL + '/users/updateData/' + source, dataPackage).pipe(map((response: any) => {
+      console.log( 'user seeded');
+      return response.message;
+    }));
   }
 
   getLinkData(url, siteNum){
     return this.http
     .get<{message: string; data: any}>(
-      BACKEND_URL + '/listing/getLinkData/' + encodeURIComponent(url) +'/'+ siteNum
+      BACKEND_URL + '/listing/getLinkData/' + encodeURIComponent(url) + '/' + siteNum
     ).pipe(map((response: any) => {
 
       const movieCount = response;

@@ -253,11 +253,14 @@ export class ListingComponent implements OnInit, OnDestroy {
     dialogConfig.data = {
       source: source
     };
+
+    // Getting User Credentials
     const dialogRef = this.dialog.open(ExternalLoginComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(data => {
-      this.mainService.updateUserManifests(data.username, data.password, this.userId, source);
+      this.mainService.updateUserManifests(data.username, data.password, this.userId, source).subscribe( message => {
+        alert(message);
+      });
     });
-    // this.mainService.updateUserManifests("username", "password", this.userId, source);
 
   }
 }
