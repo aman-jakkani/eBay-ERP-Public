@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {JsonpModule, Jsonp, Response} from '@angular/http';
 import { map, retry, catchError  } from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
 
@@ -20,7 +21,7 @@ const BACKEND_URL = environment.apiUrl ;
 export class MainService {
 
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService, private jsonp: Jsonp) {}
 
   handleError(error) {
     let errorMessage = '';
@@ -241,6 +242,11 @@ export class MainService {
     return this.http.get<{token: any}>(BACKEND_URL+'/testEbay').pipe(map((tokenData: any) => {
       return tokenData.token.access_token;
     })).pipe(catchError(this.handleError))
+  }
+
+  getOrders(token){
+    let httpheaders = new HttpHeaders().set("Authorization", "Bearer "+token);
+    return this.http.get("https://api.ebay.com/sell/fulfillment/v1/order&callbackname=jsonpcallback", {headers: httpheaders});
   }
   getLinkData(url, siteNum){
     return this.http

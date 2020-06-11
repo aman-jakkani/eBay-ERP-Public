@@ -267,4 +267,10 @@ export class ListingComponent implements OnInit, OnDestroy {
       this.accessToken = data;
     });
   }
+
+  getOrders(){
+    this.mainService.getOrders(this.accessToken).subscribe(data => {
+      console.log(data);
+    })
+  }
 }
