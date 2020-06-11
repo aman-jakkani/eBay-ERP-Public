@@ -25,13 +25,16 @@ userID = sys.argv[3]
 def main():
     #logging in to Liquidation Account
     browser = logIn()
-    manifests_list = saveManifests(browser)
 
-    saveItems(browser,manifests_list)
+    if browser != None:
+        manifests_list = saveManifests(browser)
 
+        saveItems(browser,manifests_list)
 
-    #get and save manifest
-    print("Data seeded")
+        #get and save manifest
+        print("Data seeded")
+    else:
+        print("Data failed to be seeded")
 
 def saveItems(browser, manifests):
     print()
@@ -277,8 +280,11 @@ def logIn():
         print("Not logged in. Try again.")
 
 
-
-    return(browser)
+    if loggedIn :
+         return(browser) 
+    else:
+        return  None
+    
 def stall(sec):
     start = time.time()
     end = time.time()
