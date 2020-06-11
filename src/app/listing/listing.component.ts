@@ -42,6 +42,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   userSeeded: boolean;
   //local variable to track website
   source: string = "liquidation";
+  accessToken: string = '';
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
@@ -61,6 +62,7 @@ export class ListingComponent implements OnInit, OnDestroy {
     });
     this.userId = this.authService.getUserId();
     this.userSeeded = this.authService.getSeeded();
+    this.getAccess();
 
   }
 
@@ -258,5 +260,11 @@ export class ListingComponent implements OnInit, OnDestroy {
       this.mainService.updateUserManifests(data.username, data.password, this.userId, source);
     });
 
+  }
+
+  getAccess(){
+    this.mainService.getToken().subscribe(data => {
+      this.accessToken = data;
+    });
   }
 }

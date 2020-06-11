@@ -60,6 +60,9 @@ app.use("/api/listing", listingRoutes);
 app.get("/api/testEbay", (req, res) => {
   ebay.getAccessToken().then((data) => {
     console.log(data); // data.access_token
+    res.status(200).json({
+      token: data
+    })
   }, (error) => {
     console.log(error);
   });

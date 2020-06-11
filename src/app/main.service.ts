@@ -237,6 +237,11 @@ export class MainService {
     });
   }
 
+  getToken(){
+    return this.http.get<{token: any}>(BACKEND_URL+'/testEbay').pipe(map((tokenData: any) => {
+      return tokenData.token.access_token;
+    })).pipe(catchError(this.handleError))
+  }
   getLinkData(url, siteNum){
     return this.http
     .get<{message: string; data: any}>(
