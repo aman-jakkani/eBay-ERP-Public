@@ -51,7 +51,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
       message: "Error source not found"
     });
   }
-
+  console.log("Spawning python script ", fileName  )
   const python = spawn('python3', [('../backend/python_scripts/' + fileName), username, password, userId]);
 
   // collect data from script
