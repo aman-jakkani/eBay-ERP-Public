@@ -71,6 +71,7 @@ app.get("/api/testEbay", (req, res) => {
 
 app.get("/api/getOrders", (req, res) => {
   ebay.getAccessToken().then(token => {
+    ebay.getUserTokenByCode(token).then(token => {
     axios.get("https://api.ebay.com/sell/fulfillment/v1/order", {headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: 'Bearer ' + token.access_token,
@@ -80,6 +81,13 @@ app.get("/api/getOrders", (req, res) => {
       console.log(error);
     })
   })
+})
 });
+
+app.get("api/test", (req, res) => {
+  axios.get("https://auth.ebay.com/oauth2/authorize?client_id=V4ULLC-Inventor-PRD-c2eba4255-ca5c65cc&response_type=code&redirect_uri=V4U_LLC-V4ULLC-Inventor-geqkxzxxi&scope=https://api.ebay.com/oauth/api_scope").then(res =>{
+    console.log(res);
+  })
+})
 
 module.exports = app;
