@@ -14,6 +14,7 @@ import { stringify } from '@angular/compiler/src/util';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { AuthData } from './auth/auth-data.model';
 import { AuthService } from './auth/auth.service';
+import axios from 'axios';
 
 const BACKEND_URL = environment.apiUrl ;
 
@@ -244,10 +245,12 @@ export class MainService {
     })).pipe(catchError(this.handleError))
   }
 
-  getOrders(token){
-    let httpheaders = new HttpHeaders().set("Authorization", "Bearer "+token);
-    return this.http.get("https://api.ebay.com/sell/fulfillment/v1/order&callbackname=jsonpcallback", {headers: httpheaders});
+  getOrders(token): any{
+    return this.http.get<{message: any}>(BACKEND_URL+'/getOrders').pipe(map((res) => {
+      console.log(res);
+    })).pipe(catchError(this.handleError))
   }
+
   getLinkData(url, siteNum){
     return this.http
     .get<{message: string; data: any}>(

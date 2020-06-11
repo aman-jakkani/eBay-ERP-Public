@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const querystring = require("querystring");
+const axios = require("axios");
 
 //const Movie = require("./models/movie");
 
@@ -68,5 +69,17 @@ app.get("/api/testEbay", (req, res) => {
   });
 });
 
+app.get("/api/getOrders", (req, res) => {
+  ebay.getAccessToken().then(token => {
+    axios.get("https://api.ebay.com/sell/fulfillment/v1/order", {headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: 'Bearer ' + token.access_token,
+    },}).then(response => {
+      console.log(response);
+    }).catch(error => {
+      console.log(error);
+    })
+  })
+});
 
 module.exports = app;
