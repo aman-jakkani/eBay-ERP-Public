@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {JsonpModule, Jsonp, Response} from '@angular/http';
 import { map, retry, catchError  } from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
 
@@ -13,6 +14,7 @@ import { stringify } from '@angular/compiler/src/util';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { AuthData } from './auth/auth-data.model';
 import { AuthService } from './auth/auth.service';
+import axios from 'axios';
 
 const BACKEND_URL = environment.apiUrl ;
 
@@ -20,7 +22,7 @@ const BACKEND_URL = environment.apiUrl ;
 export class MainService {
 
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService, private jsonp: Jsonp) {}
 
   handleError(error) {
     let errorMessage = '';
@@ -235,6 +237,18 @@ export class MainService {
     this.http.post<{message: string}>(BACKEND_URL+'/users/updateData/'+source, dataPackage).subscribe(response => {
       console.log("user seeded");
     });
+  }
+
+  getToken(){
+    return this.http.get<{token: any}>(BACKEND_URL+'/testEbay').pipe(map((tokenData: any) => {
+      return tokenData.token.access_token;
+    })).pipe(catchError(this.handleError))
+  }
+
+  getOrders(token): any{
+    return this.http.get<{message: any}>(BACKEND_URL+'/getOrders').pipe(map((res) => {
+      console.log(res);
+    })).pipe(catchError(this.handleError))
   }
 
   getLinkData(url, siteNum){
