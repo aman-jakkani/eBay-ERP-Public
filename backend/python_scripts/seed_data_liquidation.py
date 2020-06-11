@@ -257,7 +257,7 @@ def logIn():
     browser.select_form('form[id="loginForm"]')
 
     # browser.get_current_form().print_summary()
-    browser["j_username"] =  username   #input("User Name: ")
+    browser["j_username"] = username    #input("User Name: ")
     browser["j_password"] = password    #getpass.getpass("Password: ")
 
     browser.submit_selected()
@@ -267,25 +267,28 @@ def logIn():
     try:
         name = soup.find(id='signDetails').span.get_text()
         if name == None:
-            print("Not logged in. Try again.")
+            sign_in_error()
 
         elif name != "Sign In":
             print(name)
             print("Logged In")
             loggedIn = True
         else:
-            print("Not logged in. Try again.")
+            sign_in_error()
 
     except:
 
-        print("Not logged in. Try again.")
+        sign_in_error()
 
 
     if loggedIn:
          return(browser)
     else:
         return  None
-    
+
+def sign_in_error():
+    print("Failed to sign in")
+
 def stall(sec):
     start = time.time()
     end = time.time()
