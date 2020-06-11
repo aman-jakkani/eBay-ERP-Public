@@ -74,7 +74,6 @@ def saveItems(browser, manifests):
             if headers[i] in ["Grade"] :
                 headers[i] = "grade"
 
-        print("Normalised Headers: ",headers)
 
 
         for i in range(1,len(tr)-1):
@@ -155,8 +154,7 @@ def saveItems(browser, manifests):
             #insert item
             itemId = items_collection.insert_one(item).inserted_id
 
-            print(item)
-            print()
+
 
             #DRAFT
             draft = {"updated_SKU": False,
@@ -238,8 +236,7 @@ def saveManifests(browser):
         #inserting document into collection
         manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
-        print(manifest)
-        print()
+
         manifests_list.append(manifest)
 
     return manifests_list
