@@ -1,0 +1,14 @@
+
+
+1. In order to connect to your EC2 Instance through ssh you must use a key pair
+    1.1 Get Key Pair: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair. Make sure you put key in a secure location.
+    1.2 Specify Key Pair to Beanstalk Envionment: Select your elastic beanstalk environment. Go to Configuration - Security - Choose Key Pair
+
+
+2. Exploring Instance
+    2.1 Connect through ssh: ssh -i /path/my-key-pair.pem my-instance-user-name@my-instance-public-dns-name Proj Example: ssh -i "./CP/Ebay-Listing-Tool-Key.pem" ec2-user@ec2-18-218-179-84.us-east-2.compute.amazonaws.com
+    2.2 
+    2.3 Handy Linux Commands: 
+        - pwd: gives current path
+        - sudo su -: root / admin privileges? 
+
