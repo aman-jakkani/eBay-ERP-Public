@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "install": "npip install",
     "nopenv": "nopenv",
     "nopy": "nopy",
     "npip": "npip"
