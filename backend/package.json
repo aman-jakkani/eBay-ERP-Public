@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "install": "npip install",
     "nopenv": "nopenv",
     "nopy": "nopy",
     "npip": "npip"
@@ -21,7 +22,7 @@
   },
   "python": {
     "dependencies": {
-      "MechanicalSoup": ""
+      "MechanicalSoup": ">=0.12.0"
     }
   }
 }
