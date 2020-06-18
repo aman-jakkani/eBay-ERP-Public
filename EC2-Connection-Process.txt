@@ -7,8 +7,8 @@
 
 2. Exploring Instance
     2.1 Connect through ssh: ssh -i /path/my-key-pair.pem my-instance-user-name@my-instance-public-dns-name Proj Example: ssh -i "./CP/Ebay-Listing-Tool-Key.pem" ec2-user@ec2-18-218-179-84.us-east-2.compute.amazonaws.com
-    2.2 Find logs at: /var/log/nodejs
-        2.2.1 Get live file updates: tail -f nodejs.log
+    2.2 Find logs at: /var/log/
+        2.2.1 Get live file updates: tail -f /var/log/web.stdout.log
     2.3 Get app location: /var/app/current
     2.3 Handy Linux Commands:
         - pwd: gives current path
