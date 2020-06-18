@@ -12,5 +12,5 @@
     2.3 Get app location: /var/app/current
     2.3 Handy Linux Commands:
         - pwd: gives current path
-        - sudo su -: root / admin privileges?
+        - sudo su -: root / admin privileges
 
