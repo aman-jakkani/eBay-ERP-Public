@@ -20,6 +20,7 @@
     "zone.js": "^0.9.1"
   },
   "python": {
+
     "dependencies": {
       "MechanicalSoup": ""
     }
