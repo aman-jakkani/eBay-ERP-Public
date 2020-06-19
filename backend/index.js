@@ -7,8 +7,17 @@ app.get('/', (req, res) => {
 	
 	var dataToSend ;
 	var largeDataSet = [];
+	
+
+
+
 	// spawn new child process to call the python script
-	const python = spawn('python3', ['techsouptest.py']);
+	// const python = spawn('python3', ['techsouptest.py']);
+	const python = spawn('./node_modules/nopy', ['techsouptest.py']);
+
+
+
+
 	// collect data from script
 	python.stdout.on('data', function (data) {
 		console.log('Pipe data from python script ...');
