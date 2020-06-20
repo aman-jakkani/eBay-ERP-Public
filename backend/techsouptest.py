@@ -1,6 +1,6 @@
 
 import sys
-sys.path.append('./python_modules/lib/python3.7/site-packages')
+# sys.path.append('./python_modules/lib/python3.7/site-packages')
 print(sys.path)
 from bs4 import BeautifulSoup
 import time
