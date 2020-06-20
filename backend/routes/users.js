@@ -52,7 +52,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     });
   }
   console.log("Spawning python script ", fileName  )
-  const python = spawn('python', [('./' + fileName), username, password, userId]);
+  const python = spawn('python', [('./python_scripts/' + fileName), username, password, userId]);
 
   // collect data from script
   python.stdout.on('data', function (data) {
@@ -64,7 +64,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
       res.status(400).json({
         message: "Could not log in try again.",
       });
-    }
+    } 
     console.log(typeof(pythonData), pythonData.length );
     console.log(pythonData);
   });
@@ -90,6 +90,9 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     // As said before, convert the Uint8Array to a readable string.
     console.log("stderr");
     console.log(uint8arrayToString(data));
+    res.status(400).json({
+      message: "Could not log in. Error.",
+    });
   });
 
   python.on('exit', (code) => {

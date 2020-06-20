@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
 
 
 	// spawn new child process to call the python script
-	const python = spawn('python3', ['techsouptest.py']);
+	const python = spawn('python3', ['./python_scripts/techsouptest.py']);
 	// const python = spawn('./node_modules/nopy', ['techsouptest.py']);
 
 
