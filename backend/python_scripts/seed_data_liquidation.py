@@ -1,6 +1,5 @@
 import sys
 sys.path.append('./python_modules/lib/python3.7/site-packages')
-
 import json
 import mechanicalsoup
 import time

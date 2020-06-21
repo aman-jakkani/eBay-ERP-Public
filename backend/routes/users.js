@@ -90,9 +90,12 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     // As said before, convert the Uint8Array to a readable string.
     console.log("stderr");
     console.log(uint8arrayToString(data));
-    res.status(400).json({
-      message: "Could not log in. Error.",
-    });
+    if ( res.headersSent != true){
+      res.status(400).json({
+        message: "Could not log in. Error.",
+      });
+    }
+    
   });
 
   python.on('exit', (code) => {
