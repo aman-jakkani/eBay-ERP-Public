@@ -1,4 +1,4 @@
-#!/Users/saikasam/.pyenv/versions/3.7.2/bin/python
+#!/System/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python
 
 # -*- coding: utf-8 -*-
 import re

@@ -51,28 +51,35 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
       message: "Error source not found"
     });
   }
-
-  const python = spawn('python3', [('../backend/python_scripts/' + fileName), username, password, userId]);
+  console.log("Spawning python script ", fileName  )
+  const python = spawn('python2', [('./python_scripts/' + fileName), username, password, userId]);
 
   // collect data from script
   python.stdout.on('data', function (data) {
 
-    pythonData = data;
-    console.log(uint8arrayToString(data));
+    pythonData = uint8arrayToString(data);
+    console.log("got python data");
+    if ( pythonData.includes("Failed to sign in")){
+     
+      res.status(400).json({
+        message: "Could not log in try again.",
+      });
+    } 
+    console.log(typeof(pythonData), pythonData.length );
+    console.log(pythonData);
   });
 
 
   // in close event we are sure that stream is from child process is closed
   python.on('close', (code) => {
     console.log(`child process close all stdio with code ${code}`);
-
-    // res.status(200).json({
-    //   message: "got link data",
-    //   data: JSON.parse(largeDataSet.join(""))
-    // });
-    res.status(200).json({
-      message: "data updated!"
-    });
+    //Checks if response has already been sent
+    if ( res.headersSent != true){
+      res.status(200).json({
+        message: "Success!"
+      });
+    }
+    
   });
 
   var uint8arrayToString = function(data){
@@ -83,6 +90,12 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     // As said before, convert the Uint8Array to a readable string.
     console.log("stderr");
     console.log(uint8arrayToString(data));
+    if ( res.headersSent != true){
+      res.status(400).json({
+        message: "Could not log in. Error.",
+      });
+    }
+    
   });
 
   python.on('exit', (code) => {

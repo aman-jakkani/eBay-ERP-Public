@@ -5,8 +5,8 @@ import time
 
 def main():
 
-    SITE_NUM = int(sys.argv[2])
-    URL_PARAM = sys.argv[1]
+    SITE_NUM = 0 #int(sys.argv[2])
+    URL_PARAM = "http://google.com?" #sys.argv[1]
     
     
     if SITE_NUM == 0:

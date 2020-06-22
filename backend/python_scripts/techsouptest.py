@@ -1,8 +1,13 @@
+
+import sys
+sys.path.append('./python_modules/lib/python3.7/site-packages')
+print(sys.path)
+import os
+print(os. getcwd())
 from bs4 import BeautifulSoup
 import time
 from datetime import datetime, timedelta
-
-
+import mechanicalsoup
 
 html = """<tbody>
 

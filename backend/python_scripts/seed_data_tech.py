@@ -1,6 +1,8 @@
+import sys
+sys.path.append('./python_modules/lib/python/site-packages')
 import json
 import mechanicalsoup
-import sys, os
+import os
 import time
 import pickle
 
@@ -18,6 +20,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options  
 
 
 #Mongo Detail
@@ -39,13 +42,18 @@ userID = sys.argv[3]
 
 def main():
     #Logging in
+    print("Logging in")
     browser = logInSelenium()
-    #Saving Manifests
-    manifests = saveManifests(browser)
-    print(manifests)
-    #Saving items
-    saveItems(manifests,browser)
-    print("Seeded data")
+    if browser:
+        #Saving Manifests
+        print("Saving Manifests")
+        manifests = saveManifests(browser)
+        #Saving items
+        print("Saving items")
+        saveItems(manifests,browser)
+        print("Data seeded")
+    else:
+        print("Data failed to be seeded")
 
 def saveItems(manifests,browser):
 
@@ -70,7 +78,7 @@ def saveItems(manifests,browser):
         tr = soup.find_all("tr")
 
         #Getting headers
-        headers =  [x.get_text().replace("\n","").replace("\t","").lower() for x in tr[0].find_all('th')]
+        headers =  [x.get_text().encode("utf-8").replace("\n","").replace("\t","").lower() for x in tr[0].find_all('th')]
 
         #Normalising headers from all manifests
         for i in range(len(headers)):
@@ -140,8 +148,7 @@ def saveItems(manifests,browser):
                         detail = int(detail.strip())
 
                         items_dict[id]['quantity'] += detail
-        print(items_dict)
-        print()
+
 
         for key in items_dict:
             #ITEM
@@ -171,8 +178,6 @@ def saveItems(manifests,browser):
             #insert item
             itemId = items_collection.insert_one(item).inserted_id
 
-            print(item)
-            print()
 
             #DRAFT
             draft = {"updated_SKU": False,
@@ -214,7 +219,7 @@ def saveManifests(browser):
 
 
         def formatValue(value):
-            formattedValue = value.get_text().strip().replace("\n","").replace("\t","")
+            formattedValue = value.get_text().encode("utf-8").strip().replace("\n","").replace("\t","").replace("\xc2\xa0"," ")
             return formattedValue
 
         FMT = '%m/%d/%y'
@@ -246,6 +251,77 @@ def saveManifests(browser):
     return manifests_list
 
 
+#tech liquidation log in
+def logInSelenium():
+    chrome_options = Options()  
+    chrome_options.add_argument("--headless")  
+
+    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver_linux', chrome_options=chrome_options)
+
+    loggedIn = False
+
+    browser.get("https://techliquidators.com/tl/index.cfm?action=account_login")
+
+    username_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[1]/input'
+    password_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[2]/input'
+    remember_me_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[3]/label/input'
+    login_submit = '//*[@id="loginSubmit"]'
+
+    #User Inputs
+    username = userName #input("User Name: ")
+    password = passWord #getpass.getpass("Password: ")
+
+
+    #making sure elements are on screen
+    WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.XPATH,username_input)))
+
+    #Loading information
+    browser.find_element_by_xpath(username_input).send_keys(username)
+
+    browser.find_element_by_xpath(password_input).send_keys(password)
+
+    browser.find_element_by_xpath(remember_me_input).click()
+
+    browser.find_element_by_xpath(login_submit).click()
+
+
+    loggedIn = checkBrowserLogInStatus(browser)
+
+    #Saving cookies
+    # with open("techLiquidatorCookies.pickle","wb") as f:
+    #     pickle.dump(browser.get_cookies(),f)
+
+    if loggedIn:
+        return(browser)
+    else:
+        return None
+
+#Checks if user is signed into website
+def checkBrowserLogInStatus(browser):
+    browser.get("https://techliquidators.com/index.cfm/p/7")
+    stall(3)
+    soup = BeautifulSoup(browser.page_source, "html.parser")
+
+    try:
+        name = soup.find("div",{"class" : "col-md-8 text-right"}).small.get_text()
+        if name == None:
+            sign_in_error()
+            return False
+        elif "Welcome" in name:
+            print(name)
+            print("Logged In")
+            return True
+        else:
+            sign_in_error()
+            return False
+    except:
+        sign_in_error()
+        return False
+
+def sign_in_error():
+    print("Failed to sign in")
+
+#Not being used        
 def getBrowser():
     #trying to use previous browser state and log in
     try:
@@ -281,74 +357,13 @@ def getBrowser():
         browser = webdriver.Chrome('./chromedriver')
         browser = logInSelenium(browser)
         return browser
-#Checks if user is signed into website
-def checkBrowserLogInStatus(browser):
-    browser.get("https://techliquidators.com/index.cfm/p/7")
-    stall(3)
-    soup = BeautifulSoup(browser.page_source, "html.parser")
-
-    try:
-        name = soup.find("div",{"class" : "col-md-8 text-right"}).small.get_text()
-        if name == None:
-            print("Not logged in. Try again.")
-            return False
-        elif "Welcome" in name:
-            print(name)
-            print("Logged In")
-            return True
-        else:
-            print("Not logged in. Try again.")
-            return False
-    except:
-        print("Not logged in. Try again.")
-        return False
-
-#tech liquidation log in test
-def logInSelenium():
-    browser = webdriver.Chrome('../backend/python_scripts/chromedriver')
-
-    loggedIn = False
-    while loggedIn == False:
-        browser.get("https://techliquidators.com/tl/index.cfm?action=account_login")
-
-        username_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[1]/input'
-        password_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[2]/input'
-        remember_me_input = '/html/body/div/div/div/div[2]/div[2]/div/div/div/div[2]/form/div[3]/label/input'
-        login_submit = '//*[@id="loginSubmit"]'
-
-        #User Inputs
-        username = userName#input("User Name: ")
-        password = passWord#getpass.getpass("Password: ")
-
-
-        #making sure elements are on screen
-        WebDriverWait(browser,10).until(EC.visibility_of_element_located((By.XPATH,username_input)))
-
-        #Loading information
-        browser.find_element_by_xpath(username_input).send_keys(username)
-
-        browser.find_element_by_xpath(password_input).send_keys(password)
-
-        browser.find_element_by_xpath(remember_me_input).click()
-
-        browser.find_element_by_xpath(login_submit).click()
-
-
-        loggedIn = checkBrowserLogInStatus(browser)
-
-    #Saving cookies
-    # with open("techLiquidatorCookies.pickle","wb") as f:
-    #     pickle.dump(browser.get_cookies(),f)
-
-
-    return(browser)
-
 
 def stall(sec):
     start = time.time()
     end = time.time()
     while end - start < sec:
         end = time.time()
+
 main()
 
 # def logInSoup():

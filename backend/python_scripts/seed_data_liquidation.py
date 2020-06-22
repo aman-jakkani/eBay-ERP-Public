@@ -1,6 +1,7 @@
+import sys
+sys.path.append('./python_modules/lib/python/site-packages')
 import json
 import mechanicalsoup
-import sys
 import time
 from pymongo import MongoClient
 import getpass
@@ -24,19 +25,23 @@ userID = sys.argv[3]
 
 def main():
     #logging in to Liquidation Account
+    print("logging in to Liquidation Account")
     browser = logIn()
-    manifests_list = saveManifests(browser)
 
-    saveItems(browser,manifests_list)
+    if browser != None:
+        print("Saving Manifests")
 
+        manifests_list = saveManifests(browser)
+        print("Saving Items")
+        saveItems(browser,manifests_list)
 
-    #get and save manifest
-    print("Data seeded")
+        #get and save manifest
+        print("Data seeded")
+    else:
+        print("Data failed to be seeded")
 
 def saveItems(browser, manifests):
-    print()
-    print("Saving items")
-    print()
+
 
     ITEM_HEADERS = ["name", "quantity", "price","model","grade"]
 
@@ -57,7 +62,7 @@ def saveItems(browser, manifests):
         tr = soup.find_all("tr")
 
         #Normalising headers from all manifests
-        headers =  [x.get_text() for x in tr[0].find_all('td')]
+        headers =  [x.get_text().encode("utf-8") for x in tr[0].find_all('td')]
         for i in range(len(headers)):
             if headers[i] in ["Item Description", "Item Title", "Title","Product"]:
                 headers[i] = "name"
@@ -70,7 +75,6 @@ def saveItems(browser, manifests):
             if headers[i] in ["Grade"] :
                 headers[i] = "grade"
 
-        print("Normalised Headers: ",headers)
 
 
         for i in range(1,len(tr)-1):
@@ -151,8 +155,7 @@ def saveItems(browser, manifests):
             #insert item
             itemId = items_collection.insert_one(item).inserted_id
 
-            print(item)
-            print()
+
 
             #DRAFT
             draft = {"updated_SKU": False,
@@ -184,7 +187,7 @@ def saveManifests(browser):
     #geetting table rows
     tr = transactions_in_progress.find_all("tr")
 
-
+    #number of manifests to save
     for i in range(12):
 
         try: 
@@ -198,16 +201,16 @@ def saveManifests(browser):
 
         #formatting data -1 to not incude source and userid
         for detailCount in range(len(headers) - 2):
-            value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
+            value = td[detailCount].get_text().encode("utf-8").strip().replace("\n","").replace("\t","").replace("\xc2\xa0"," ")
             data_to_add.append(value)
 
-        #converting time to date time
+        #converting time to date time account for change in format
         
         try:
             FMT = '%Y/%m/%d %H:%M:%S'
             data_to_add[5] = datetime.strptime(data_to_add[5].replace("-","/"), FMT)
         except Exception as ex  :
-            print("Exception occured while converting data",ex)
+            # print("Exception occured while converting data",ex)
             try:
                 status = data_to_add.pop(3)
                 data_to_add.append(status)
@@ -219,6 +222,7 @@ def saveManifests(browser):
 
 
 
+    
         #creating dictionary to pass
         manifest = {
         headers[0] : data_to_add[0],
@@ -234,8 +238,7 @@ def saveManifests(browser):
         #inserting document into collection
         manifests_id = manifests_collection.insert_one(manifest).inserted_id
 
-        print(manifest)
-        print()
+
         manifests_list.append(manifest)
 
     return manifests_list
@@ -243,43 +246,48 @@ def saveManifests(browser):
 def logIn():
 
     loggedIn = False
-    while loggedIn == False:
-        print("Trying to log in to liquidation")
-        # Connect to Google
-        browser = mechanicalsoup.StatefulBrowser()
-        browser.open("https://www.liquidation.com/login")
+    print("Trying to log in to liquidation")
+    # Connect to Google
+    browser = mechanicalsoup.StatefulBrowser()
+    browser.open("https://www.liquidation.com/login")
 
-        browser.get_current_page()
-        # Fill-in the form
-        browser.select_form('form[id="loginForm"]')
+    browser.get_current_page()
+    # Fill-in the form
+    browser.select_form('form[id="loginForm"]')
 
-        # browser.get_current_form().print_summary()
-        browser["j_username"] =  username#input("User Name: ")
-        browser["j_password"] = password#getpass.getpass("Password: ")
+    # browser.get_current_form().print_summary()
+    browser["j_username"] = username    #input("User Name: ")
+    browser["j_password"] = password    #getpass.getpass("Password: ")
 
-        browser.submit_selected()
-        #log in check
-        browser.open("https://www.liquidation.com/account/main")
-        soup = browser.get_current_page()
-        try:
-            name = soup.find(id='signDetails').span.get_text()
-            if name == None:
-                print("Not logged in. Try again.")
+    browser.submit_selected()
+    #log in check
+    browser.open("https://www.liquidation.com/account/main")
+    soup = browser.get_current_page()
+    try:
+        name = soup.find(id='signDetails').span.get_text()
+        if name == None:
+            sign_in_error()
 
-            elif name != "Sign In":
-                print(name)
-                print("Logged In")
-                loggedIn = True
-            else:
-                print("Not logged in. Try again.")
+        elif name != "Sign In":
+            print(name)
+            print("Logged In")
+            loggedIn = True
+        else:
+            sign_in_error()
 
-        except:
+    except:
 
-            print("Not logged in. Try again.")
-
+        sign_in_error()
 
 
-    return(browser)
+    if loggedIn:
+         return(browser)
+    else:
+        return  None
+
+def sign_in_error():
+    print("Failed to sign in")
+
 def stall(sec):
     start = time.time()
     end = time.time()
