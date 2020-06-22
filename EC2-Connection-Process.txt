@@ -14,3 +14,7 @@
         - pwd: gives current path
         - sudo su -: root / admin privileges
 
+3. Virtual Envionment
+    3.1 source venv/bin/activate
+    3.2 virtualenv -p /usr/bin/python2.7 venv
+    3.3 deactivate
