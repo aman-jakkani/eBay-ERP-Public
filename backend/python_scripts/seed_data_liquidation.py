@@ -187,7 +187,7 @@ def saveManifests(browser):
     #geetting table rows
     tr = transactions_in_progress.find_all("tr")
 
-
+    #number of manifests to save
     for i in range(12):
 
         try: 
@@ -201,10 +201,10 @@ def saveManifests(browser):
 
         #formatting data -1 to not incude source and userid
         for detailCount in range(len(headers) - 2):
-            value = td[detailCount].get_text().strip().replace("\n","").replace("\t","")
+            value = td[detailCount].get_text().encode("utf-8").strip().replace("\n","").replace("\t","").replace("\xc2\xa0"," ")
             data_to_add.append(value)
 
-        #converting time to date time
+        #converting time to date time account for change in format
         
         try:
             FMT = '%Y/%m/%d %H:%M:%S'
@@ -222,6 +222,7 @@ def saveManifests(browser):
 
 
 
+    
         #creating dictionary to pass
         manifest = {
         headers[0] : data_to_add[0],
