@@ -1,6 +1,8 @@
+import sys
+sys.path.append('./python_modules/lib/python/site-packages')
 import json
 import mechanicalsoup
-import sys, os
+import os
 import time
 import pickle
 
