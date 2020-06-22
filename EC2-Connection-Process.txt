@@ -18,3 +18,6 @@
     3.1 source venv/bin/activate
     3.2 virtualenv -p /usr/bin/python2.7 venv
     3.3 deactivate
+
+4. Installed Chrome using https://www.if-not-true-then-false.com/2010/install-google-chrome-with-yum-on-fedora-red-hat-rhel/
+

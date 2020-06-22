@@ -252,7 +252,7 @@ def saveManifests(browser):
 
 #tech liquidation log in
 def logInSelenium():
-    browser = webdriver.Chrome('../backend/python_scripts/chromedriver')
+    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver_linux')
 
     loggedIn = False
 
