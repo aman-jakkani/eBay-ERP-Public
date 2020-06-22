@@ -52,7 +52,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
     });
   }
   console.log("Spawning python script ", fileName  )
-  const python = spawn('python', [('./python_scripts/' + fileName), username, password, userId]);
+  const python = spawn('python2', [('./python_scripts/' + fileName), username, password, userId]);
 
   // collect data from script
   python.stdout.on('data', function (data) {
