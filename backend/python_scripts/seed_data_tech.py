@@ -20,6 +20,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.chrome.options import Options  
 
 
 #Mongo Detail
@@ -252,7 +253,10 @@ def saveManifests(browser):
 
 #tech liquidation log in
 def logInSelenium():
-    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver_linux')
+    chrome_options = Options()  
+    chrome_options.add_argument("--headless")  
+
+    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver_linux', chrome_options=chrome_options)
 
     loggedIn = False
 
