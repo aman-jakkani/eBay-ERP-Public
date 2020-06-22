@@ -62,7 +62,7 @@ def saveItems(browser, manifests):
         tr = soup.find_all("tr")
 
         #Normalising headers from all manifests
-        headers =  [x.get_text() for x in tr[0].find_all('td')]
+        headers =  [x.get_text().encode("utf-8") for x in tr[0].find_all('td')]
         for i in range(len(headers)):
             if headers[i] in ["Item Description", "Item Title", "Title","Product"]:
                 headers[i] = "name"

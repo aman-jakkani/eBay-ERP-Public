@@ -78,7 +78,7 @@ def saveItems(manifests,browser):
         tr = soup.find_all("tr")
 
         #Getting headers
-        headers =  [x.get_text().replace("\n","").replace("\t","").lower() for x in tr[0].find_all('th')]
+        headers =  [x.get_text().encode("utf-8").replace("\n","").replace("\t","").lower() for x in tr[0].find_all('th')]
 
         #Normalising headers from all manifests
         for i in range(len(headers)):
@@ -219,7 +219,7 @@ def saveManifests(browser):
 
 
         def formatValue(value):
-            formattedValue = value.get_text().strip().replace("\n","").replace("\t","")
+            formattedValue = value.get_text().encode("utf-8").strip().replace("\n","").replace("\t","").replace("\xc2\xa0"," ")
             return formattedValue
 
         FMT = '%m/%d/%y'
@@ -256,7 +256,7 @@ def logInSelenium():
     chrome_options = Options()  
     chrome_options.add_argument("--headless")  
 
-    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver_linux', chrome_options=chrome_options)
+    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver', chrome_options=chrome_options)
 
     loggedIn = False
 
