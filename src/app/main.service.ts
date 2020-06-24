@@ -4,8 +4,8 @@ import {JsonpModule, Jsonp, Response} from '@angular/http';
 import { map, retry, catchError  } from 'rxjs/operators';
 import {Observable, throwError} from 'rxjs';
 
-import { Manifest } from "./models/manifest.model";
-import { Item } from "./models/item.model";
+import { Manifest } from './models/manifest.model';
+import { Item } from './models/item.model';
 import { Product } from './models/product.model';
 import { Draft } from './models/draft.model';
 
@@ -41,8 +41,8 @@ export class MainService {
     return this.http.get<{ message: string; manifests: any}>(
       BACKEND_URL + '/listing/getLiquidationManifests')
       .pipe(map((manifestData) => {
-        var manifests:Manifest[] = manifestData.manifests.map ( manifest =>{
-           let manifestData: Manifest = new Manifest ({
+        let manifests: Manifest[] = manifestData.manifests.map ( manifest => {
+           const manifestData: Manifest = new Manifest ({
             id : manifest._id,
             auction_title : manifest.auction_title,
             auction_id : manifest.auction_id,
@@ -63,8 +63,8 @@ export class MainService {
     return this.http.get<{ message: string; manifests: any}>(
       BACKEND_URL + '/listing/getTechManifests')
       .pipe(map((manifestData) => {
-        var manifests:Manifest[] = manifestData.manifests.map ( manifest =>{
-           let manifestData: Manifest = new Manifest ({
+        let manifests: Manifest[] = manifestData.manifests.map ( manifest => {
+           const manifestData: Manifest = new Manifest ({
             id : manifest._id,
             auction_title : manifest.auction_title,
             auction_id : manifest.auction_id,
@@ -83,10 +83,10 @@ export class MainService {
 
   getManifest(manifestID) {
     return this.http.get<{ message: string; manifest: any}>(
-      BACKEND_URL + '/listing/getManifest/'+manifestID)
+      BACKEND_URL + '/listing/getManifest/' + manifestID)
       .pipe(map((response) =>    {
 
-        let manifest: Manifest = new Manifest({
+        const manifest: Manifest = new Manifest({
           id: response.manifest._id,
           auction_title: response.manifest.auction_title,
           auction_id: response.manifest.auction_id,
@@ -105,10 +105,10 @@ export class MainService {
 
   getItems(manifestID) {
     return this.http.get<{ message: string; items: any}>(
-      BACKEND_URL + '/listing/getItems/'+manifestID)
+      BACKEND_URL + '/listing/getItems/' + manifestID)
       .pipe(map((itemData) => {
-        var items: Item[] = itemData.items.map ( item =>{
-          let itemData: Item = new Item ({
+        let items: Item[] = itemData.items.map ( item => {
+          const itemData: Item = new Item ({
             id: item._id,
             name: item.name,
             quantity: item.quantity,
@@ -125,23 +125,23 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
-  getProduct(itemID){
+  getProduct(itemID) {
     return this.http.get<{ message: string; product: any}>(
-      BACKEND_URL + '/listing/getProduct/'+itemID).pipe(map((productData) => {
-        let product = new Product ({
+      BACKEND_URL + '/listing/getProduct/' + itemID).pipe(map((productData) => {
+        const product = new Product ({
           id: productData.product._id,
           sku: productData.product.sku,
           quantity_sold: productData.product.quantity_sold,
           prices_sold: productData.product.prices_sold,
           item_ids: productData.product.item_ids
-        })
+        });
         return product;
       })).pipe(catchError(this.handleError));
   }
-  getDraft(itemID){
+  getDraft(itemID) {
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL+"/listing/getDraft/"+itemID).pipe(map((draftData) => {
-        let draft = new Draft ({
+      BACKEND_URL +'/listing/getDraft/'+ itemID).pipe(map((draftData) => {
+        const draft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
           published_draft: draftData.draft.published_draft,
@@ -151,31 +151,31 @@ export class MainService {
           condition_desc: draftData.draft.condition_desc,
           price: draftData.draft.price,
           item_id: draftData.draft.item_id
-        })
+        });
         return draft;
       })).pipe(catchError(this.handleError));
   }
 
-  updateSKU(itemID, newSKU){
+  updateSKU(itemID, newSKU) {
     return this.http.get<{message: string; product: any}>(
-      BACKEND_URL + '/listing/updateSKU/'+itemID+'/'+encodeURIComponent(newSKU)).pipe(map((productData: any) => {
-        let product = new Product ({
+      BACKEND_URL + '/listing/updateSKU/' + itemID + '/' + encodeURIComponent(newSKU)).pipe(map((productData: any) => {
+        const product = new Product ({
           id: productData.product._id,
           sku: productData.product.sku,
           quantity_sold: productData.product.quantity_sold,
           prices_sold: productData.product.prices_sold,
           item_ids: productData.product.item_ids
-        })
+        });
         return product;
       })).pipe(catchError(this.handleError));
   }
 
-  updateDraft(draftID, newTitle, newCondition, newDesc, newPrice){
-    let url = '/listing/updateDraft/'+  "draftID:" + draftID + '/' + "newTitle:" + encodeURIComponent(newTitle)+'/'+ "newCondition:" + newCondition+'/'+ "newDesc:" + encodeURIComponent(newDesc)+'/'+ "newDesc" + "newPrice:"+ newPrice
-    console.log("Service url",url)
+  updateDraft(draftID, newTitle, newCondition, newDesc, newPrice) {
+    const url = '/listing/updateDraft/' +  'draftID:' + draftID + '/' + 'newTitle:' + encodeURIComponent(newTitle) + '/' + 'newCondition:' + newCondition + '/' + 'newDesc:' + encodeURIComponent(newDesc) + '/' + 'newDesc' + 'newPrice:'+ newPrice;
+    console.log('Service url', url);
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL+url).pipe(map((draftData: any) =>{
-        let newdraft = new Draft ({
+      BACKEND_URL + url).pipe(map((draftData: any) => {
+        const newdraft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
           published_draft: draftData.draft.published_draft,
@@ -190,10 +190,10 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
-  listDraft(draftID){
+  listDraft(draftID) {
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL+'/listing/listDraft/'+draftID).pipe(map((draftData: any) =>{
-        let newdraft = new Draft ({
+      BACKEND_URL + '/listing/listDraft/' + draftID).pipe(map((draftData: any) => {
+        const newdraft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
           published_draft: draftData.draft.published_draft,
@@ -208,10 +208,10 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
-  unlistDraft(draftID){
+  unlistDraft(draftID) {
     return this.http.get<{message: string; draft: any}>(
       BACKEND_URL + '/listing/unlistDraft/' + draftID).pipe(map((draftData: any) => {
-        let newdraft = new Draft ({
+        const newdraft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
           published_draft: draftData.draft.published_draft,
@@ -240,19 +240,19 @@ export class MainService {
     }));
   }
 
-  getToken(){
-    return this.http.get<{token: any}>(BACKEND_URL+'/testEbay').pipe(map((tokenData: any) => {
+  getToken() {
+    return this.http.get<{token: any}>(BACKEND_URL + '/testEbay').pipe(map((tokenData: any) => {
       return tokenData.token.access_token;
-    })).pipe(catchError(this.handleError))
+    })).pipe(catchError(this.handleError));
   }
 
-  getOrders(token): any{
-    return this.http.get<{message: any}>(BACKEND_URL+'/getOrders').pipe(map((res) => {
+  getOrders(token): any {
+    return this.http.get<{message: any}>(BACKEND_URL + '/getOrders').pipe(map((res) => {
       console.log(res);
-    })).pipe(catchError(this.handleError))
+    })).pipe(catchError(this.handleError));
   }
 
-  getLinkData(url, siteNum){
+  getLinkData(url, siteNum) {
     return this.http
     .get<{message: string; data: any}>(
       BACKEND_URL + '/listing/getLinkData/' + encodeURIComponent(url) + '/' + siteNum
