@@ -62,7 +62,8 @@ export class ListingComponent implements OnInit, OnDestroy {
     });
     this.userId = this.authService.getUserId();
     this.userSeeded = this.authService.getSeeded();
-    this.getAccess();
+
+    // this.getAccess();
 
   }
 
@@ -261,6 +262,14 @@ export class ListingComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(data => {
       this.mainService.updateUserManifests(data.username, data.password, this.userId, source).subscribe( message => {
         alert(message);
+
+        // updating manifestsList automatiicaly
+        if (this.source === 'liquidation' ) {
+          this.getLiquidationManifests();
+        } else if (this.source === 'techliquidators') {
+          this.getTechManifests();
+        }
+
       });
     });
 
