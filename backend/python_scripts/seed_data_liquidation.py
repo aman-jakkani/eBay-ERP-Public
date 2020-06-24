@@ -10,8 +10,8 @@ from datetime import datetime, timedelta
 #Mongo Detail
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
-db = client.test_db
-client.drop_database("test_db")
+db = client.dev_db
+# client.drop_database("test_db")
 
 manifests_collection = db.manifests
 items_collection = db.items
