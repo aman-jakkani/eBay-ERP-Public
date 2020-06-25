@@ -22,3 +22,4 @@
 
 4. Installed Chrome using https://www.if-not-true-then-false.com/2010/install-google-chrome-with-yum-on-fedora-red-hat-rhel/
 
+open alarm.py -a Atom
