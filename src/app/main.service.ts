@@ -63,7 +63,7 @@ export class MainService {
     return this.http.get<{ message: string; manifests: any}>(
       BACKEND_URL + '/listing/getTechManifests')
       .pipe(map((manifestData) => {
-        let manifests: Manifest[] = manifestData.manifests.map ( manifest => {
+        const manifests: Manifest[] = manifestData.manifests.map ( manifest => {
            const manifestData: Manifest = new Manifest ({
             id : manifest._id,
             auction_title : manifest.auction_title,
@@ -107,7 +107,7 @@ export class MainService {
     return this.http.get<{ message: string; items: any}>(
       BACKEND_URL + '/listing/getItems/' + manifestID)
       .pipe(map((itemData) => {
-        let items: Item[] = itemData.items.map ( item => {
+        const items: Item[] = itemData.items.map ( item => {
           const itemData: Item = new Item ({
             id: item._id,
             name: item.name,
@@ -140,7 +140,7 @@ export class MainService {
   }
   getDraft(itemID) {
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL +'/listing/getDraft/'+ itemID).pipe(map((draftData) => {
+      BACKEND_URL + '/listing/getDraft/' + itemID).pipe(map((draftData) => {
         const draft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
@@ -171,7 +171,8 @@ export class MainService {
   }
 
   updateDraft(draftID, newTitle, newCondition, newDesc, newPrice) {
-    const url = '/listing/updateDraft/' +  'draftID:' + draftID + '/' + 'newTitle:' + encodeURIComponent(newTitle) + '/' + 'newCondition:' + newCondition + '/' + 'newDesc:' + encodeURIComponent(newDesc) + '/' + 'newDesc' + 'newPrice:'+ newPrice;
+    // tslint:disable-next-line: max-line-length
+    const url = '/listing/updateDraft/' +  'draftID:' + draftID + '/' + 'newTitle:' + encodeURIComponent(newTitle) + '/' + 'newCondition:' + newCondition + '/' + 'newDesc:' + encodeURIComponent(newDesc) + '/' + 'newDesc' + 'newPrice:' + newPrice;
     console.log('Service url', url);
     return this.http.get<{message: string; draft: any}>(
       BACKEND_URL + url).pipe(map((draftData: any) => {
@@ -226,18 +227,22 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
-  seedUser(userId, source) {
-    this.http.post<{message: string}>(BACKEND_URL + '/users/seed/' + source, userId).subscribe(response => {
-      console.log('user seeded');
+  seedUser(username: string, password: string, source) {
+    const dataPackage = {username: username, password: password};
+    return this.http.post<{message: string, seeded: boolean}>(BACKEND_URL + '/users/seed/' + source, dataPackage).pipe(response => {
+      console.log('received seedUser Response in Main.Service');
+      console.log(response);
+      return response;
     });
   }
 
-  updateUserManifests(username: string, password: string, userId, source) {
-    const dataPackage = {username: username, password: password, userId: userId};
-    return this.http.post<{message: string}>(BACKEND_URL + '/users/updateData/' + source, dataPackage).pipe(map((response: any) => {
-      console.log( 'user seeded');
-      return response.message;
-    }));
+  updateUserManifests(username: string, password: string, source) {
+    const dataPackage = {username: username, password: password};
+    return this.http.post<{message: string, seeded: boolean}>(BACKEND_URL + '/users/updateData/' + source, dataPackage).pipe(response => {
+      console.log('received seedUser Response in Main.Service update manifests');
+      console.log(response);
+      return response;
+    });
   }
 
   getToken() {
