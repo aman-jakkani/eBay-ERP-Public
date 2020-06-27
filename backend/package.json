@@ -23,13 +23,13 @@
     "zone.js": "^0.9.1"
   },
   "python": {
-    "execPath": "python2",
+    "execPath": "python2.7",
     "dependencies": {
       "MechanicalSoup": "",
-      "pymongo":"",
-      "datetime":"",
-      "selenium":"",
-      "dnspython":""
+      "pymongo": "",
+      "datetime": "",
+      "selenium": "",
+      "dnspython": ""
     }
   }
 }

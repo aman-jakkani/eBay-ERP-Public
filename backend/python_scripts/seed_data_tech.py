@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./python_modules/lib/python2.7/site-packages')
+sys.path.append('./python_modules/lib/python/site-packages')
 import json
 import mechanicalsoup
 import os
@@ -256,7 +256,7 @@ def logInSelenium():
     chrome_options = Options()  
     chrome_options.add_argument("--headless")  
 
-    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver_linux', chrome_options=chrome_options)
+    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver', chrome_options=chrome_options)
 
     loggedIn = False
 
