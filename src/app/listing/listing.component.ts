@@ -40,9 +40,9 @@ export class ListingComponent implements OnInit, OnDestroy {
   userId: string;
   private authStatusSubs: Subscription;
   userSeeded: boolean;
-  //local variable to track website
-  source: string = "liquidation";
-  accessToken: string = '';
+  // local variable to track website
+  source = 'liquidation';
+  accessToken = '';
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
@@ -67,7 +67,7 @@ export class ListingComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.authStatusSubs.unsubscribe();
   }
 
@@ -185,7 +185,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   updateSKU(productID, newSKU, i) {
-    alert("The SKU has been updated!");
+    alert('The SKU has been updated!');
     // const itm = this.items.filter(x => x.product_id === productID); - if multiple items have the same the products this wouldnt work
     this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
       const product: Product = data;
@@ -246,12 +246,12 @@ export class ListingComponent implements OnInit, OnDestroy {
     }
   }
 
-  seedUser(source: string){
+  seedUser(source: string) {
     this.mainService.seedUser(this.userId, source);
     this.userSeeded = true;
   }
 
-  updateUser(source: string){
+  updateUser(source: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       source: source
@@ -275,15 +275,15 @@ export class ListingComponent implements OnInit, OnDestroy {
 
   }
 
-  getAccess(){
+  getAccess() {
     this.mainService.getToken().subscribe(data => {
       this.accessToken = data;
     });
   }
 
-  getOrders(){
+  getOrders() {
     this.mainService.getOrders(this.accessToken).then(data => {
       console.log(data);
-    })
+    });
   }
 }
