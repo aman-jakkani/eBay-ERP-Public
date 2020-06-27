@@ -63,7 +63,7 @@ export class MainService {
     return this.http.get<{ message: string; manifests: any}>(
       BACKEND_URL + '/listing/getTechManifests')
       .pipe(map((manifestData) => {
-        let manifests: Manifest[] = manifestData.manifests.map ( manifest => {
+        const manifests: Manifest[] = manifestData.manifests.map ( manifest => {
            const manifestData: Manifest = new Manifest ({
             id : manifest._id,
             auction_title : manifest.auction_title,
@@ -107,7 +107,7 @@ export class MainService {
     return this.http.get<{ message: string; items: any}>(
       BACKEND_URL + '/listing/getItems/' + manifestID)
       .pipe(map((itemData) => {
-        let items: Item[] = itemData.items.map ( item => {
+        const items: Item[] = itemData.items.map ( item => {
           const itemData: Item = new Item ({
             id: item._id,
             name: item.name,
@@ -140,7 +140,7 @@ export class MainService {
   }
   getDraft(itemID) {
     return this.http.get<{message: string; draft: any}>(
-      BACKEND_URL +'/listing/getDraft/'+ itemID).pipe(map((draftData) => {
+      BACKEND_URL + '/listing/getDraft/' + itemID).pipe(map((draftData) => {
         const draft = new Draft ({
           id: draftData.draft._id,
           updated_SKU: draftData.draft.updated_SKU,
@@ -171,7 +171,8 @@ export class MainService {
   }
 
   updateDraft(draftID, newTitle, newCondition, newDesc, newPrice) {
-    const url = '/listing/updateDraft/' +  'draftID:' + draftID + '/' + 'newTitle:' + encodeURIComponent(newTitle) + '/' + 'newCondition:' + newCondition + '/' + 'newDesc:' + encodeURIComponent(newDesc) + '/' + 'newDesc' + 'newPrice:'+ newPrice;
+    // tslint:disable-next-line: max-line-length
+    const url = '/listing/updateDraft/' +  'draftID:' + draftID + '/' + 'newTitle:' + encodeURIComponent(newTitle) + '/' + 'newCondition:' + newCondition + '/' + 'newDesc:' + encodeURIComponent(newDesc) + '/' + 'newDesc' + 'newPrice:' + newPrice;
     console.log('Service url', url);
     return this.http.get<{message: string; draft: any}>(
       BACKEND_URL + url).pipe(map((draftData: any) => {
