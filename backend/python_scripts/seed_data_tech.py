@@ -26,7 +26,7 @@ from selenium.webdriver.chrome.options import Options
 #Mongo Detail
 client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
 #Set db
-db = client.dev_db
+db = client.prod_db
 # client.drop_database("test_db")
 
 #Collections
@@ -256,7 +256,7 @@ def logInSelenium():
     chrome_options = Options()  
     chrome_options.add_argument("--headless")  
 
-    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver', chrome_options=chrome_options)
+    browser = webdriver.Chrome(executable_path='./python_scripts/chromedriver_linux', chrome_options=chrome_options)
 
     loggedIn = False
 
