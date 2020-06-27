@@ -247,8 +247,35 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   seedUser(source: string) {
-    this.mainService.seedUser(this.userId, source);
-    this.userSeeded = true;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      source: source
+    };
+
+    // Getting User Credentials
+    const dialogRef = this.dialog.open(ExternalLoginComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(data => {
+      this.mainService.seedUser(data.username, data.password, source).subscribe( response => {
+        alert(response.message);
+
+        if ( response.seeded ) {
+           // updating manifestsList automatiicaly
+          if (this.source === 'liquidation' ) {
+            this.getLiquidationManifests();
+          } else if (this.source === 'techliquidators') {
+            this.getTechManifests();
+          }
+
+          this.userSeeded = true;
+
+        }
+
+      });
+    });
+
+    // this.mainService.seedUser(this.userId, source);
+
+
   }
 
   updateUser(source: string) {

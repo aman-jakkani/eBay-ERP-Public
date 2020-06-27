@@ -226,16 +226,19 @@ export class MainService {
       })).pipe(catchError(this.handleError));
   }
 
-  seedUser(userId, source) {
-    this.http.post<{message: string}>(BACKEND_URL + '/users/seed/' + source, userId).subscribe(response => {
-      console.log('user seeded');
+  seedUser(username: string, password: string, source) {
+    const dataPackage = {username: username, password: password};
+    return this.http.post<{message: string, seeded: boolean}>(BACKEND_URL + '/users/seed/' + source, dataPackage).pipe(response => {
+      console.log('received seedUser Response in Main.Service');
+      console.log(response);
+      return response;
     });
   }
 
   updateUserManifests(username: string, password: string, userId, source) {
     const dataPackage = {username: username, password: password, userId: userId};
     return this.http.post<{message: string}>(BACKEND_URL + '/users/updateData/' + source, dataPackage).pipe(map((response: any) => {
-      console.log( 'user seeded');
+      console.log( 'user updated');
       return response.message;
     }));
   }
