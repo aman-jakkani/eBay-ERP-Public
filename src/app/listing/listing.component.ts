@@ -314,13 +314,4 @@ export class ListingComponent implements OnInit, OnDestroy {
     });
   }
 
-<<<<<<< HEAD
-
-=======
-  getOrders() {
-    this.mainService.getOrders(this.accessToken).then(data => {
-      console.log(data);
-    });
-  }
->>>>>>> 2bf1a86caf04a344071c3ed7196df8a744cb7a9a
 }
