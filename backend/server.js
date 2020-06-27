@@ -1,6 +1,6 @@
 const app = require("./app");
 const debug = require("debug")("node-angular");
-var http = require("http");
+var https = require("https");
 var fs = require("fs");
 var path = require("path");
 
@@ -45,14 +45,14 @@ const onListening = () => {
   debug("Listening on " + bind);
 };
 
-/*var certOptions = {
+var certOptions = {
   key: fs.readFileSync(path.resolve('../../local-cert-generator/server.key')),
   cert: fs.readFileSync(path.resolve('../../local-cert-generator/server.crt'))
-}*/
+}
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
 
-var server = http.createServer(app);
+var server = https.createServer(certOptions, app);
 server.on("error", onError);
 server.on("listening", onListening);
 server.listen(port);

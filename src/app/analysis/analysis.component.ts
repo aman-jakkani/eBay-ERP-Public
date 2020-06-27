@@ -15,6 +15,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ExternalLoginComponent } from '../ext-login/external.component';
 import { stringify } from 'querystring';
 import { environment } from '../../environments/environment';
+import { map } from 'rxjs/operators';
 const BACKEND_URL = environment.apiUrl ;
 
 @Component({
@@ -60,9 +61,9 @@ export class AnalysisComponent implements OnInit, OnDestroy {
     this.userSeeded = this.authService.getSeeded();
     var code = this.router.url.split('=')[1].split('&')[0];
     console.log(code);
-    this.http.get<{message: string, response: any}>(BACKEND_URL+'/ebay'+code).subscribe(res => {
+    this.http.get<{message: string, response: any}>(BACKEND_URL+'/analysis/ebay/'+code).pipe(map(res => {
       console.log(res);
-    });
+    }));
   }
 
   ngOnDestroy() {
