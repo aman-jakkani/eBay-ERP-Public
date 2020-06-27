@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "install": "npip install",
     "nopenv": "nopenv",
     "nopy": "nopy",
     "npip": "npip"
@@ -24,7 +25,11 @@
   "python": {
     "execPath": "python2",
     "dependencies": {
-      "MechanicalSoup": ""
+      "MechanicalSoup": "",
+      "pymongo":"",
+      "datetime":"",
+      "selenium":"",
+      "dnspython":""
     }
   }
 }

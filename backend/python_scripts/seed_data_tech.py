@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./python_modules/lib/python/site-packages')
+sys.path.append('./python_modules/lib/python2.7/site-packages')
 import json
 import mechanicalsoup
 import os
