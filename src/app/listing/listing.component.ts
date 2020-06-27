@@ -74,10 +74,10 @@ export class ListingComponent implements OnInit, OnDestroy {
   onTabChanged($event) {
     const clickedIndex = $event.index;
     if ( clickedIndex === 0) {
-      this.source= "liquidation";
+      this.source = 'liquidation';
       this.getLiquidationManifests();
     } else {
-      this.source= "techliquidators";
+      this.source = 'techliquidators';
       this.getTechManifests();
     }
   }
