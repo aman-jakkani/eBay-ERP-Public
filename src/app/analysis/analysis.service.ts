@@ -16,10 +16,24 @@ const BACKEND_URL = environment.apiUrl ;
 export class AnalysisService {
   constructor(private http: HttpClient){}
 
+  handleError(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+        // client-side error
+        errorMessage = `Error: ${error.error.message}`;
+    } else {
+        // server-side error
+        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return throwError(errorMessage);
+  }
+
   accessEbay(code){
     return this.http.get<{message: string, data: any}>(BACKEND_URL+'/analysis/ebay/'+code).pipe(map(res => {
-      console.log(res);
       return res;
-    }));
+    })).pipe(catchError(this.handleError));
   }
+
+
 }

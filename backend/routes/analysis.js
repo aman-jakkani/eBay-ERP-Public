@@ -17,16 +17,14 @@ router.get("/ebay/:code", (req, res) => {
   let data = "V4ULLC-Inventor-PRD-c2eba4255-ca5c65cc:PRD-2eba425576de-54b9-4b1c-aee8-51e4";
   let buff = new Buffer(data);
   let base64data = buff.toString('base64');
-  console.log(base64data);
   const headers = {"Content-Type": "application/x-www-form-urlencoded", 'Authorization': 'Basic '+base64data};
   var granttype = querystring.stringify({"grant_type": "authorization_code", "code": tcode, "redirect_uri": "V4U_LLC-V4ULLC-Inventor-geqkxzxxi" });
   axios.post('https://api.ebay.com/identity/v1/oauth2/token',
       granttype
-    , {headers: headers}).then(data => {
-      console.log(data);
+    , {headers: headers}).then(function(response) {
       res.status(200).json({
         message: "User verified successfully",
-        data: data
+        data: response.data
       })
   }).catch(err => {
     console.log(err);
