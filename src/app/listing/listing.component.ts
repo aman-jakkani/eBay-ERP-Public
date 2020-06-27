@@ -273,8 +273,6 @@ export class ListingComponent implements OnInit, OnDestroy {
       });
     });
 
-    // this.mainService.seedUser(this.userId, source);
-
 
   }
 
@@ -287,14 +285,19 @@ export class ListingComponent implements OnInit, OnDestroy {
     // Getting User Credentials
     const dialogRef = this.dialog.open(ExternalLoginComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(data => {
-      this.mainService.updateUserManifests(data.username, data.password, this.userId, source).subscribe( message => {
-        alert(message);
+      this.mainService.updateUserManifests(data.username, data.password, source).subscribe( response => {
+        alert(response.message);
 
-        // updating manifestsList automatiicaly
-        if (this.source === 'liquidation' ) {
-          this.getLiquidationManifests();
-        } else if (this.source === 'techliquidators') {
-          this.getTechManifests();
+        if ( response.seeded ) {
+           // updating manifestsList automatiicaly
+          if (this.source === 'liquidation' ) {
+            this.getLiquidationManifests();
+          } else if (this.source === 'techliquidators') {
+            this.getTechManifests();
+          }
+
+          this.userSeeded = true;
+
         }
 
       });

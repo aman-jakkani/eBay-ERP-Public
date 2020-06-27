@@ -235,12 +235,13 @@ export class MainService {
     });
   }
 
-  updateUserManifests(username: string, password: string, userId, source) {
-    const dataPackage = {username: username, password: password, userId: userId};
-    return this.http.post<{message: string}>(BACKEND_URL + '/users/updateData/' + source, dataPackage).pipe(map((response: any) => {
-      console.log( 'user updated');
-      return response.message;
-    }));
+  updateUserManifests(username: string, password: string, source) {
+    const dataPackage = {username: username, password: password};
+    return this.http.post<{message: string, seeded: boolean}>(BACKEND_URL + '/users/updateData/' + source, dataPackage).pipe(response => {
+      console.log('received seedUser Response in Main.Service update manifests');
+      console.log(response);
+      return response;
+    });
   }
 
   getToken() {
