@@ -16,6 +16,7 @@ import { ExternalLoginComponent } from '../ext-login/external.component';
 import { stringify } from 'querystring';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
+import { AnalysisService } from './analysis.service';
 const BACKEND_URL = environment.apiUrl ;
 
 @Component({
@@ -49,7 +50,7 @@ export class AnalysisComponent implements OnInit, OnDestroy {
   source = 'liquidation';
 
 
-  constructor(private http: HttpClient, public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
+  constructor(private http: HttpClient, public analysisService: AnalysisService, public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getLiquidationManifests();
@@ -60,10 +61,10 @@ export class AnalysisComponent implements OnInit, OnDestroy {
     this.userId = this.authService.getUserId();
     this.userSeeded = this.authService.getSeeded();
     var code = this.router.url.split('=')[1].split('&')[0];
-    console.log(code);
-    this.http.get<{message: string, response: any}>(BACKEND_URL+'/analysis/ebay/'+code).pipe(map(res => {
-      console.log(res);
-    }));
+    this.analysisService.accessEbay(code).subscribe(data => {
+      console.log(data);
+    })
+
   }
 
   ngOnDestroy() {
