@@ -63,6 +63,7 @@ export class ListingComponent implements OnInit, OnDestroy {
     this.userId = this.authService.getUserId();
     this.userSeeded = this.authService.getSeeded();
 
+    // **Should Delete From this component**
     // this.getAccess();
 
   }
@@ -305,6 +306,8 @@ export class ListingComponent implements OnInit, OnDestroy {
 
   }
 
+
+  // ***Probably need to delete code below***
   getAccess() {
     this.mainService.getToken().subscribe(data => {
       this.accessToken = data;
