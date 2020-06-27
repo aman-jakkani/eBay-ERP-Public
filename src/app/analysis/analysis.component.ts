@@ -40,8 +40,8 @@ export class AnalysisComponent implements OnInit, OnDestroy {
   userId: string;
   private authStatusSubs: Subscription;
   userSeeded: boolean;
-  //local variable to track website
-  source: string = "liquidation";
+  // local variable to track website
+  source = 'liquidation';
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
@@ -56,17 +56,17 @@ export class AnalysisComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.authStatusSubs.unsubscribe();
   }
 
   onTabChanged($event) {
     const clickedIndex = $event.index;
     if ( clickedIndex === 0) {
-      this.source= "liquidation";
+      this.source = 'liquidation';
       this.getLiquidationManifests();
     } else {
-      this.source= "techliquidators";
+      this.source = 'techliquidators';
       this.getTechManifests();
     }
   }
@@ -173,20 +173,20 @@ export class AnalysisComponent implements OnInit, OnDestroy {
     })();
   }
 
-  seedUser(source: string){
-    this.mainService.seedUser(this.userId, source);
-    this.userSeeded = true;
+  seedUser(source: string) {
+    // this.mainService.seedUser(this.userId, source);
+    // this.userSeeded = true;
   }
 
-  updateUser(source: string){
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      source: source
-    };
-    const dialogRef = this.dialog.open(ExternalLoginComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(data => {
-      this.mainService.updateUserManifests(data.username, data.password, this.userId, source);
-    });
+  updateUser(source: string) {
+    // const dialogConfig = new MatDialogConfig();
+    // dialogConfig.data = {
+    //   source: source
+    // };
+    // const dialogRef = this.dialog.open(ExternalLoginComponent, dialogConfig);
+    // dialogRef.afterClosed().subscribe(data => {
+    //   this.mainService.updateUserManifests(data.username, data.password, source);
+    // });
 
   }
 }
