@@ -189,4 +189,5 @@ export class AnalysisComponent implements OnInit, OnDestroy {
     });
 
   }
+
 }
