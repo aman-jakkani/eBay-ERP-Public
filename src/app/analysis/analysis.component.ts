@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainService } from '../main.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Router} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { observable, VirtualTimeScheduler, Subscription } from 'rxjs';
@@ -8,10 +9,13 @@ import {Manifest} from '../models/manifest.model';
 import { Product } from '../models/product.model';
 import { Item } from '../models/item.model';
 import { Draft } from '../models/draft.model';
-import { formatDate } from '@angular/common';
+import { formatDate, Location } from '@angular/common';
 import { AuthService } from '../auth/auth.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ExternalLoginComponent } from '../ext-login/external.component';
+import { stringify } from 'querystring';
+import { environment } from '../../environments/environment';
+const BACKEND_URL = environment.apiUrl ;
 
 @Component({
   selector: 'app-home',
@@ -43,7 +47,8 @@ export class AnalysisComponent implements OnInit, OnDestroy {
   // local variable to track website
   source = 'liquidation';
 
-  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
+
+  constructor(private http: HttpClient, public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.getLiquidationManifests();
@@ -53,7 +58,11 @@ export class AnalysisComponent implements OnInit, OnDestroy {
     });
     this.userId = this.authService.getUserId();
     this.userSeeded = this.authService.getSeeded();
-
+    var code = this.router.url.split('=')[1].split('&')[0];
+    console.log(code);
+    this.http.get<{message: string, response: any}>(BACKEND_URL+'/ebay'+code).subscribe(res => {
+      console.log(res);
+    });
   }
 
   ngOnDestroy() {

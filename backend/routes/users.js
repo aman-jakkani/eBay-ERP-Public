@@ -10,9 +10,6 @@ const {spawn} = require('child_process');
 const prompt = require('prompt-sync')();
 
 
-
-
-
 router.post("/updateData/:source", checkAuth, (req, res, next) => {
 
   userId = req.userData.userID;
@@ -43,13 +40,13 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
 
     //Checks if use was able to log in
     if ( pythonData.includes("Failed to sign in")){
-     
+
       res.status(400).json({
         message: "Could not log in try again.",
         seeded: false
 
       });
-    } 
+    }
     console.log(typeof(pythonData), pythonData.length );
     console.log(pythonData);
   });
@@ -66,7 +63,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
         seeded: true
       });
     }
-    
+
   });
 
   var uint8arrayToString = function(data){
@@ -83,7 +80,7 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
         seeded: false
       });
     }
-    
+
   });
 
   python.on('exit', (code) => {
@@ -121,13 +118,13 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
 
     //Checks if use was able to log in
     if ( pythonData.includes("Failed to sign in")){
-     
+
       res.status(400).json({
         message: "Could not log in try again.",
         seeded: false
 
       });
-    } 
+    }
     console.log(typeof(pythonData), pythonData.length );
     console.log(pythonData);
   });
@@ -156,9 +153,9 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
         });
       })
 
-     
+
     }
-    
+
   });
 
   var uint8arrayToString = function(data){
@@ -175,7 +172,7 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
         seeded: false
       });
     }
-    
+
   });
 
   python.on('exit', (code) => {
@@ -187,7 +184,7 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
 
 
 
-  
+
 
 });
 

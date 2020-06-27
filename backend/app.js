@@ -57,6 +57,7 @@ let ebay = new Ebay({
 
 app.use("/api/users", userRoutes);
 app.use("/api/listing", listingRoutes);
+app.use("/api/analysis", analysisRoutes);
 
 app.get("/api/testEbay", (req, res) => {
   ebay.getAccessToken().then((data) => {
