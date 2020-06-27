@@ -19,7 +19,6 @@ export class AuthService {
   private authStatusListener = new Subject<boolean>();
   private tokenTimer: any;
   private userId: string;
-  private seeded: boolean;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -38,9 +37,7 @@ export class AuthService {
   getUserId(){
     return this.userId;
   }
-  getSeeded(){
-    return this.seeded;
-  }
+  
 
   createUser(email: string, password: string){
     const authData: AuthData = {email: email, password: password};
@@ -62,7 +59,6 @@ export class AuthService {
         this.setAuthTimer(expiration);
         this.isAuth = true;
         this.userId = response.userID;
-        this.seeded = response.seeded;
         this.authStatusListener.next(true);
         const now = new Date();
         const expires = new Date(now.getTime() + expiration * 1000);
@@ -84,7 +80,6 @@ export class AuthService {
       this.token = authInfo.token;
       this.isAuth = true;
       this.userId = authInfo.userId;
-      this.seeded = authInfo.seeded;
       this.authStatusListener.next(true);
       this.setAuthTimer(expiresIn / 1000);
     }
@@ -95,7 +90,6 @@ export class AuthService {
     this.isAuth = false;
     this.authStatusListener.next(false);
     this.userId = null;
-    this.seeded = null;
     this.router.navigate(['/login']);
     this.clearAuthData();
     clearTimeout(this.tokenTimer);
@@ -111,13 +105,11 @@ export class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("expiration");
     localStorage.removeItem('userId');
-    localStorage.removeItem('seeded');
   }
   private getAuthData(){
     const token = localStorage.getItem("token");
     const expires = localStorage.getItem("expiration");
     const userId = localStorage.getItem('userId');
-    const seeded = JSON.parse(localStorage.getItem('seeded'));
     if(!token || !expires ) {
       return;
     }
@@ -125,7 +117,6 @@ export class AuthService {
       token: token,
       expirationDate: new Date(expires),
       userId: userId,
-      seeded: seeded
     }
   }
   private setAuthTimer(duration){

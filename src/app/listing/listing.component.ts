@@ -39,14 +39,18 @@ export class ListingComponent implements OnInit, OnDestroy {
   userIsAuth = false;
   userId: string;
   private authStatusSubs: Subscription;
-  userSeeded: boolean;
   // local variable to track website
   source = 'liquidation';
   accessToken = '';
+  techSeeded: boolean;
+  liquidationSeeded: boolean;
+  userSeeded: boolean;
 
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
+
+    this.getSeededStatus();
     this.getLiquidationManifests();
     // Form for link input
     this.draft = new FormGroup({
@@ -56,12 +60,14 @@ export class ListingComponent implements OnInit, OnDestroy {
       conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
     });
+
+
+    // ***I Dont follow this code***
     this.userIsAuth = this.authService.getIsAuth();
     this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
       this.userIsAuth = isAuth;
     });
     this.userId = this.authService.getUserId();
-    this.userSeeded = this.authService.getSeeded();
 
     // **Should Delete From this component**
     // this.getAccess();
@@ -70,6 +76,17 @@ export class ListingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.authStatusSubs.unsubscribe();
+  }
+
+  getSeededStatus() {
+    this.mainService.getTechSeeded().subscribe(
+      data => {
+        this.techSeeded = data;
+        console.log("seeded chek")
+        console.log(this.techSeeded);
+      });
+
+
   }
 
   onTabChanged($event) {

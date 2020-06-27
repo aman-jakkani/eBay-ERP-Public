@@ -196,7 +196,8 @@ router.post("/signup", (req, res, next) => {
     const user = new User({
       email: req.body.email,
       password: hash,
-      seeded: false
+      tech_seeded: false,
+      liquidation_seeded: false
     });
     user.save().then(result =>{
       res.status(201).json({
@@ -212,6 +213,22 @@ router.post("/signup", (req, res, next) => {
   });
 });
 
+router.get("/techSeeded",checkAuth, (req, res, next) => {
+  User.findOne( {_id: req.userData.userID}).then(user => {
+    if(!user) {
+      res.status(401).json({
+        message: "Auth failed, user not found"
+      });
+    } else {
+      console.log("user.seeded")
+
+      console.log(user.tech_seeded)
+      res.status(200).json({
+        seeded: user.tech_seeded
+      })
+    }
+  })
+});
 
 router.post("/login", (req, res, next) => {
   let fetchedUser;
@@ -237,7 +254,6 @@ router.post("/login", (req, res, next) => {
       token: token,
       expiresIn: 3600,
       userID: fetchedUser._id,
-      seeded: fetchedUser.seeded
     });
   }).catch(err => {
     console.log(err);

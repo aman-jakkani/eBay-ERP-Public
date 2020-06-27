@@ -269,5 +269,13 @@ export class MainService {
     }));
   }
 
+  getTechSeeded(){
+    return this.http.get<{seeded: boolean}>(BACKEND_URL + '/users/techSeeded/').pipe(map((response: any) => {
+
+      console.log("getTechSeeded")
+      console.log(response)
+      return response.seeded ;
+    })).pipe(catchError(this.handleError));
+  }
 
 }
