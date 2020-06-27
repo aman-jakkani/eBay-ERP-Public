@@ -17,11 +17,11 @@ const {spawn} = require('child_process');
 //getting all manifests from database
 router.get("/getLiquidationManifests", checkAuth, (req, res) => {
 
-  var url = req.params.url;
-  console.log(req.params);
+  console.log(typeof(req.userData.userID));
 
-  Manifest.find({source: "liquidation.com", creator: req.userData.userID}).then(documents => {
-    console.log(documents);
+
+  Manifest.find({ user_id: req.userData.userID}).then(documents => {
+
     res.status(200).json({
       message: "Liquidation Manifests fetched succesfully",
       manifests: documents
@@ -36,10 +36,9 @@ router.get("/getLiquidationManifests", checkAuth, (req, res) => {
 
 router.get("/getTechManifests", checkAuth, (req, res) => {
 
-  var url = req.params.url;
-  console.log(req.params);
+  console.log(req.userData.userID);
 
-  Manifest.find({source: "techliquidators.com", creator: req.userData.userID}).then(documents => {
+  Manifest.find({source: "techliquidators.com", user_id: req.userData.userID}).then(documents => {
     console.log(documents);
     res.status(200).json({
       message: "Tech Liquidation Manifests fetched succesfully",
