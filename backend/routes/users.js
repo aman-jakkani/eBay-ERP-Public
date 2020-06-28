@@ -15,80 +15,7 @@ const prompt = require('prompt-sync')();
 
 router.post("/updateData/:source", checkAuth, (req, res, next) => {
 
-  userId = req.userData.userID;
-  const source = req.params.source;
-
-  const username = req.body.username;
-  const password = req.body.password;
-
-  // spawn new child process to call the python script
-  var fileName;
-  if (source === 'liquidation'){
-    fileName = 'seed_data_liquidation.py'
-  } else if (source === 'techliquidators'){
-    fileName = 'seed_data_tech.py'
-  } else {
-    res.status(400).json({
-      message: "Error source not found"
-    });
-  }
-  console.log("Spawning python script ", fileName  )
-  const python = spawn('python2', [('./python_scripts/' + fileName), username, password, userId]);
-
-  // collect data from script
-  python.stdout.on('data', function (data) {
-
-    pythonData = uint8arrayToString(data);
-    console.log("got python data");
-
-    //Checks if use was able to log in
-    if ( pythonData.includes("Failed to sign in")){
-     
-      res.status(400).json({
-        message: "Could not log in try again.",
-        seeded: false
-
-      });
-    } 
-    console.log(typeof(pythonData), pythonData.length );
-    console.log(pythonData);
-  });
-
-
-  // in close event we are sure that stream is from child process is closed
-  python.on('close', (code) => {
-    console.log(`child process close all stdio with code ${code}`);
-
-    //Checks if response has already been sent (means that there was problem with log in)
-    if ( res.headersSent != true){
-      res.status(200).json({
-        message: "Success!",
-        seeded: true
-      });
-    }
-    
-  });
-
-  var uint8arrayToString = function(data){
-    return String.fromCharCode.apply(null, data);
-  };
-
-  python.stderr.on('data', (data) => {
-    // As said before, convert the Uint8Array to a readable string.
-    console.log("stderr");
-    console.log(uint8arrayToString(data));
-    if ( res.headersSent != true){
-      res.status(400).json({
-        message: "Could not log in. Error.",
-        seeded: false
-      });
-    }
-    
-  });
-
-  python.on('exit', (code) => {
-    console.log("Process quit with code : " + code);
-  });
+ 
 
 });
 
@@ -124,8 +51,6 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
      
       res.status(400).json({
         message: "Could not log in try again.",
-        seeded: false
-
       });
     } 
     console.log(typeof(pythonData), pythonData.length );
@@ -140,21 +65,27 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
     //Checks if response has already been sent (means that there was problem with log in)
     if ( res.headersSent != true){
 
-      // Set User to Seeded
-      User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{seeded: true}}).then(user => {
-
-
-        res.status(200).json({
-          message: "Success!",
-          seeded: true
+      if (source === 'techliquidators') {
+        // Set User to Seeded
+        User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{tech_seeded: true}}).then(user => {
+          // Response
+          res.status(200).json({
+            message: "Success!",
+            seeded: true
+          });
         });
-      }).catch(err => {
-        console.log(err);
-        return res.status(401).json({
-          message: "Data seeded but could not update seeded in DB",
-          seeded: false
+      } else {
+        // Set User to Seeded
+        User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{liquidation_seeded: true}}).then(user => {
+          // Response
+          res.status(200).json({
+            message: "Success!",
+            seeded: true
+          });
         });
-      })
+
+      }
+      
 
      
     }
@@ -225,6 +156,23 @@ router.get("/techSeeded",checkAuth, (req, res, next) => {
       console.log(user.tech_seeded)
       res.status(200).json({
         seeded: user.tech_seeded
+      })
+    }
+  })
+});
+
+router.get("/liquidationSeeded",checkAuth, (req, res, next) => {
+  User.findOne( {_id: req.userData.userID}).then(user => {
+    if(!user) {
+      res.status(401).json({
+        message: "Auth failed, user not found"
+      });
+    } else {
+      console.log("user.seeded")
+
+      console.log(user.liquidation_seeded)
+      res.status(200).json({
+        seeded: user.liquidation_seeded
       })
     }
   })

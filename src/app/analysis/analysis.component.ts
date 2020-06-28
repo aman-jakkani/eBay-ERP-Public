@@ -52,7 +52,6 @@ export class AnalysisComponent implements OnInit, OnDestroy {
       this.userIsAuth = isAuth;
     });
     this.userId = this.authService.getUserId();
-    this.userSeeded = this.authService.getSeeded();
 
   }
 

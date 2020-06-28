@@ -39,13 +39,13 @@ export class ListingComponent implements OnInit, OnDestroy {
   userIsAuth = false;
   userId: string;
   private authStatusSubs: Subscription;
-  // local variable to track website
+  // local variable to track website techliquidators | liquidation
   source = 'liquidation';
   accessToken = '';
-  techSeeded: boolean;
   liquidationSeeded: boolean;
-  userSeeded: boolean;
+  techSeeded: boolean;
 
+  // tslint:disable-next-line: max-line-length
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -82,10 +82,15 @@ export class ListingComponent implements OnInit, OnDestroy {
     this.mainService.getTechSeeded().subscribe(
       data => {
         this.techSeeded = data;
-        console.log("seeded chek")
+        console.log("seeded tech")
         console.log(this.techSeeded);
-      });
-
+    });
+    this.mainService.getLiquidationSeeded().subscribe(
+      data => {
+        this.liquidationSeeded = data;
+        console.log("seeded liquidaiton")
+        console.log(this.liquidationSeeded);
+    });
 
   }
 
@@ -277,14 +282,14 @@ export class ListingComponent implements OnInit, OnDestroy {
         alert(response.message);
 
         if ( response.seeded ) {
+          // update seeded status
+          this.getSeededStatus();
            // updating manifestsList automatiicaly
           if (this.source === 'liquidation' ) {
             this.getLiquidationManifests();
           } else if (this.source === 'techliquidators') {
             this.getTechManifests();
           }
-
-          this.userSeeded = true;
 
         }
 

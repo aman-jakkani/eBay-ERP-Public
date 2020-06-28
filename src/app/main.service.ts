@@ -278,4 +278,13 @@ export class MainService {
     })).pipe(catchError(this.handleError));
   }
 
+  getLiquidationSeeded(){
+    return this.http.get<{seeded: boolean}>(BACKEND_URL + '/users/liquidationSeeded/').pipe(map((response: any) => {
+
+      console.log("getLiquidationSeeded")
+      console.log(response)
+      return response.seeded ;
+    })).pipe(catchError(this.handleError));
+  }
+
 }

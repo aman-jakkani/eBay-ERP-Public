@@ -42,7 +42,6 @@ export class AuthService {
   createUser(email: string, password: string){
     const authData: AuthData = {email: email, password: password};
     this.http.post(BACKEND_URL+'/users/signup', authData).subscribe(() => {
-      this.seeded = false;
       this.router.navigate(['/login']);
     }, error => {
       this.authStatusListener.next(false);
@@ -51,7 +50,7 @@ export class AuthService {
 
   login(email: string, password: string){
     const authData: AuthData = {email: email, password: password};
-    this.http.post<{token: string, expiresIn: number, userID: string, seeded: boolean}>(BACKEND_URL+'/users/login', authData).subscribe(response => {
+    this.http.post<{token: string, expiresIn: number, userID: string}>(BACKEND_URL + '/users/login', authData).subscribe(response => {
       const token = response.token;
       this.token = token;
       if (token) {
@@ -62,7 +61,7 @@ export class AuthService {
         this.authStatusListener.next(true);
         const now = new Date();
         const expires = new Date(now.getTime() + expiration * 1000);
-        this.saveAuthData(token, expires, this.userId, this.seeded);
+        this.saveAuthData(token, expires, this.userId);
         this.router.navigate(['/home']);
       }
     }, error => {
@@ -95,11 +94,10 @@ export class AuthService {
     clearTimeout(this.tokenTimer);
   }
 
-  private saveAuthData(token: string, expirationDate: Date, userId: string, seeded: boolean) {
+  private saveAuthData(token: string, expirationDate: Date, userId: string) {
     localStorage.setItem('token', token);
     localStorage.setItem('expiration', expirationDate.toISOString());
     localStorage.setItem('userId', userId);
-    localStorage.setItem('seeded', JSON.stringify(seeded));
   }
   private clearAuthData(){
     localStorage.removeItem("token");
