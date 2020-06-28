@@ -1,0 +1,27 @@
+<mat-card *ngIf="!userIsAuth">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form (submit)="onLogin(loginForm)" *ngIf="!isLoading" #loginForm="ngForm">
+    <div class="form-group">
+      <mat-form-field appearance="standard">
+        <input matInput name="email" ngModel class="form-control" type="email" placeholder="E-mail Address" #emailInput="ngModel" required email>
+        <mat-error *ngIf="emailInput.invalid">Please enter a valid email address.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field appearance="standard">
+        <input matInput name="password" ngModel class="form-control" type="password" placeholder="Password" #passwordInput="ngModel" required>
+        <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
+      </mat-form-field>
+    </div>
+    <div style="text-align: center;">
+    <button *ngIf="!isLoading" mat-raised-button color="accent" class="btn-default btn-lg" type="submit">Login</button>
+    </div>
+  </form>
+</mat-card>
+
+<mat-card *ngIf="userIsAuth">
+  <div>
+    <p>Welcome to the eBay ERP Tool! You are already logged in. Select above to navigate to the desired page.</p>
+  </div>
+</mat-card>
+

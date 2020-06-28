@@ -1,24 +1,35 @@
 {
-  "name": "mean-course",
+  "name": "ebay-listing",
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "install": "npip install",
     "nopenv": "nopenv",
     "nopy": "nopy",
     "npip": "npip"
   },
   "dependencies": {
+    "axios": "^0.19.2",
+    "bcrypt": "^4.0.1",
     "body-parser": "^1.18.3",
+    "ebay-node-api": "^2.8.7",
     "express": "^4.16.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.1.2",
     "mongoose-unique-validator": "^2.0.3",
     "nopy": "^0.2.7",
+    "prompt-sync": "^4.2.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.9.1"
   },
   "python": {
+    "execPath": "python2.7",
     "dependencies": {
-      "MechanicalSoup": ""
+      "MechanicalSoup": "",
+      "pymongo": "",
+      "datetime": "",
+      "selenium": "",
+      "dnspython": ""
     }
   }
 }

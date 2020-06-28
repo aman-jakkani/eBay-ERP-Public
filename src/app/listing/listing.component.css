@@ -23,6 +23,11 @@
     order: 3;
 }
 
+.dialog{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  }
 
 .items-table{
     order: 0;
@@ -49,6 +54,12 @@
    margin:0 auto;
    display:block;
    font-size: 12px;
+}
+
+.seed{
+  width: 120px;
+  margin-left: 20px;
+  height: 40px;
 }
 .btn-detail{
     width: 5%;

@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainService } from '../main.service';
 import {Router} from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { observable, VirtualTimeScheduler } from 'rxjs';
+import { observable, VirtualTimeScheduler, Subscription } from 'rxjs';
 import { FormBuilder, FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import {Manifest} from '../models/manifest.model';
 import { Product } from '../models/product.model';
 import { Item } from '../models/item.model';
 import { Draft } from '../models/draft.model';
 import { formatDate } from '@angular/common';
+import { AuthService } from '../auth/auth.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ExternalLoginComponent } from '../ext-login/external.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './listing.component.html',
   styleUrls: ['./listing.component.css']
 })
-export class ListingComponent implements OnInit {
+export class ListingComponent implements OnInit, OnDestroy {
 
 
   // total quantity of items in auction
@@ -33,10 +36,21 @@ export class ListingComponent implements OnInit {
   draft: FormGroup;
   ttInput: string;
   drafts: Draft[] = [];
+  userIsAuth = false;
+  userId: string;
+  private authStatusSubs: Subscription;
+  // local variable to track website techliquidators | liquidation
+  source = 'liquidation';
+  accessToken = '';
+  liquidationSeeded: boolean;
+  techSeeded: boolean;
 
-  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+  // tslint:disable-next-line: max-line-length
+  constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
+
+    this.getSeededStatus();
     this.getLiquidationManifests();
     // Form for link input
     this.draft = new FormGroup({
@@ -47,13 +61,46 @@ export class ListingComponent implements OnInit {
       price: new FormControl(null, {}),
     });
 
+
+    // ***I Dont follow this code***
+    this.userIsAuth = this.authService.getIsAuth();
+    this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
+      this.userIsAuth = isAuth;
+    });
+    this.userId = this.authService.getUserId();
+
+    // **Should Delete From this component**
+    // this.getAccess();
+
+  }
+
+  ngOnDestroy() {
+    this.authStatusSubs.unsubscribe();
+  }
+
+  getSeededStatus() {
+    this.mainService.getTechSeeded().subscribe(
+      data => {
+        this.techSeeded = data;
+        console.log("seeded tech")
+        console.log(this.techSeeded);
+    });
+    this.mainService.getLiquidationSeeded().subscribe(
+      data => {
+        this.liquidationSeeded = data;
+        console.log("seeded liquidaiton")
+        console.log(this.liquidationSeeded);
+    });
+
   }
 
   onTabChanged($event) {
     const clickedIndex = $event.index;
     if ( clickedIndex === 0) {
+      this.source = 'liquidation';
       this.getLiquidationManifests();
     } else {
+      this.source = 'techliquidators';
       this.getTechManifests();
     }
   }
@@ -158,19 +205,17 @@ export class ListingComponent implements OnInit {
       }
       return 'out of loop';
     })();
-
-
-
   }
 
   updateSKU(productID, newSKU, i) {
-    alert("The SKU has been updated!");
+    alert('The SKU has been updated!');
     // const itm = this.items.filter(x => x.product_id === productID); - if multiple items have the same the products this wouldnt work
     this.mainService.updateSKU(this.items[i].id, newSKU).subscribe(data => {
       const product: Product = data;
       console.log(data);
       this.products[i] = product;
       this.drafts[i].updated_SKU = true;
+      this.drafts[i].listed = true;
     });
   }
   updateSKUAgain(productID, newSKU, i) {
@@ -181,6 +226,7 @@ export class ListingComponent implements OnInit {
         console.log(data);
         this.products[i] = product;
         this.drafts[i].updated_SKU = true;
+        this.drafts[i].listed = true;
       });
     }
   }
@@ -222,4 +268,47 @@ export class ListingComponent implements OnInit {
       });
     }
   }
+
+  seedUser(source: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      source: source
+    };
+
+    // Getting User Credentials
+    const dialogRef = this.dialog.open(ExternalLoginComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(data => {
+      this.mainService.seedUser(data.username, data.password, source).subscribe( response => {
+        alert(response.message);
+
+        if ( response.seeded ) {
+          // update seeded status
+          this.getSeededStatus();
+           // updating manifestsList automatiicaly
+          if (this.source === 'liquidation' ) {
+            this.getLiquidationManifests();
+          } else if (this.source === 'techliquidators') {
+            this.getTechManifests();
+          }
+
+        }
+
+      });
+    });
+
+
+  }
+
+  updateUser(source: string) {
+    alert('Funcationality coming soon!!');
+  }
+
+
+  // ***Probably need to delete code below***
+  getAccess() {
+    this.mainService.getToken().subscribe(data => {
+      this.accessToken = data;
+    });
+  }
+
 }

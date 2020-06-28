@@ -21,7 +21,10 @@
   width: 19%;
   padding-left: 4%;
 }
-
+.mat-stroked-button{
+  background-color: white;
+  margin-top: 5px;
+}
 
 /* Show it is fixed to the top */
 .navbar-static-top.navbar{

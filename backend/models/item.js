@@ -10,7 +10,8 @@ var item_schema = mongoose.Schema({
     grade: {type: String},
     product_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Product'},
     manifest_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Manifest'},
-    draft_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Draft'}
+    draft_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Draft'},
+    user_id: {type: String}
 
 });
 

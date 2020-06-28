@@ -1,5 +1,5 @@
 
-<div class="container" >
+<div *ngIf="userIsAuth" class="container" >
   <div>
     <mat-tab-group (selectedTabChange)="onTabChanged($event);" animationDuration="0ms">
         <mat-tab label="Liquidation"></mat-tab>
@@ -26,6 +26,16 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <div *ngIf="source=='liquidation'">
+      <button *ngIf="!liquidationSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser(source)">Get Manifests</button>
+      <button *ngIf="liquidationSeeded" type="button" class="btn btn-sm btn-success seed" (click)="updateUser(source)">Update Manifests</button>
+    </div>
+
+    <div *ngIf="source=='techliquidators'">
+      <button *ngIf="!techSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser(source)">Get Manifests</button>
+      <button *ngIf="techSeeded" type="button" class="btn btn-sm btn-success seed" (click)="updateUser(source)">Update Manifests</button>
+    </div>
+
   </div>
 
 
@@ -124,6 +134,6 @@
   </span>  &nbsp; &nbsp; Date: <span  class="light-text">
     {{current_manifest.date_purchased | date: 'M/d/yyyy'}}
   </span> </h4>
-
+  <!-- <button (click)="getOrders()">get orders</button> -->
 </div>
 
