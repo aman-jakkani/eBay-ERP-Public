@@ -188,7 +188,7 @@ def saveManifests(browser):
     tr = transactions_in_progress.find_all("tr")
 
     #number of manifests to save
-    for i in range(12):
+    for i in range(15):
 
         try: 
             td = tr[i].find_all('td')

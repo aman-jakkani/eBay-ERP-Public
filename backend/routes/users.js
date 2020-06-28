@@ -151,9 +151,7 @@ router.get("/techSeeded",checkAuth, (req, res, next) => {
         message: "Auth failed, user not found"
       });
     } else {
-      console.log("user.seeded")
 
-      console.log(user.tech_seeded)
       res.status(200).json({
         seeded: user.tech_seeded
       })
@@ -168,9 +166,7 @@ router.get("/liquidationSeeded",checkAuth, (req, res, next) => {
         message: "Auth failed, user not found"
       });
     } else {
-      console.log("user.seeded")
 
-      console.log(user.liquidation_seeded)
       res.status(200).json({
         seeded: user.liquidation_seeded
       })

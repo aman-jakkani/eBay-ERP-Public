@@ -24,9 +24,9 @@ from selenium.webdriver.chrome.options import Options
 
 
 #Mongo Detail
-client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test_db?retryWrites=true&w=majority")
 #Set db
-db = client.prod_db
+db = client.test_db
 # client.drop_database("test_db")
 
 #Collections
@@ -232,7 +232,7 @@ def saveManifests(browser):
           "auction_id": int(formatValue(value[0])),
           "transaction_id" : int(value[8].form.find("input",{"name":"appSaleID"}).get("value")),
           "quantity" : int(formatValue(value[3])),
-          "total_price" : int("".join(filter(str.isdigit, formatValue(value[4]))))/100,
+          "total_price" : int("".join(filter(str.isdigit, formatValue(value[7]))))/100,
           "date_purchased" : date,
           "status" : formatValue(value[8]).split(" ")[0],
           "source" : "techliquidators.com" ,
