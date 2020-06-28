@@ -300,7 +300,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   updateUser(source: string) {
-    alert("Funcationality coming soon!")
+    alert('Funcationality coming soon!');
   }
 
 
