@@ -12,7 +12,6 @@ const prompt = require('prompt-sync')();
 
 router.post("/updateData/:source", checkAuth, (req, res, next) => {
 
-<<<<<<< HEAD
   userId = req.userData.userID;
   const source = req.params.source;
 
@@ -87,9 +86,6 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
   python.on('exit', (code) => {
     console.log("Process quit with code : " + code);
   });
-=======
- 
->>>>>>> 44845926ca5f6b8c194c5640980898315b212686
 
 });
 
@@ -159,7 +155,7 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
         });
 
       }
-      
+
 
 
     }
