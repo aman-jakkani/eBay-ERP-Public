@@ -26,8 +26,16 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button *ngIf="!userSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser(source)">Get Manifests</button>
-    <button *ngIf="userSeeded" type="button" class="btn btn-sm btn-success seed" (click)="updateUser(source)">Update Manifests</button>
+    <div *ngIf="source=='liquidation'">
+      <button *ngIf="!liquidationSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser(source)">Get Manifests</button>
+      <button *ngIf="liquidationSeeded" type="button" class="btn btn-sm btn-success seed" (click)="updateUser(source)">Update Manifests</button>
+    </div>
+
+    <div *ngIf="source=='techliquidators'">
+      <button *ngIf="!techSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser(source)">Get Manifests</button>
+      <button *ngIf="techSeeded" type="button" class="btn btn-sm btn-success seed" (click)="updateUser(source)">Update Manifests</button>
+    </div>
+
   </div>
 
 
@@ -126,5 +134,9 @@
   </span>  &nbsp; &nbsp; Date: <span  class="light-text">
     {{current_manifest.date_purchased | date: 'M/d/yyyy'}}
   </span> </h4>
+<<<<<<< HEAD
+=======
+  <!-- <button (click)="getOrders()">get orders</button> -->
+>>>>>>> 44845926ca5f6b8c194c5640980898315b212686
 </div>
 

@@ -12,6 +12,7 @@ const prompt = require('prompt-sync')();
 
 router.post("/updateData/:source", checkAuth, (req, res, next) => {
 
+<<<<<<< HEAD
   userId = req.userData.userID;
   const source = req.params.source;
 
@@ -86,6 +87,9 @@ router.post("/updateData/:source", checkAuth, (req, res, next) => {
   python.on('exit', (code) => {
     console.log("Process quit with code : " + code);
   });
+=======
+ 
+>>>>>>> 44845926ca5f6b8c194c5640980898315b212686
 
 });
 
@@ -121,8 +125,6 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
 
       res.status(400).json({
         message: "Could not log in try again.",
-        seeded: false
-
       });
     }
     console.log(typeof(pythonData), pythonData.length );
@@ -137,21 +139,27 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
     //Checks if response has already been sent (means that there was problem with log in)
     if ( res.headersSent != true){
 
-      // Set User to Seeded
-      User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{seeded: true}}).then(user => {
-
-
-        res.status(200).json({
-          message: "Success!",
-          seeded: true
+      if (source === 'techliquidators') {
+        // Set User to Seeded
+        User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{tech_seeded: true}}).then(user => {
+          // Response
+          res.status(200).json({
+            message: "Success!",
+            seeded: true
+          });
         });
-      }).catch(err => {
-        console.log(err);
-        return res.status(401).json({
-          message: "Data seeded but could not update seeded in DB",
-          seeded: false
+      } else {
+        // Set User to Seeded
+        User.findOneAndUpdate({_id: req.userData.userID}, {"$set":{liquidation_seeded: true}}).then(user => {
+          // Response
+          res.status(200).json({
+            message: "Success!",
+            seeded: true
+          });
         });
-      })
+
+      }
+      
 
 
     }
@@ -193,7 +201,8 @@ router.post("/signup", (req, res, next) => {
     const user = new User({
       email: req.body.email,
       password: hash,
-      seeded: false
+      tech_seeded: false,
+      liquidation_seeded: false
     });
     user.save().then(result =>{
       res.status(201).json({
@@ -209,6 +218,35 @@ router.post("/signup", (req, res, next) => {
   });
 });
 
+router.get("/techSeeded",checkAuth, (req, res, next) => {
+  User.findOne( {_id: req.userData.userID}).then(user => {
+    if(!user) {
+      res.status(401).json({
+        message: "Auth failed, user not found"
+      });
+    } else {
+
+      res.status(200).json({
+        seeded: user.tech_seeded
+      })
+    }
+  })
+});
+
+router.get("/liquidationSeeded",checkAuth, (req, res, next) => {
+  User.findOne( {_id: req.userData.userID}).then(user => {
+    if(!user) {
+      res.status(401).json({
+        message: "Auth failed, user not found"
+      });
+    } else {
+
+      res.status(200).json({
+        seeded: user.liquidation_seeded
+      })
+    }
+  })
+});
 
 router.post("/login", (req, res, next) => {
   let fetchedUser;
@@ -234,7 +272,6 @@ router.post("/login", (req, res, next) => {
       token: token,
       expiresIn: 3600,
       userID: fetchedUser._id,
-      seeded: fetchedUser.seeded
     });
   }).catch(err => {
     console.log(err);

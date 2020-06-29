@@ -39,14 +39,18 @@ export class ListingComponent implements OnInit, OnDestroy {
   userIsAuth = false;
   userId: string;
   private authStatusSubs: Subscription;
-  userSeeded: boolean;
-  // local variable to track website
+  // local variable to track website techliquidators | liquidation
   source = 'liquidation';
   accessToken = '';
+  liquidationSeeded: boolean;
+  techSeeded: boolean;
 
+  // tslint:disable-next-line: max-line-length
   constructor(public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
 
   ngOnInit() {
+
+    this.getSeededStatus();
     this.getLiquidationManifests();
     // Form for link input
     this.draft = new FormGroup({
@@ -56,12 +60,14 @@ export class ListingComponent implements OnInit, OnDestroy {
       conditionDesc: new FormControl(null, {}),
       price: new FormControl(null, {}),
     });
+
+
+    // ***I Dont follow this code***
     this.userIsAuth = this.authService.getIsAuth();
     this.authStatusSubs = this.authService.getAuthStatusListener().subscribe(isAuth => {
       this.userIsAuth = isAuth;
     });
     this.userId = this.authService.getUserId();
-    this.userSeeded = this.authService.getSeeded();
 
     // **Should Delete From this component**
     // this.getAccess();
@@ -70,6 +76,22 @@ export class ListingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.authStatusSubs.unsubscribe();
+  }
+
+  getSeededStatus() {
+    this.mainService.getTechSeeded().subscribe(
+      data => {
+        this.techSeeded = data;
+        console.log("seeded tech")
+        console.log(this.techSeeded);
+    });
+    this.mainService.getLiquidationSeeded().subscribe(
+      data => {
+        this.liquidationSeeded = data;
+        console.log("seeded liquidaiton")
+        console.log(this.liquidationSeeded);
+    });
+
   }
 
   onTabChanged($event) {
@@ -260,14 +282,14 @@ export class ListingComponent implements OnInit, OnDestroy {
         alert(response.message);
 
         if ( response.seeded ) {
+          // update seeded status
+          this.getSeededStatus();
            // updating manifestsList automatiicaly
           if (this.source === 'liquidation' ) {
             this.getLiquidationManifests();
           } else if (this.source === 'techliquidators') {
             this.getTechManifests();
           }
-
-          this.userSeeded = true;
 
         }
 
@@ -278,32 +300,7 @@ export class ListingComponent implements OnInit, OnDestroy {
   }
 
   updateUser(source: string) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      source: source
-    };
-
-    // Getting User Credentials
-    const dialogRef = this.dialog.open(ExternalLoginComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe(data => {
-      this.mainService.updateUserManifests(data.username, data.password, source).subscribe( response => {
-        alert(response.message);
-
-        if ( response.seeded ) {
-           // updating manifestsList automatiicaly
-          if (this.source === 'liquidation' ) {
-            this.getLiquidationManifests();
-          } else if (this.source === 'techliquidators') {
-            this.getTechManifests();
-          }
-
-          this.userSeeded = true;
-
-        }
-
-      });
-    });
-
+    alert('Funcationality coming soon!!');
   }
 
 

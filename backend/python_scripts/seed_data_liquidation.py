@@ -8,9 +8,9 @@ import getpass
 from datetime import datetime, timedelta
 
 #Mongo Detail
-client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test_db?retryWrites=true&w=majority")
 #Set db
-db = client.dev_db
+db = client.test_db
 # client.drop_database("test_db")
 
 manifests_collection = db.manifests
@@ -188,7 +188,7 @@ def saveManifests(browser):
     tr = transactions_in_progress.find_all("tr")
 
     #number of manifests to save
-    for i in range(12):
+    for i in range(15):
 
         try: 
             td = tr[i].find_all('td')

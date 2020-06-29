@@ -59,11 +59,14 @@ export class AnalysisComponent implements OnInit, OnDestroy {
       this.userIsAuth = isAuth;
     });
     this.userId = this.authService.getUserId();
+<<<<<<< HEAD
     this.userSeeded = this.authService.getSeeded();
     var code = this.router.url.split('=')[1].split('&')[0];
     this.analysisService.accessEbay(code).subscribe(data => {
       console.log(data.data.access_token);
     })
+=======
+>>>>>>> 44845926ca5f6b8c194c5640980898315b212686
 
   }
 
