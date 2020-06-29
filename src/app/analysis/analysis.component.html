@@ -69,10 +69,10 @@
   </span>  &nbsp; &nbsp; Date: <span  class="light-text">
     {{current_manifest.date_purchased | date: 'M/d/yyyy'}}
   </span> </h4>
-  <a href="
+  <a *ngIf="!connectedBefore" href="
   https://auth.ebay.com/oauth2/authorize?client_id=V4ULLC-Inventor-PRD-c2eba4255-ca5c65cc&response_type=code&redirect_uri=V4U_LLC-V4ULLC-Inventor-geqkxzxxi&scope=https://api.ebay.com/oauth/api_scope https://api.ebay.com/oauth/api_scope/sell.marketing.readonly https://api.ebay.com/oauth/api_scope/sell.marketing https://api.ebay.com/oauth/api_scope/sell.inventory.readonly https://api.ebay.com/oauth/api_scope/sell.inventory https://api.ebay.com/oauth/api_scope/sell.account.readonly https://api.ebay.com/oauth/api_scope/sell.account https://api.ebay.com/oauth/api_scope/sell.fulfillment.readonly https://api.ebay.com/oauth/api_scope/sell.fulfillment https://api.ebay.com/oauth/api_scope/sell.analytics.readonly https://api.ebay.com/oauth/api_scope/sell.finances https://api.ebay.com/oauth/api_scope/sell.payment.dispute https://api.ebay.com/oauth/api_scope/commerce.identity.readonly" class="btn btn-primary">
-    Click
-</a>
-
+    Connect to eBay!
+  </a>
+  <button *ngIf="connectedBefore" class="btn btn-success">You are already connected to eBay!</button>
 </div>
 

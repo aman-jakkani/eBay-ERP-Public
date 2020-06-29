@@ -50,6 +50,7 @@ export class AnalysisComponent implements OnInit, OnDestroy {
   private userToken: string;
   // local variable to track website
   source = 'liquidation';
+  connectedBefore: boolean = false;
 
 
   constructor(private http: HttpClient, public analysisService: AnalysisService, public mainService: MainService, private router: Router, private route: ActivatedRoute, private formBuilder: FormBuilder, private authService: AuthService, private dialog: MatDialog) { }
@@ -68,16 +69,17 @@ export class AnalysisComponent implements OnInit, OnDestroy {
       this.liqSeeded = data;
     });
     this.authService.getRefresh().subscribe(data => {
-      console.log(data);
       if(data == 'na'){
         var code = this.router.url.split('=')[1].split('&')[0];
         this.analysisService.accessEbay(code).subscribe(data => {
           this.userToken = data.data.access_token;
+          this.connectedBefore = true;
         });
       }
       else {
         this.analysisService.accessThruRefresh().subscribe(data => {
           this.userToken = data.data.access_token;
+          this.connectedBefore = true;
         });
       }
     });
