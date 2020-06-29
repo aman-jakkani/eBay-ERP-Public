@@ -45,7 +45,9 @@ export class AnalysisComponent implements OnInit, OnDestroy {
   userIsAuth = false;
   userId: string;
   private authStatusSubs: Subscription;
-  userSeeded: boolean;
+  techSeeded: boolean;
+  liqSeeded: boolean;
+  private userToken: string;
   // local variable to track website
   source = 'liquidation';
 
@@ -59,14 +61,30 @@ export class AnalysisComponent implements OnInit, OnDestroy {
       this.userIsAuth = isAuth;
     });
     this.userId = this.authService.getUserId();
-<<<<<<< HEAD
-    this.userSeeded = this.authService.getSeeded();
+    this.mainService.getTechSeeded().subscribe(data => {
+      this.techSeeded = data;
+    });
+    this.mainService.getLiquidationSeeded().subscribe(data => {
+      this.liqSeeded = data;
+    });
+    this.authService.getRefresh().subscribe(data => {
+      console.log(data);
+      if(data == 'na'){
+        var code = this.router.url.split('=')[1].split('&')[0];
+        this.analysisService.accessEbay(code).subscribe(data => {
+          this.userToken = data.data.access_token;
+        });
+      }
+      else {
+        this.analysisService.accessThruRefresh().subscribe(data => {
+          this.userToken = data.data.access_token;
+        });
+      }
+    });
     var code = this.router.url.split('=')[1].split('&')[0];
     this.analysisService.accessEbay(code).subscribe(data => {
       console.log(data.data.access_token);
-    })
-=======
->>>>>>> 44845926ca5f6b8c194c5640980898315b212686
+    });
 
   }
 

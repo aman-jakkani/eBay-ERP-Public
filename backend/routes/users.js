@@ -183,14 +183,8 @@ router.post("/seed/:source", checkAuth, (req, res, next) => {
     console.log("Process quit with code : " + code);
   });
 
-
-
-
-
-
-
-
 });
+
 
 router.post("/signup", (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then(hash => {
@@ -198,7 +192,8 @@ router.post("/signup", (req, res, next) => {
       email: req.body.email,
       password: hash,
       tech_seeded: false,
-      liquidation_seeded: false
+      liquidation_seeded: false,
+      refresh_token: 'na'
     });
     user.save().then(result =>{
       res.status(201).json({
@@ -207,7 +202,7 @@ router.post("/signup", (req, res, next) => {
       });
     }).catch(err => {
       res.status(500).json({
-        message: "This user already exists!",
+        message: "Something went wrong while signing up!",
         error: err
       })
     })
@@ -244,6 +239,20 @@ router.get("/liquidationSeeded",checkAuth, (req, res, next) => {
   })
 });
 
+router.get("/refresh", checkAuth, (req, res, next) => {
+  User.findOne({_id: req.userData.userID}).then(user => {
+    if(!user) {
+      res.status(401).json({
+        message: "Auth failed, user not found"
+      });
+    } else {
+      res.status(200).json({
+        refresh: user.refresh_token
+      });
+    }
+  })
+});
+
 router.post("/login", (req, res, next) => {
   let fetchedUser;
   User.findOne({email: req.body.email}).then(user => {
@@ -266,7 +275,7 @@ router.post("/login", (req, res, next) => {
     res.status(200).json({
       message: "Auth successful",
       token: token,
-      expiresIn: 3600,
+      expiresIn: 7200,
       userID: fetchedUser._id,
     });
   }).catch(err => {

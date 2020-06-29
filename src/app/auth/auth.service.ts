@@ -5,6 +5,7 @@ import { map, retry, catchError  } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { stringify } from '@angular/compiler/src/util';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { throwError} from 'rxjs';
 
 import { AuthData } from "./auth-data.model";
 import { Subject } from 'rxjs';
@@ -22,6 +23,19 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
+  handleError(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+        // client-side error
+        errorMessage = `Error: ${error.error.message}`;
+    } else {
+        // server-side error
+        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return throwError(errorMessage);
+  }
+
   getToken(){
     return this.token;
   }
@@ -37,7 +51,7 @@ export class AuthService {
   getUserId(){
     return this.userId;
   }
-  
+
 
   createUser(email: string, password: string){
     const authData: AuthData = {email: email, password: password};
@@ -123,4 +137,12 @@ export class AuthService {
     }, duration * 1000);
   }
 
+  getRefresh(){
+    return this.http.get<{refresh: string}>(BACKEND_URL + '/users/refresh').pipe(map((response: any) => {
+
+      console.log("got refresh")
+      //console.log(response)
+      return response.refresh;
+    })).pipe(catchError(this.handleError));
+  }
 }

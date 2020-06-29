@@ -35,5 +35,11 @@ export class AnalysisService {
     })).pipe(catchError(this.handleError));
   }
 
+  accessThruRefresh(){
+    return this.http.get<{message: string, data: any}>(BACKEND_URL+'/analysis/refresh').pipe(map(res => {
+      return res;
+    })).pipe(catchError(this.handleError));
+  }
+
 
 }

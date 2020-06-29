@@ -21,7 +21,7 @@ const app = express();
 const {spawn} = require('child_process');
 
 mongoose.connect(
-    "mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/test_db?retryWrites=true&w=majority"
+    "mongodb+srv://admin:wvpEj5g4AtIaLANt@listing-tool-cluster-rkyd0.mongodb.net/dev_db?retryWrites=true&w=majority"
   )
   .then(() => {
     console.log("Connected to database!");

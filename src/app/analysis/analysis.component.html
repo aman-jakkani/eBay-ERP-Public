@@ -27,8 +27,15 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button *ngIf="!userSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser(source)">Get Manifests</button>
-    <button *ngIf="userSeeded" type="button" class="btn btn-sm btn-success seed" (click)="updateUser(source)">Update Manifests</button>
+    <div *ngIf="source=='liquidation'">
+      <button *ngIf="!liqSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser(source)">Get Manifests</button>
+      <button *ngIf="liqSeeded" type="button" class="btn btn-sm btn-success seed" (click)="updateUser(source)">Update Manifests</button>
+    </div>
+
+    <div *ngIf="source=='techliquidators'">
+      <button *ngIf="!techSeeded" type="button" class="btn btn-sm btn-danger seed" (click)="seedUser(source)">Get Manifests</button>
+      <button *ngIf="techSeeded" type="button" class="btn btn-sm btn-success seed" (click)="updateUser(source)">Update Manifests</button>
+    </div>
   </div>
 
 
