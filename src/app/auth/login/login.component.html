@@ -1,7 +1,9 @@
+<div *ngIf="!userIsAuth">
+
 
 <h1 style="text-align:center"> Demo for Ebay Listing Tool </h1>
 
-<mat-card *ngIf="!userIsAuth">
+<mat-card >
   <mat-spinner *ngIf="isLoading"></mat-spinner>
   <form (submit)="onLogin(loginForm)" *ngIf="!isLoading" #loginForm="ngForm">
     <div class="form-group">
@@ -22,11 +24,6 @@
   </form>
 </mat-card>
 
-<mat-card *ngIf="userIsAuth">
-  <div>
-    <p>Welcome to the eBay ERP Tool! You are already logged in. Select above to navigate to the desired page.</p>
-  </div>
-</mat-card>
 
 <h2 style="text-align:center"> Demo Credentials </h2>
 <h4 style="text-align:center"> Username: demo@gmail.com </h4>
@@ -34,3 +31,10 @@
 
 
 
+</div>
+
+<mat-card *ngIf="userIsAuth">
+  <div>
+    <p>Welcome to the eBay ERP Tool! You are already logged in. Select above to navigate to the desired page.</p>
+  </div>
+</mat-card>
