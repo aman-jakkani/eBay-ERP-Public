@@ -1,3 +1,7 @@
+Link to deployment: http://ebay-resource-management.s3-website.us-east-2.amazonaws.com/
+
+Refer to the documentation folder for project resources!
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
 
 ## Development server
